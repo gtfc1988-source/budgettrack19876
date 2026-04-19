@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#007aff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Budget">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Budget Planner","short_name":"Budget","start_url":"./","display":"standalone","background_color":"%23ffffff","theme_color":"%23007aff","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22%3E%3Crect width=%22192%22 height=%22192%22 rx=%2244%22 fill=%22%23007aff%22/%3E%3Ctext x=%2296%22 y=%22130%22 font-size=%22110%22 text-anchor=%22middle%22%3E%F0%9F%92%B0%3C/text%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<link rel="apple-touch-icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><rect width="180" height="180" rx="40" fill="%23007aff"/><text x="90" y="125" font-size="105" text-anchor="middle">%F0%9F%92%B0</text></svg>'>
+<title>Budget Planner</title>
+</head>
+<body>
+<div id="root"></div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{
+  /* Apple system colours */
+  --c-p500:#007aff;--c-p100:#e5f1ff;--c-p200:#b8d8ff;--c-p700:#0051d0;
+  --c-s50:#f9f9f9;--c-s100:#f2f2f7;--c-s200:#e5e5ea;--c-s300:#d1d1d6;
+  --c-s500:#8e8e93;--c-s900:#000000;
+  --c-ok:#34c759;--c-ok-bg:#e8f8ec;--c-ok-bd:#b8ebc4;
+  --c-er:#ff3b30;--c-er-bg:#ffeceb;--c-er-bd:#ffc6c2;
+  --c-wa:#ff9500;--c-wa-bg:#fff3e0;--c-wa-bd:#ffd89a;
+  --c-bg:#f2f2f7;--c-card:#ffffff;--c-card-alt:#fafafa;
+  /* System font stack — resolves to SF on Apple platforms, system default elsewhere */
+  --f-s:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --f-m:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  /* Generous Apple-style radii */
+  --r:12px;--rs:8px;
+  --sh:0 1px 2px rgb(0 0 0/.04);
+  --sh2:0 4px 16px -2px rgb(0 0 0/.08),0 2px 4px -2px rgb(0 0 0/.04);}
+.dark{
+  --c-p500:#0a84ff;--c-p100:#0a2647;--c-p200:#0c3a6e;--c-p700:#5eb3ff;
+  --c-s50:#1c1c1e;--c-s100:#000000;--c-s200:#2c2c2e;--c-s300:#3a3a3c;
+  --c-s500:#8e8e93;--c-s900:#ffffff;
+  --c-ok:#30d158;--c-ok-bg:#0a2e14;--c-ok-bd:#155529;
+  --c-er:#ff453a;--c-er-bg:#3d0b08;--c-er-bd:#6b1410;
+  --c-wa:#ff9f0a;--c-wa-bg:#3d2708;--c-wa-bd:#6b4410;
+  --c-bg:#000000;--c-card:#1c1c1e;--c-card-alt:#2c2c2e;
+  --sh:0 1px 2px rgb(0 0 0/.3);
+  --sh2:0 4px 16px -2px rgb(0 0 0/.5),0 2px 4px -2px rgb(0 0 0/.3);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--c-bg);font-family:var(--f-s);color:var(--c-s900);-webkit-font-smoothing:antialiased;line-height:1.47;font-size:16px;transition:background .2s,color .2s}
+.app{padding:1.5rem 1.25rem 3rem;max-width:1080px;margin:0 auto}
+.m{font-family:var(--f-m);font-variant-numeric:tabular-nums}
+.mu{color:var(--c-s500);font-size:.875rem}
+.eb{font-size:.75rem;font-weight:600;color:var(--c-s500);letter-spacing:.01em;text-transform:none}
+/* Banner */
+.banner{display:flex;align-items:center;gap:.75rem;margin-bottom:1.5rem;padding:0 .25rem}
+.banner-text h1{margin:0;font-size:1.5rem;font-weight:700;color:var(--c-s900);letter-spacing:-.02em;line-height:1.1}
+.banner-right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+.tst-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:.3rem;vertical-align:middle}
+.tst-dot-ok{background:var(--c-ok)}
+.tst-dot-fail{background:var(--c-er)}
+/* Inputs */
+.inp{font-family:var(--f-s);font-size:1rem;border:1px solid var(--c-s200);background:var(--c-card);padding:.625rem .875rem;border-radius:var(--rs);color:var(--c-s900);width:100%;transition:border-color .15s,box-shadow .15s,background .15s}
+.inp:focus{outline:none;border-color:var(--c-p500);box-shadow:0 0 0 4px rgb(0 122 255/.15)}
+.bare{border-color:transparent;background:transparent;padding:.375rem .5rem}
+.bare:hover{border-color:var(--c-s200);background:var(--c-card)}
+.money{font-family:var(--f-m);font-variant-numeric:tabular-nums;text-align:right}
+.mw{position:relative;display:inline-flex;align-items:center}
+.mw::before{content:'\00a3';position:absolute;left:.625rem;font-family:var(--f-m);font-size:.875rem;color:var(--c-s500);pointer-events:none;z-index:1}
+.mw .money{padding-left:1.375rem}
+.mw-bare::before{left:.375rem}
+.mw-bare .money{padding-left:1.1rem}
+.mw-lg::before{font-size:1rem;left:.75rem}
+.mw-lg .money{padding-left:1.625rem}
+.inp-amt{border:1px solid var(--c-s200);background:var(--c-card);padding:.5rem .75rem;border-radius:var(--rs);font-size:.9375rem;font-weight:500;font-family:var(--f-m);color:var(--c-s900);transition:border-color .15s,box-shadow .15s}
+.inp-amt:hover{border-color:var(--c-s300)}
+.inp-amt:focus{outline:none;border-color:var(--c-p500);box-shadow:0 0 0 4px rgb(0 122 255/.15)}
+/* Buttons */
+.btn{font-family:var(--f-s);font-weight:500;font-size:.9375rem;border:none;background:var(--c-s100);color:var(--c-p500);cursor:pointer;padding:.55rem 1rem;border-radius:var(--rs);transition:background .15s,transform .1s;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.btn:hover{background:var(--c-s200)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid var(--c-p500);outline-offset:2px}
+.btn-p{background:var(--c-p500);color:#fff}
+.btn-p:hover{background:var(--c-p700)}
+.btn-sm{padding:.4rem .75rem;font-size:.875rem}
+.btn-lnk{background:none;border:none;color:var(--c-p500);cursor:pointer;font-family:var(--f-s);font-size:.875rem;font-weight:500;padding:0}
+.btn-lnk:hover{color:var(--c-p700);text-decoration:underline}
+.add{background:var(--c-s100);border:none;color:var(--c-p500);cursor:pointer;font-family:var(--f-s);font-size:.9375rem;font-weight:500;padding:.625rem 1rem;border-radius:var(--rs);width:100%;margin-top:.5rem;transition:background .15s}
+.add:hover{background:var(--c-s200)}
+.x{background:none;border:none;color:var(--c-s500);cursor:pointer;padding:.25rem .5rem;border-radius:var(--rs);font-size:1rem;transition:background .12s,color .12s}
+.x:hover{background:var(--c-er-bg);color:var(--c-er)}
+.mv{background:none;border:none;color:var(--c-s500);cursor:pointer;padding:.2rem .4rem;border-radius:.25rem;font-size:.7rem;line-height:1}
+.mv:hover{background:var(--c-p100);color:var(--c-p700)}
+/* Pots */
+.pot{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
+.pot:hover{border-color:var(--c-s300)}
+.pot-head{display:flex;align-items:center;gap:.875rem;padding:1rem 1.25rem;cursor:pointer;user-select:none;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.pot-head:hover{background:var(--c-s50)}
+.pot-head:active{background:var(--c-s100)}
+.pot-name{font-weight:600;font-size:1rem;letter-spacing:-.01em}
+.pot-sub{font-size:.8125rem;color:var(--c-s500);margin-top:.15rem}
+.pot-amt{font-family:var(--f-m);font-weight:500;font-size:1.0625rem;flex-shrink:0;text-align:right;letter-spacing:-.02em}
+.pot-pct{font-size:.75rem;color:var(--c-s500);margin-top:.15rem;text-align:right}
+.pot-chev{color:var(--c-s500);font-size:.625rem;transition:transform .15s;flex-shrink:0}
+.pot-chev.o{transform:rotate(90deg)}
+.pot-bar{height:3px;background:var(--c-s200)}
+.pot-bar-fill{height:100%;background:var(--c-p500);transition:width .4s ease;border-radius:0 2px 2px 0}
+.pot-body{border-top:1px solid var(--c-s200);padding:.875rem 1.25rem 1.125rem;background:var(--c-card-alt)}
+.sub{display:flex;align-items:center;gap:.5rem;padding:.2rem 0}
+.pot-tools{display:flex;gap:.5rem;justify-content:space-between;align-items:center;margin-top:.875rem;padding-top:.875rem;border-top:1px dashed var(--c-s300);flex-wrap:wrap}
+.pot-note textarea{font-family:var(--f-s);font-size:.8125rem;border:1px solid transparent;background:transparent;color:var(--c-s500);padding:.375rem .5rem;border-radius:var(--rs);width:100%;resize:none;min-height:2rem;margin-top:.5rem;transition:border-color .12s,background .12s}
+.pot-note textarea:hover{border-color:var(--c-s200);background:var(--c-card)}
+.pot-note textarea:focus{outline:none;border-color:var(--c-p500);background:var(--c-card);color:var(--c-s900)}
+.pot-grid{display:grid;grid-template-columns:1fr;gap:.75rem;margin-bottom:.75rem}
+@media(min-width:768px){.pot-grid{grid-template-columns:1fr 1fr}}
+.pot-ghost{color:var(--c-s500);font-size:.75rem;font-family:var(--f-m);margin-top:.375rem}
+.rollover-pill{font-size:.7rem;font-weight:500;background:var(--c-p100);color:var(--c-p500);padding:.15rem .5rem;border-radius:9999px;flex-shrink:0}
+/* Alerts */
+.ins{padding:.75rem 1rem;border-radius:var(--rs);font-size:.875rem;margin-bottom:.5rem;display:flex;gap:.5rem;align-items:flex-start;border:1px solid transparent;line-height:1.4}
+.insi{background:var(--c-p100);color:var(--c-p700);border-color:var(--c-p200)}
+.insw{background:var(--c-wa-bg);color:var(--c-wa);border-color:var(--c-wa-bd)}
+.inse{background:var(--c-er-bg);color:var(--c-er);border-color:var(--c-er-bd)}
+/* Summary */
+.summary{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+.summary-stats{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start;margin-bottom:.875rem}
+.hnum{font-family:var(--f-m);font-size:1.375rem;font-weight:500;line-height:1;letter-spacing:-.03em}
+.health-pill{display:inline-block;font-size:.75rem;font-weight:500;padding:.25rem .625rem;border-radius:9999px}
+.summary-track{height:5px;background:var(--c-s200);border-radius:9999px;overflow:hidden}
+.summary-track-fill{height:100%;border-radius:9999px;transition:width .6s ease}
+/* Collapsible cards */
+.card{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);margin-bottom:.75rem;overflow:hidden}
+.sh{padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;gap:.5rem;transition:background .15s;-webkit-tap-highlight-color:transparent}
+.sh:hover{background:var(--c-s50)}
+.sh:active{background:var(--c-s100)}
+.h2{font-size:1.0625rem;font-weight:600;margin:0;display:flex;align-items:center;gap:.5rem;letter-spacing:-.01em}
+.sb{padding:.25rem 1.25rem 1.25rem}
+/* Misc widgets */
+.distrib{background:var(--c-p100);border:1px solid var(--c-p200);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;flex-wrap:wrap}
+.cdpill{display:inline-block;font-size:.8125rem;font-weight:500;color:var(--c-p500);background:var(--c-p100);padding:.25rem .75rem;border-radius:9999px;margin-top:.375rem}
+.diff-bar{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);padding:.75rem 1.25rem;margin-bottom:1.25rem;display:flex;gap:.625rem;flex-wrap:wrap;align-items:center;font-size:.875rem}
+.closeout{background:var(--c-ok-bg);border:1px solid var(--c-ok-bd);border-radius:var(--r);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.afford{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.afford-row{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.afford-result{margin-top:.5rem;padding:.625rem .875rem;border-radius:var(--rs);font-size:.85rem}
+.var-row{display:flex;align-items:center;gap:.75rem;padding:.375rem 0;border-bottom:1px solid var(--c-s200);font-size:.875rem}
+.var-row:last-child{border-bottom:none}
+.var-chip{font-size:.7rem;font-weight:700;padding:.15rem .45rem;border-radius:9999px;flex-shrink:0;font-family:var(--f-m)}
+.var-over{background:var(--c-er-bg);color:var(--c-er);border:1px solid var(--c-er-bd)}
+.var-under{background:var(--c-ok-bg);color:var(--c-ok);border:1px solid var(--c-ok-bd)}
+.var-on{background:var(--c-s100);color:var(--c-s500);border:1px solid var(--c-s200)}
+.target-row{display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap;margin-top:.375rem}
+.target-bar{height:4px;background:var(--c-s200);border-radius:9999px;overflow:hidden;margin-top:.5rem}
+.target-bar-fill{height:100%;border-radius:9999px;background:var(--c-p500);transition:width .4s ease}
+.overpay-result{background:var(--c-p100);border:1px solid var(--c-p200);border-radius:var(--rs);padding:.75rem 1rem;margin-top:.75rem;font-size:.875rem;line-height:1.8}
+
+.undo-toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--c-s900);color:var(--c-card);padding:.75rem 1.25rem;border-radius:9999px;font-size:.9375rem;display:flex;align-items:center;gap:.75rem;z-index:100;box-shadow:var(--sh2);white-space:nowrap}
+.undo-toast button{background:var(--c-p500);color:#fff;border:none;padding:.25rem .875rem;border-radius:9999px;cursor:pointer;font-family:var(--f-s);font-size:.8125rem;font-weight:600}
+.gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background:var(--c-bg)}
+.gate-box{background:var(--c-card);border-radius:var(--r);box-shadow:var(--sh2);padding:2.5rem 2rem;width:360px;max-width:100%}
+.err-box{background:var(--c-er-bg);border:1px solid var(--c-er-bd);color:var(--c-er);padding:1rem 1.25rem;border-radius:var(--r);margin-bottom:1rem;font-size:.9375rem}
+.tbl{width:100%;border-collapse:collapse}
+.tbl td,.tbl th{padding:.5rem .625rem}
+.zbr>tbody>tr:nth-child(even) td{background:var(--c-card-alt)}
+.sel{font-family:var(--f-s);font-size:1.25rem;font-weight:600;border:none;background:transparent;padding:.25rem .5rem;border-radius:var(--rs);cursor:pointer;color:var(--c-s900);transition:background .15s;letter-spacing:-.01em}
+.sel:hover{background:var(--c-s100)}
+.sel:focus{outline:2px solid var(--c-p500);outline-offset:2px;background:var(--c-s100)}
+.sel option{background:var(--c-card);color:var(--c-s900)}
+.theme-btn{background:var(--c-s100);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:background .15s}
+.theme-btn:hover{background:var(--c-s200)}
+@media(max-width:600px){
+  .app{padding:1rem .875rem 2rem}
+  .sel{font-size:1.125rem}
+  .pot-head{padding:.875rem 1rem}
+  .pot-body{padding:.75rem 1rem 1rem}
+  .pot-amt{font-size:1rem}
+  .banner-text h1{font-size:1.25rem}
+  .summary{padding:1.25rem}}
+
+/* ── Offline indicator ──────── */
+.status-pill{position:fixed;top:1.25rem;right:1.25rem;font-size:.8125rem;font-weight:500;padding:.35rem 1rem;border-radius:9999px;z-index:50;box-shadow:var(--sh2);transition:opacity .2s,background .2s}
+.status-ok{background:var(--c-card);color:var(--c-ok);border:1px solid var(--c-ok-bd)}
+.status-offline{background:var(--c-wa-bg);color:var(--c-wa);border:1px solid var(--c-wa-bd)}
+.status-saving{background:var(--c-card);color:var(--c-s500);border:1px solid var(--c-s200)}
+.status-hidden{opacity:0;pointer-events:none}
+/* ── History table ──────────── */
+.hist-tbl{width:100%;border-collapse:collapse;font-size:.9375rem}
+.hist-tbl th,.hist-tbl td{padding:.625rem .5rem;text-align:left;border-bottom:1px solid var(--c-s200)}
+.hist-tbl th{font-weight:600;color:var(--c-s500);font-size:.8125rem}
+.hist-tbl td.num{text-align:right;font-family:var(--f-m);font-variant-numeric:tabular-nums}
+.hist-bar{display:inline-block;width:50px;height:6px;background:var(--c-s200);border-radius:3px;overflow:hidden;vertical-align:middle;margin-right:.5rem}
+.hist-bar-fill{height:100%;background:var(--c-ok);transition:width .3s}
+/* ── Backup buttons row ──── */
+.backup-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+
+/* ── 3-month forecast strip ──── */
+.fcast{display:flex;gap:.625rem;margin-bottom:1rem;flex-wrap:wrap}
+.fcast-month{flex:1 1 calc(33% - .5rem);min-width:90px;background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);padding:.75rem .875rem;transition:border-color .15s}
+.fcast-month:hover{border-color:var(--c-s300)}
+.fcast-label{font-size:.75rem;font-weight:500;color:var(--c-s500);margin-bottom:.25rem}
+.fcast-value{font-family:var(--f-m);font-size:1.0625rem;font-weight:500;letter-spacing:-.02em;line-height:1}
+.fcast-tag{font-size:.75rem;color:var(--c-s500);margin-top:.25rem;line-height:1.3}
+.fcast-good{color:var(--c-ok)}
+.fcast-tight{color:var(--c-wa)}
+.fcast-bad{color:var(--c-er)}
+
+/* ── Auto-allocate ────── */
+.aa-panel{background:var(--c-card);border:1px solid var(--c-s200);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:.75rem}
+.aa-row{display:flex;gap:.75rem;align-items:flex-start;flex-wrap:wrap}
+.aa-headline{flex:1;min-width:200px}
+.aa-headline h3{margin:0 0 .25rem;font-size:1.0625rem;font-weight:600;letter-spacing:-.01em}
+.aa-results{margin-top:.875rem;padding-top:.875rem;border-top:1px solid var(--c-s200)}
+.aa-result-row{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;font-size:.875rem;border-bottom:1px solid var(--c-s100)}
+.aa-result-row:last-child{border-bottom:none}
+.aa-result-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.aa-result-old{color:var(--c-s500);font-family:var(--f-m);font-size:.8125rem;text-decoration:line-through;text-decoration-color:var(--c-s300)}
+.aa-result-arrow{color:var(--c-s500);font-size:.8125rem}
+.aa-result-new{font-family:var(--f-m);font-weight:500;font-size:.9375rem;color:var(--c-s900);min-width:60px;text-align:right}
+.aa-explain{font-size:.8125rem;color:var(--c-s500);margin-top:.5rem;line-height:1.5}
+.aa-tag{font-size:.7rem;font-weight:500;padding:.1rem .45rem;border-radius:9999px;flex-shrink:0;margin-left:.4rem}
+.aa-tag-default{background:var(--c-ok-bg);color:var(--c-ok)}
+.aa-tag-trim{background:var(--c-wa-bg);color:var(--c-wa)}
+.aa-tag-cut{background:var(--c-er-bg);color:var(--c-er)}
+
+/* Pot goal ring (small progress indicator in pot header) */
+.pot-goal-ring{display:inline-flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--c-s500);margin-top:.15rem}
+.pot-goal-bar{width:60px;height:6px;background:var(--c-s200);border-radius:3px;overflow:hidden}
+.pot-goal-fill{height:100%;background:var(--c-ok);border-radius:3px;transition:width .4s ease}
+.pot-goal-done{color:var(--c-ok);font-weight:600}
+/* More impactful % of income bar */
+.pot-bar{height:5px;background:var(--c-s100)}
+.pot-bar-fill{height:100%;background:linear-gradient(90deg,var(--c-p500) 0%,var(--c-p500) 100%);transition:width .4s ease;border-radius:0 3px 3px 0}
+.pot-bar-fill.wide{background:var(--c-wa)}
+.pot-bar-fill.huge{background:var(--c-er)}
+/* Drag-to-reorder */
+.pot.dragging{opacity:.4;transform:scale(.98)}
+.pot.drag-over{border-color:var(--c-p500);border-style:dashed}
+.pot-drag{cursor:grab;color:var(--c-s300);font-size:1rem;padding:.25rem .2rem;margin-right:-.25rem;flex-shrink:0;user-select:none;touch-action:none}
+.pot-drag:hover{color:var(--c-s500)}
+.pot-drag:active{cursor:grabbing}
+.sub.item-dragging{opacity:.4}
+.sub.item-drag-over{border-top:2px solid var(--c-p500)}
+.item-drag{cursor:grab;color:var(--c-s300);font-size:.875rem;padding:.15rem .25rem;user-select:none;touch-action:none;flex-shrink:0}
+.item-drag:hover{color:var(--c-s500)}
+/* Bigger, more obvious theme toggle */
+.theme-btn{background:var(--c-s100);border:1px solid var(--c-s200);border-radius:50%;width:40px;height:40px;font-size:1.125rem}
+.theme-btn:hover{background:var(--c-p100);border-color:var(--c-p200)}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+
+// ============================================================
+const SUPABASE_URL = 'https://wppzwukmestyyqioakql.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_7ZB-OwLjI3q1MfqTD7w95Q_sSWOHsdR';
+const PASSWORD = '22b59b42-7057-4c4b-ba66-b8f564e66df2';
+// ============================================================
+
+const {useState,useMemo,useEffect,useCallback,useRef,createElement:h}=React;
+
+// ── Bank holidays ─────────────────────────────────────────────────
+let BH=new Set(['2025-01-01','2025-04-18','2025-04-21','2025-05-05','2025-05-26','2025-08-25','2025-12-25','2025-12-26','2026-01-01','2026-04-03','2026-04-06','2026-05-04','2026-05-25','2026-08-31','2026-12-25','2026-12-28','2027-01-01','2027-03-26','2027-03-29','2027-05-03','2027-05-31','2027-08-30','2027-12-27','2027-12-28','2028-01-03','2028-04-14','2028-04-17','2028-05-01','2028-05-29','2028-08-28','2028-12-25','2028-12-26']);
+const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MF=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+// ── Pure helpers ──────────────────────────────────────────────────
+const iso=d=>d.toISOString().slice(0,10);
+const wk=d=>d.getDay()!==0&&d.getDay()!==6&&!BH.has(iso(d));
+const pd=(y,m)=>{const d=new Date(y,m,21);while(!wk(d))d.setDate(d.getDate()-1);return d};
+const npd=(y,m)=>pd(m===11?y+1:y,m===11?0:m+1);
+const cd=(s,e,dow)=>{let n=0;const d=new Date(s);while(d<e){if(d.getDay()===dow)n++;d.setDate(d.getDate()+1)}return n};
+const gS=n=>{const v=Number(n||0);return v%1===0?'\u00a3'+Math.round(v).toLocaleString('en-GB'):'\u00a3'+v.toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2})};
+const fd=d=>d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+const uid=()=>Math.random().toString(36).slice(2,9);
+const MK=(y,m)=>`pp:monthly:${y}:${m}`;
+const prevMo=(y,m)=>m===0?[y-1,11]:[y,m-1];
+
+// School term-time periods (inclusive). Each entry: [startISO, endISO]
+// During these spans (Mon-Fri only), kids are at after-school club.
+const TERM_DATES=[
+  // 2025-26 Summer term
+  ['2026-04-21','2026-05-22'],
+  ['2026-06-01','2026-07-22'],
+  // 2026-27 Autumn term
+  ['2026-09-03','2026-10-23'],
+  ['2026-11-02','2026-12-18'],
+  // 2026-27 Spring term
+  ['2027-01-05','2027-02-12'],
+  ['2027-02-22','2027-03-25'],
+  // 2026-27 Summer term
+  ['2027-04-14','2027-05-28'],
+  ['2027-06-07','2027-07-21'],
+];
+function isTermTime(d){
+  const i=iso(d);
+  return TERM_DATES.some(([s,e])=>i>=s&&i<=e);}
+// Average Fridays in a typical 4-week month is approximately 4 — used as baseline for "more/less than usual"
+const AVG_TERM_FRIDAYS=3;
+// Count Fridays between two dates that fall inside term time
+function termFridays(start,end){
+  let n=0;const d=new Date(start);
+  while(d<end){if(d.getDay()===5&&isTermTime(d))n++;d.setDate(d.getDate()+1)}
+  return n}
+// List the actual Friday dates within term time for a pay period (for tooltips)
+function termFridayDates(start,end){
+  const out=[];const d=new Date(start);
+  while(d<end){if(d.getDay()===5&&isTermTime(d))out.push(new Date(d));d.setDate(d.getDate()+1)}
+  return out}
+
+function bdIn(bds,p){
+  const start=new Date(p);start.setDate(start.getDate()+7);
+  const np=npd(p.getFullYear(),p.getMonth());
+  const end=new Date(np);end.setDate(end.getDate()+7);
+  const out=[];
+  bds.forEach(b=>{for(const y of[start.getFullYear(),start.getFullYear()+1]){const d=new Date(y,b.month-1,b.day);if(d>=start&&d<end){out.push({...b,dateObj:d});break}}});
+  return out}
+function rollM(bal,rp,pm,mo){let b=bal,i=rp/100/12;for(let k=0;k<mo;k++)b=Math.max(0,b-(pm-b*i));return b}
+function pmtFor(bal,rp,mo){const i=rp/100/12;return i===0?bal/mo:(bal*i)/(1-Math.pow(1+i,-mo))}
+function monthsToTarget(saved,target,monthly){if(monthly<=0||saved>=target)return 0;return Math.ceil((target-saved)/monthly)}
+function daysUntil(target){const n=new Date(),t=new Date(+target);n.setHours(0,0,0,0);t.setHours(0,0,0,0);return Math.round((t-n)/86400000)}
+
+function forecastMonth(targetYr,targetMi,income,pots,monthlyAmts,annualEvents,birthdays,shopRate,friRate,histAvg){
+  // Build per-pot amount estimate without React deps
+  const tp=pd(targetYr,targetMi);
+  const tnp=npd(targetYr,targetMi);
+  const we=cd(tp,tnp,6);
+  const fr=termFridays(tp,tnp);
+  const bdaysIn=bdIn(birthdays,tp);
+  const annualIn=annualEvents.filter(a=>a.pay_month===targetMi&&(!a.year||Number(a.year)===targetYr));
+  let total=0;
+  const reasons=[];
+  pots.forEach(p=>{
+    let amt=0;
+    if(p.kind==='list')amt=(p.items||[]).reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='fixed'){
+      // Forecast: use historical avg if available, else current monthly override, else base
+      amt=histAvg[p.id]??Number(monthlyAmts[p.id]??p.amount??0);}
+    else if(p.kind==='auto-shopping')amt=we*Number(shopRate||0);
+    else if(p.kind==='auto-afterschool')amt=fr*Number(friRate||0);
+    else if(p.kind==='auto-birthdays')amt=bdaysIn.reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='auto-annual')amt=annualIn.reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='savings')amt=Number(monthlyAmts[p.id]??p.monthly??0);
+    total+=amt;});
+  if(annualIn.length){
+    const annualTot=annualIn.reduce((a,b)=>a+Number(b.amount||0),0);
+    if(annualTot>=100)reasons.push(annualIn.map(a=>a.name).join(', '));}
+  if(bdaysIn.length>=2)reasons.push(bdaysIn.length+' birthdays');
+  if(we>=5)reasons.push('5-weekend month');
+  return{total:Math.round(total),buffer:Math.round(income-total),reasons,tp,we,bdaysCount:bdaysIn.length,annualTot:annualIn.reduce((a,b)=>a+Number(b.amount||0),0)};}
+
+// Auto-allocate algorithm.
+// Inputs: list of pots, current per-pot amounts, defaults map, income, bills/auto totals.
+// Returns: {amounts:{id:value}, changes:[{pot,old,new,reason}], explain}
+function autoAllocate(pots,monthlyAmts,defaults,income,fixedExpenses,we,fr,shopRate,friRate,bdays,annual){
+  // Step 1: compute committed (non-discretionary) total
+  let committed=0;
+  pots.forEach(p=>{
+    if(p.kind==='list')committed+=(p.items||[]).reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='auto-shopping')committed+=we*Number(shopRate||0);
+    else if(p.kind==='auto-afterschool')committed+=fr*Number(friRate||0);
+    else if(p.kind==='auto-birthdays')committed+=bdays.reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='auto-annual')committed+=annual.reduce((a,b)=>a+Number(b.amount||0),0);
+    else if(p.kind==='savings')committed+=Number(monthlyAmts[p.id]??p.monthly??0);
+  });
+  // Step 2: identify discretionary pots (fixed kind only)
+  // A pot has a default if it appears in `defaults`. Without a default, leave at current value.
+  const discretionary=pots.filter(p=>p.kind==='fixed');
+  const withDefault=discretionary.filter(p=>defaults[p.id]!==undefined);
+  const withoutDefault=discretionary.filter(p=>defaults[p.id]===undefined);
+  // Anything without a default is treated as committed at its current value
+  withoutDefault.forEach(p=>{committed+=Number(monthlyAmts[p.id]??p.amount??0)});
+  // Step 3: budget remaining for discretionary
+  const available=income-committed;
+  const totalDefaults=withDefault.reduce((sum,p)=>sum+defaults[p.id],0);
+  const newAmounts={...monthlyAmts};
+  const changes=[];
+  let scenario='ideal';
+  if(available>=totalDefaults){
+    // Fits — use exact defaults, never go higher
+    withDefault.forEach(p=>{
+      const old=Number(monthlyAmts[p.id]??p.amount??0);
+      const next=defaults[p.id];
+      newAmounts[p.id]=next;
+      if(old!==next)changes.push({pot:p,old,new:next,reason:'default'});
+    });
+  }else if(available>0){
+    // Doesn't quite fit — proportionally trim to fit available
+    const ratio=available/totalDefaults;
+    scenario='trim';
+    withDefault.forEach(p=>{
+      const old=Number(monthlyAmts[p.id]??p.amount??0);
+      const next=Math.max(0,Math.round(defaults[p.id]*ratio));
+      newAmounts[p.id]=next;
+      if(old!==next)changes.push({pot:p,old,new:next,reason:'trim'});
+    });
+  }else{
+    // No money for discretionary — zero them all
+    scenario='cut';
+    withDefault.forEach(p=>{
+      const old=Number(monthlyAmts[p.id]??p.amount??0);
+      newAmounts[p.id]=0;
+      if(old!==0)changes.push({pot:p,old,new:0,reason:'cut'});
+    });
+  }
+  return{
+    amounts:newAmounts,
+    changes,
+    scenario,
+    available,
+    totalDefaults,
+    committed,
+    income,
+    discretionaryCount:withDefault.length,
+  };}
+
+function calcPotAmount(pot,we,fr,shopRate,friRate,bdays,annual,monthlyAmts={}){
+  if(pot.kind==='list')return(pot.items||[]).reduce((a,b)=>a+Number(b.amount||0),0);
+  if(pot.kind==='fixed')return Number(monthlyAmts[pot.id]??pot.amount??0);
+  if(pot.kind==='auto-shopping')return we*Number(shopRate||0);
+  if(pot.kind==='auto-afterschool')return fr*Number(friRate||0);
+  if(pot.kind==='auto-birthdays')return bdays.reduce((a,b)=>a+Number(b.amount||0),0);
+  if(pot.kind==='auto-annual')return annual.reduce((a,b)=>a+Number(b.amount||0),0);
+  if(pot.kind==='savings')return Number(monthlyAmts[pot.id]??pot.monthly??0);
+  return 0}
+
+// ── Async helpers ─────────────────────────────────────────────────
+async function refreshBankHolidays(){
+  const ck='pp_bh_cache';
+  try{
+    const hit=localStorage.getItem(ck);
+    if(hit){const{dates,ts}=JSON.parse(hit);if(Date.now()-ts<7*86400000){dates.forEach(d=>BH.add(d));return true;}}
+    const r=await fetch('https://www.gov.uk/bank-holidays.json');
+    const data=await r.json();
+    const dates=(data['england-and-wales']?.events||[]).map(e=>e.date);
+    dates.forEach(d=>BH.add(d));
+    localStorage.setItem(ck,JSON.stringify({dates,ts:Date.now()}));
+    return true;
+  }catch(e){return false;}}
+
+// ── Live mortgage rate system ─────────────────────────────────────
+const RATE_SPREADS=[
+  {maxLtv:60,label:'\u226460%',  y2s:0.96,y5s:1.05,trs:0.21,fee2:999, fee5:995, lender2:'Nationwide', lender5:'Yorkshire Bank',lenderT:'Lloyds'},
+  {maxLtv:65,label:'61\u201365%',y2s:1.14,y5s:1.22,trs:0.39,fee2:999, fee5:995, lender2:'Nationwide', lender5:'Nationwide',    lenderT:'Nationwide'},
+  {maxLtv:70,label:'66\u201370%',y2s:1.18,y5s:1.26,trs:0.44,fee2:999, fee5:999, lender2:'NatWest',    lender5:'NatWest',       lenderT:'NatWest'},
+  {maxLtv:75,label:'71\u201375%',y2s:1.24,y5s:1.32,trs:0.50,fee2:999, fee5:999, lender2:'HSBC',       lender5:'HSBC',          lenderT:'HSBC'},
+  {maxLtv:80,label:'76\u201380%',y2s:1.39,y5s:1.47,trs:0.65,fee2:999, fee5:995, lender2:'Barclays',   lender5:'Barclays',      lenderT:'Barclays'},
+  {maxLtv:85,label:'81\u201385%',y2s:1.64,y5s:1.69,trs:0.90,fee2:999, fee5:999, lender2:'Halifax',    lender5:'Halifax',       lenderT:'Halifax'},
+  {maxLtv:90,label:'86\u201390%',y2s:1.84,y5s:1.89,trs:1.10,fee2:999, fee5:999, lender2:'Santander',  lender5:'Santander',     lenderT:'Santander'},
+];
+const FB=3.75;
+let LIVE_RATES={base:FB,date:'16 Apr 2026',source:'embedded',age:0};
+function buildRates(base){return RATE_SPREADS.map(s=>({...s,y2fix:+(base+s.y2s).toFixed(2),y5fix:+(base+s.y5s).toFixed(2),tracker:+(base+s.trs).toFixed(2)}))}
+let MRATES=buildRates(FB);
+function mktRate(ltv){return MRATES.find(r=>ltv<=r.maxLtv)||MRATES[MRATES.length-1]}
+
+async function fetchLiveRates(){
+  const BOE='https://www.bankofengland.co.uk/boe-apps/iadb/fromshowcolumns?csv.x=yes&Datefrom=01/Jan/2025&Dateto=now&SeriesCodes=IUMABEDR&CSVF=TN&UsingCodes=Y';
+  try{
+    const res=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(BOE),{signal:AbortSignal.timeout(8000)});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const txt=await res.text();
+    const rows=txt.trim().split('\n').filter(l=>l&&!l.startsWith('Date'));
+    const base=parseFloat(rows[rows.length-1].split(',')[1]);
+    if(isNaN(base)||base<0||base>15)throw new Error('Bad value');
+    const dateStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    LIVE_RATES={base,date:dateStr,source:'BoE',age:0};
+    MRATES=buildRates(base);
+    if(sb)saveKey('pp:mortgage-rates',{base,date:dateStr,ts:new Date().toISOString()});
+    return{ok:true,base};
+  }catch(e){console.info('Rate fetch:',e.message);return{ok:false};}}
+
+async function loadCachedRates(){
+  if(!sb)return;
+  try{
+    const{data}=await sb.from('kv_store').select('value').eq('key','pp:mortgage-rates').maybeSingle();
+    if(!data?.value)return;
+    const{base,date,ts}=data.value;
+    const ageHrs=(Date.now()-new Date(ts).getTime())/3600000;
+    LIVE_RATES={base,date,source:'cached',age:Math.round(ageHrs)};
+    MRATES=buildRates(base);
+    return ageHrs;
+  }catch(e){}}
+
+// ── Supabase ──────────────────────────────────────────────────────
+const CONFIGURED=!SUPABASE_URL.includes('YOUR_PROJECT')&&!SUPABASE_ANON_KEY.includes('YOUR_ANON');
+const sb=CONFIGURED?supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY):null;
+const KEYS=['pp:settings','pp:pots','pp:annual','pp:birthdays','pp:actual','pp:closed'];
+const lastSaved={};
+
+async function loadAll(){
+  if(!sb)return{settings:DS,pots:DP,annual:DA,birthdays:DD,actual:{},closed:{},error:null};
+  try{
+    const{data,error}=await sb.from('kv_store').select('*').in('key',KEYS);
+    if(error)return{settings:DS,pots:DP,annual:DA,birthdays:DD,actual:{},closed:{},error:error.message};
+    const by={};(data||[]).forEach(r=>by[r.key]=r.value);
+    return{settings:by['pp:settings']||DS,pots:by['pp:pots']||DP,annual:by['pp:annual']||DA,birthdays:by['pp:birthdays']||DD,actual:by['pp:actual']||{},closed:by['pp:closed']||{},error:null};
+  }catch(e){return{settings:DS,pots:DP,annual:DA,birthdays:DD,actual:{},closed:{},error:e.message}}}
+
+// Save state: 'idle' | 'saving' | 'ok' | 'offline'
+const saveState={status:'idle',listeners:new Set()};
+function setSaveStatus(s){saveState.status=s;saveState.listeners.forEach(fn=>fn(s))}
+function onSaveStatus(fn){saveState.listeners.add(fn);return()=>saveState.listeners.delete(fn)}
+async function saveKey(key,value){
+  if(!sb)return;
+  lastSaved[key]=Date.now();
+  setSaveStatus('saving');
+  try{
+    const{error}=await sb.from('kv_store').upsert({key,value,updated_at:new Date().toISOString()});
+    if(error){console.error('Save error:',error);setSaveStatus('offline');}
+    else{setSaveStatus('ok');setTimeout(()=>{if(saveState.status==='ok')setSaveStatus('idle')},1800)}
+  }catch(e){console.error(e);setSaveStatus('offline')}}
+
+// ── Defaults ──────────────────────────────────────────────────────
+// Default monthly amounts for discretionary pots — auto-allocator uses these as ceilings.
+// Pot must have an id matching a key here AND kind:'fixed' to be eligible.
+const POT_DEFAULTS={
+  'pot-petrol':180,
+  'pot-daysout':200,
+  'pot-misc':100,
+  'pot-car':100,
+  'pot-house':100,
+  'pot-lauren40':80,
+};
+
+const DS={income:3149.40,shopRate:140,friRate:9,mortBalance:275888,mortRate:3.49,mortPmt:1229,propertyValue:439000,mortTermMonths:361,overpayAmt:0};
+const DP=[
+  {id:'pot-bills',name:'Bills',emoji:'\ud83d\udcc4',kind:'list',note:'',items:[
+    {id:uid(),name:'Energy',amount:127.09},{id:uid(),name:'Life insurance',amount:12.97},{id:uid(),name:'Water',amount:82},{id:uid(),name:'TV Licence',amount:15},{id:uid(),name:'Broadband',amount:34},{id:uid(),name:'Spotify',amount:21.99},{id:uid(),name:'Xbox',amount:15},{id:uid(),name:'Mortgage contribution',amount:50},{id:uid(),name:'Council Tax',amount:362.64},{id:uid(),name:'Zwift',amount:19.99},{id:uid(),name:'Apple One',amount:19.99},{id:uid(),name:'Ring',amount:3.99},{id:uid(),name:'Karate',amount:20},{id:uid(),name:'British Gas (boiler)',amount:20.54},{id:uid(),name:'Christmas saving',amount:50},{id:uid(),name:'Monthly savings',amount:200},{id:uid(),name:'Credit card payment',amount:250}]},
+  {id:'pot-petrol',name:'Petrol',emoji:'\u26fd',kind:'fixed',amount:170,note:''},
+  {id:'pot-shopping',name:'Shopping',emoji:'\ud83d\uded2',kind:'auto-shopping',note:''},
+  {id:'pot-afterschool',name:'After school club',emoji:'\ud83c\udf92',kind:'auto-afterschool',note:''},
+  {id:'pot-daysout',name:'Days out & fun',emoji:'\ud83c\udfa2',kind:'fixed',amount:0,note:''},
+  {id:'pot-misc',name:'Miscellaneous',emoji:'\ud83d\udce6',kind:'fixed',amount:100,note:''},
+  {id:'pot-car',name:'Car maintenance',emoji:'\ud83d\udd27',kind:'fixed',amount:0,note:''},
+  {id:'pot-house',name:'House maintenance',emoji:'\ud83d\udd28',kind:'fixed',amount:0,note:''},
+  {id:'pot-lauren40',name:"Lauren's 40th",emoji:'\ud83c\udf82',kind:'fixed',amount:0,note:''},
+  {id:'pot-birthdays',name:'Family birthdays',emoji:'\ud83c\udf81',kind:'auto-birthdays',note:''},
+  {id:'pot-calendar',name:'Calendar costs',emoji:'\ud83d\udcc5',kind:'auto-annual',note:''},
+];
+const DA=[[11,'White car service',210],[0,'Ring Doorbell',50],[1,'Blue car service & MOT',180],[1,'Garden waste bin',42],[1,"Mother's Day",80],[2,'White car MOT',45],[2,'House insurance',120],[3,'Alarm service',80],[3,'House estate maintenance',250],[4,'Chimney sweep',75],[4,"Father's Day",40],[5,'Amazon Prime',95],[5,'Car insurance',230],[5,'Car tax \u2014 both cars',210],[6,'Fire Stick',65],[7,'Car breakdown cover',70]].map(x=>({id:uid(),pay_month:x[0],name:x[1],amount:x[2]}));
+const DD=[['Theo',15,1,40],['Lauren',20,1,200],['Dad',15,7,40],['Penny',31,7,40],['George',8,8,100],['William',8,9,40],['Emilie',11,10,100],['Evy',31,10,40],['Mum',7,11,40],['Elisha',19,11,40],['Hayden',23,11,40],['Scott',24,12,40],['James',31,12,40]].map(x=>({id:uid(),name:x[0],day:x[1],month:x[2],amount:x[3]}));
+
+// ── Integrated test runner ────────────────────────────────────────
+function runTests(){
+  let pass=0,fail=0;
+  function eq(a,b,label){if(JSON.stringify(a)===JSON.stringify(b)){pass++}else{fail++;console.warn('\u274c Test fail:',label,'got',a,'expected',b)}}
+  // gS
+  eq(gS(100),'\u00a3100','gS whole');eq(gS(1000),'\u00a31,000','gS thousands');
+  eq(gS(127.09),'\u00a3127.09','gS pence');eq(gS(0),'\u00a30','gS zero');eq(gS(null),'\u00a30','gS null');
+  // pd returns weekday
+  const d=pd(2026,3);eq(d.getDay()===0||d.getDay()===6,false,'payday weekday');
+  eq(d.getDate()<=21,true,'payday <=21');
+  // npd after pd
+  eq(npd(2026,3)>pd(2026,3),true,'npd > pd');
+  eq(npd(2026,11).getFullYear(),2027,'npd year rollover');
+  // cd
+  const start=new Date(2026,3,21),end=new Date(2026,4,21);
+  eq(cd(start,end,6)>=3&&cd(start,end,6)<=6,true,'cd saturdays');
+  eq(cd(start,start,6),0,'cd empty range');
+  // calcPotAmount
+  eq(calcPotAmount({kind:'list',items:[{amount:100},{amount:50.5}]},0,0,0,0,[],[]),150.5,'list sum');
+  eq(calcPotAmount({kind:'list',items:[]},0,0,0,0,[],[]),0,'list empty');
+  eq(calcPotAmount({kind:'fixed',amount:170},0,0,0,0,[],[]),170,'fixed amount');
+  eq(calcPotAmount({kind:'fixed'},0,0,0,0,[],[]),0,'fixed undefined');
+  eq(calcPotAmount({kind:'auto-shopping'},4,0,140,0,[],[]),560,'shopping 4we');
+  eq(calcPotAmount({kind:'auto-shopping'},5,0,140,0,[],[]),700,'shopping 5we');
+  eq(calcPotAmount({kind:'auto-afterschool'},0,4,0,9,[],[]),36,'afterschool');
+  eq(calcPotAmount({kind:'auto-birthdays'},0,0,0,0,[{amount:40},{amount:100}],[]),140,'birthdays');
+  eq(calcPotAmount({kind:'auto-annual'},0,0,0,0,[],[{amount:80},{amount:120}]),200,'annual');
+  eq(calcPotAmount({kind:'savings'},0,0,0,0,[],[],{'s1':250}),0,'savings no monthly');
+  eq(calcPotAmount({id:'s1',kind:'savings',monthly:100},0,0,0,0,[],[],{'s1':200}),200,'savings override');
+  eq(calcPotAmount({kind:'unknown'},0,0,0,0,[],[]),0,'unknown kind');
+  // bdIn
+  const bds=[{name:'Test',day:15,month:5,amount:40}];
+  const payday=pd(2026,3);
+  const res=bdIn(bds,payday);
+  eq(res.length,1,'bdIn finds birthday');
+  eq(bdIn([{name:'X',day:1,month:1,amount:0}],payday).length,0,'bdIn excludes out-of-range');
+  // rollM
+  eq(rollM(100000,3,500,12)<100000,true,'rollM reduces balance');
+  eq(rollM(1000,3.49,5000,60),0,'rollM no negative');
+  eq(rollM(100000,3,800,24)<rollM(100000,3,500,24),true,'rollM overpay faster');
+  // pmtFor
+  eq(pmtFor(275000,4.5,300)>0,true,'pmtFor positive');
+  eq(pmtFor(275000,5,300)>pmtFor(275000,3,300),true,'pmtFor higher rate higher pmt');
+  eq(Math.round(pmtFor(12000,0,12)),1000,'pmtFor zero rate');
+  // daysUntil
+  eq(daysUntil(new Date()),0,'daysUntil today');
+  const fut=new Date();fut.setDate(fut.getDate()+7);eq(daysUntil(fut),7,'daysUntil future');
+  const past=new Date();past.setDate(past.getDate()-3);eq(daysUntil(past),-3,'daysUntil past');
+  // monthsToTarget
+  eq(monthsToTarget(0,1200,100),12,'monthsToTarget basic');
+  eq(monthsToTarget(1200,1200,100),0,'monthsToTarget reached');
+  eq(monthsToTarget(0,100,0),0,'monthsToTarget no monthly');
+  // autoAllocate
+  // committed = bills(1500) + shopping(4*140=560) + afterschool(4*9=36) = 2096
+  // defaults: petrol 180 + misc 100 = 280
+  const aaPots=[
+    {id:'pot-petrol',kind:'fixed',amount:0,emoji:'⛽',name:'Petrol'},
+    {id:'pot-misc',kind:'fixed',amount:50,emoji:'✨',name:'Misc'},
+    {id:'pot-bills',kind:'list',items:[{amount:1500}]},
+    {id:'pot-shop',kind:'auto-shopping'},
+    {id:'pot-as',kind:'auto-afterschool'},
+  ];
+  const aaDef={'pot-petrol':180,'pot-misc':100};
+  // Plenty: 3000 income > 2096 committed + 280 defaults = 2376
+  const aa1=autoAllocate(aaPots,{},aaDef,3000,0,4,4,140,9,[],[]);
+  eq(aa1.scenario,'ideal','aa ideal scenario');
+  eq(aa1.amounts['pot-petrol'],180,'aa petrol default');
+  eq(aa1.amounts['pot-misc'],100,'aa misc default');
+  // Exactly enough: income = committed + defaults
+  const aa2=autoAllocate(aaPots,{},aaDef,2376,0,4,4,140,9,[],[]);
+  eq(aa2.scenario,'ideal','aa exactly enough');
+  // Tight: only 200 available for 280 of defaults → trim ratio 200/280 = 0.714
+  const aa3=autoAllocate(aaPots,{},aaDef,2296,0,4,4,140,9,[],[]);
+  eq(aa3.scenario,'trim','aa trim scenario');
+  eq(aa3.amounts['pot-petrol']<=180,true,'aa trim respects petrol ceiling');
+  eq(aa3.amounts['pot-misc']<=100,true,'aa trim respects misc ceiling');
+  eq(aa3.amounts['pot-petrol']>0,true,'aa trim still allocates some');
+  // No money: income < committed
+  const aa4=autoAllocate(aaPots,{},aaDef,2000,0,4,4,140,9,[],[]);
+  eq(aa4.scenario,'cut','aa cut scenario');
+  eq(aa4.amounts['pot-petrol'],0,'aa cut zeros petrol');
+  eq(aa4.amounts['pot-misc'],0,'aa cut zeros misc');
+  // Pot without default: untouched
+  const aaNoDef=[{id:'pot-other',kind:'fixed',amount:50,emoji:'?',name:'Other'}];
+  const aa5=autoAllocate(aaNoDef,{'pot-other':50},aaDef,2000,0,4,4,140,9,[],[]);
+  eq(aa5.amounts['pot-other'],50,'aa pot without default untouched');
+  // termFridays + isTermTime
+  // 21 Apr 2026 (Tue) through 22 May 2026 (Fri) - school open all term-time Fridays
+  // First Friday after Tue 21 Apr is Fri 24 Apr.
+  eq(isTermTime(new Date('2026-04-24')),true,'24 Apr 2026 is term time');
+  eq(isTermTime(new Date('2026-05-29')),false,'29 May 2026 is half-term (holiday)');
+  eq(isTermTime(new Date('2026-08-01')),false,'1 Aug 2026 is summer holiday');
+  eq(isTermTime(new Date('2026-12-22')),false,'22 Dec 2026 is Christmas holiday');
+  eq(isTermTime(new Date('2027-01-05')),true,'5 Jan 2027 is term time');
+  // Count term-time Fridays between Apr 21 and May 22 (5 Fridays: 24 Apr, 1 May, 8 May, 15 May, 22 May)
+  const apr21=new Date('2026-04-21'),may23=new Date('2026-05-23');
+  eq(termFridays(apr21,may23),5,'5 term Fridays Apr 21 - May 22 2026');
+  // August (school holiday) should yield 0 term Fridays
+  eq(termFridays(new Date('2026-08-01'),new Date('2026-08-31')),0,'0 term Fridays in Aug');
+  // forecastMonth
+  const fcRes=forecastMonth(2026,5,3000,[{id:'p1',kind:'fixed',amount:500}],{},[],[],0,0,{});
+  eq(fcRes.total,500,'forecast fixed pot');
+  eq(fcRes.buffer,2500,'forecast buffer');
+  const fcHist=forecastMonth(2026,5,3000,[{id:'p1',kind:'fixed',amount:500}],{},[],[],0,0,{p1:600});
+  eq(fcHist.total,600,'forecast uses historical avg');
+  const fcAnnual=forecastMonth(2026,5,3000,[{id:'p1',kind:'auto-annual'}],{},[{id:'a1',pay_month:5,name:'Insurance',amount:230}],[],0,0,{});
+  eq(fcAnnual.total,230,'forecast annual events');
+  console.info(`\u2705 Tests: ${pass} passed, ${fail} failed`);
+  return{pass,fail}}
+
+const TEST_RESULTS=runTests();
+
+// ── Shared UI primitives ──────────────────────────────────────────
+function MI({value,onChange,cls='',wrapCls='',style={},wrapStyle={}}){
+  const[lo,setLo]=useState(String(value));
+  useEffect(()=>{setLo(String(value))},[value]);
+  return h('span',{className:'mw '+wrapCls,style:wrapStyle},
+    h('input',{type:'text',inputMode:'decimal',className:'inp money '+cls,style,value:lo,
+      onFocus:e=>e.target.select(),
+      onChange:e=>{const v=e.target.value;if(/^-?\d*\.?\d{0,2}$/.test(v)||v===''){setLo(v);const n=parseFloat(v);if(!isNaN(n))onChange(n);else if(v===''||v==='-')onChange(0)}},
+      onBlur:()=>{const n=parseFloat(lo);setLo(isNaN(n)?'0':String(n))}}))}
+
+function NI({value,onChange,style={}}){
+  const[lo,setLo]=useState(String(value));
+  useEffect(()=>{setLo(String(value))},[value]);
+  return h('input',{type:'text',inputMode:'numeric',className:'inp money',style,value:lo,
+    onFocus:e=>e.target.select(),
+    onChange:e=>{const v=e.target.value;if(/^\d*$/.test(v)){setLo(v);const n=parseInt(v,10);if(!isNaN(n))onChange(n)}},
+    onBlur:()=>{const n=parseInt(lo,10);setLo(isNaN(n)?String(value):String(n))}})}
+
+function Sec({title,right,children,open:o0=false,icon}){
+  const[o,setO]=useState(o0);
+  return h('div',{className:'card'},
+    h('div',{className:'sh',onClick:()=>setO(!o)},
+      h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem',flex:1,minWidth:0}},
+        h('span',{style:{color:'var(--c-s500)',fontSize:10,transform:o?'rotate(90deg)':'none',display:'inline-block',transition:'transform .15s'}},'\u25b6'),
+        h('h3',{className:'h2'},icon&&h('span',null,icon),' ',title)),
+      right&&h('div',{className:'m',style:{fontSize:'.875rem',color:'var(--c-s500)',flexShrink:0}},right)),
+    o&&h('div',{className:'sb'},children))}
+
+// ── Gate ──────────────────────────────────────────────────────────
+const AUTH_KEY='pp_auth_ok';
+function Gate({children}){
+  const[ok,setOk]=useState(()=>localStorage.getItem(AUTH_KEY)==='1');
+  const[pw,setPw]=useState('');const[err,setErr]=useState('');
+  if(ok)return children;
+  const submit=e=>{e.preventDefault();if(pw===PASSWORD){localStorage.setItem(AUTH_KEY,'1');setOk(true)}else{setErr('Wrong password');setPw('')}};
+  return h('div',{className:'gate'},
+    h('form',{onSubmit:submit,className:'gate-box'},
+      h('h1',{style:{margin:'0 0 .25rem',fontSize:'1.25rem'}},'\ud83d\udcb0 Budget Planner'),
+      h('p',{className:'mu',style:{margin:'0 0 1rem'}},'Enter password to continue'),
+      h('input',{type:'password',value:pw,onChange:e=>{setPw(e.target.value);setErr('')},autoFocus:true,className:'inp',style:{marginBottom:'.75rem'},placeholder:'Password'}),
+      err&&h('p',{style:{color:'var(--c-er)',fontSize:'.875rem',margin:'0 0 .5rem'}},err),
+      h('button',{type:'submit',className:'btn btn-p',style:{width:'100%',padding:'.625rem'}},'Unlock')))}
+
+// ── PotCard ───────────────────────────────────────────────────────
+function PotCard({pot,amount,pct,subtext,expanded,onToggle,children,onDelete,editing,onEditToggle,onRename,onEmoji,onNote,onMoveUp,onMoveDown,onRollover,onTarget,isFirst,isLast,onDragStart,onDragOver,onDrop,onDragEnd,dragging,dragOver}){
+  return h('div',{className:'pot'+(dragging?' dragging':'')+(dragOver?' drag-over':''),
+      draggable:true,onDragStart,onDragOver,onDrop,onDragEnd},
+    h('div',{className:'pot-head',onClick:onToggle},
+      h('span',{className:'pot-drag',title:'Drag to reorder',onClick:e=>e.stopPropagation()},'☰'),
+      h('span',{style:{fontSize:'1.375rem',lineHeight:1,flexShrink:0}},pot.emoji||'\ud83d\udcb7'),
+      h('div',{style:{flex:1,minWidth:0}},
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.375rem'}},
+          h('span',{className:'pot-name'},pot.name),
+          pot.rollover&&h('span',{className:'rollover-pill'},'\u21bb rolling')),
+        subtext&&h('div',{className:'pot-sub'},subtext),
+        (pot.kind==='fixed'&&Number(pot.target||0)>0)&&(()=>{
+          const saved=Number(pot.saved||0),target=Number(pot.target);
+          const pctDone=Math.min(100,Math.round(saved/target*100));
+          return h('div',{className:'pot-goal-ring'+(pctDone>=100?' pot-goal-done':'')},
+            h('span',{className:'pot-goal-bar'},h('span',{className:'pot-goal-fill',style:{width:pctDone+'%'}})),
+            h('span',null,pctDone>=100?'\u2713 Funded \u00b7 '+gS(target):pctDone+'% \u00b7 '+gS(saved)+' of '+gS(target)));})()),
+      h('div',{style:{flexShrink:0,textAlign:'right'}},
+        h('div',{className:'pot-amt'},gS(amount)),
+        pct>0&&h('div',{className:'pot-pct'},Math.round(pct)+'% of income')),
+      h('span',{className:'pot-chev'+(expanded?' o':'')},'\u25b6')),
+    h('div',{className:'pot-bar'},pct>0&&h('div',{className:'pot-bar-fill'+(pct>=25?' huge':pct>=15?' wide':''),style:{width:Math.min(100,pct)+'%'}})),
+    expanded&&h('div',{className:'pot-body'},
+      children,
+      h('div',{className:'pot-note'},h('textarea',{placeholder:'Add a note\u2026',value:pot.note||'',rows:1,onChange:e=>onNote(e.target.value)})),
+      h('div',{className:'pot-tools'},
+        h('div',{style:{display:'flex',gap:'.375rem',alignItems:'center',flexWrap:'wrap'}},
+          editing
+            ?h('div',{style:{display:'flex',gap:'.5rem',alignItems:'center',flexWrap:'wrap'}},
+                h('input',{className:'inp',style:{width:50,textAlign:'center'},value:pot.emoji||'',onChange:e=>onEmoji(e.target.value.slice(0,4)),placeholder:'Icon'}),
+                h('input',{className:'inp',style:{width:160},value:pot.name,onChange:e=>onRename(e.target.value),placeholder:'Name'}),
+                pot.kind==='fixed'&&onRollover&&h('label',{style:{display:'flex',alignItems:'center',gap:'.3rem',fontSize:'.8rem',color:'var(--c-s500)',cursor:'pointer',userSelect:'none',whiteSpace:'nowrap'}},
+                  h('input',{type:'checkbox',checked:!!pot.rollover,onChange:e=>{e.stopPropagation();onRollover(e.target.checked)},style:{accentColor:'var(--c-p500)'}}),
+                  'Accumulate'),
+                pot.kind==='fixed'&&onTarget&&h('label',{style:{display:'flex',alignItems:'center',gap:'.3rem',fontSize:'.8rem',color:'var(--c-s500)',whiteSpace:'nowrap'}},
+                  'Goal £',h('input',{type:'number',min:0,value:pot.target||'',onChange:e=>{e.stopPropagation();onTarget(e.target.value===''?0:Number(e.target.value))},placeholder:'0',style:{width:70,padding:'.25rem .375rem',border:'1px solid var(--c-s200)',borderRadius:'var(--rs)',fontSize:'.8rem',fontFamily:'var(--f-m)'}})),
+                h('button',{className:'btn btn-sm btn-p',onClick:e=>{e.stopPropagation();onEditToggle(false)}},'Done'))
+            :h('button',{className:'btn btn-sm',onClick:e=>{e.stopPropagation();onEditToggle(true)}},'\u270e Rename'),
+          !isFirst&&h('button',{className:'mv',onClick:e=>{e.stopPropagation();onMoveUp()},title:'Move up'},'\u25b2'),
+          !isLast&&h('button',{className:'mv',onClick:e=>{e.stopPropagation();onMoveDown()},title:'Move down'},'\u25bc')),
+        onDelete&&h('button',{className:'btn btn-sm',style:{color:'var(--c-er)',borderColor:'var(--c-er-bg)'},onClick:e=>{e.stopPropagation();if(confirm('Delete "'+pot.name+'"?'))onDelete()}},'Delete'))))}
+
+// ── Summary ───────────────────────────────────────────────────────
+function Summary({pct,buffer,bh}){
+  const color=buffer<0?'var(--c-er)':pct>=90?'var(--c-ok)':pct>=70?'var(--c-wa)':'var(--c-s500)';
+  const label=buffer<0?'Shortfall':pct>=90?'Healthy':pct>=70?'On track':'Building';
+  const pill=buffer<0?'var(--c-er-bg)':pct>=90?'var(--c-ok-bg)':'var(--c-wa-bg)';
+  return h('div',{className:'summary'},
+    h('div',{className:'summary-stats'},
+      h('div',null,
+        h('div',{className:'eb'},'Plan'),
+        h('div',{style:{fontSize:'2rem',fontFamily:'var(--f-m)',fontWeight:500,letterSpacing:'-.03em',lineHeight:1,color,marginTop:'.2rem'}},pct+'%'),
+        h('span',{className:'health-pill',style:{background:pill,color}},label)),
+      h('div',null,
+        h('div',{className:'hnum',style:{color:buffer>=0?'var(--c-ok)':'var(--c-er)'}},gS(Math.abs(buffer))),
+        h('div',{className:'mu',style:{marginTop:'.125rem'}},buffer>=0?'unallocated':'shortfall')),
+      bh.length>0&&h('div',null,
+        h('div',{className:'hnum'},bh.length),
+        h('div',{className:'mu',style:{marginTop:'.125rem'}},bh.length===1?'birthday':'birthdays'))),
+    h('div',{className:'summary-track'},
+      h('div',{className:'summary-track-fill',style:{width:Math.min(100,pct)+'%',background:color}})))}
+
+// ── Distributor ───────────────────────────────────────────────────
+function Distributor({buffer,pots,potAmount,setMonthlyAmt}){
+  if(buffer<50)return null;
+  const flex=pots.filter(p=>p.kind==='fixed');
+  return h('div',{className:'distrib'},
+    h('div',null,
+      h('div',{className:'eb'},gS(buffer)+' unallocated'),
+      h('div',{className:'mu',style:{fontSize:'.8rem',marginTop:'.15rem'}},'Add to a pot or split evenly')),
+    h('div',{style:{display:'flex',gap:'.5rem',flexWrap:'wrap',flexShrink:0}},
+      flex.slice(0,4).map(p=>h('button',{key:p.id,className:'btn btn-sm',onClick:()=>setMonthlyAmt(p.id,potAmount(p)+buffer)},p.emoji+' '+p.name)),
+      flex.length>1&&h('button',{className:'btn btn-sm btn-p',onClick:()=>{const sh=Math.floor(buffer/flex.length);flex.forEach(p=>setMonthlyAmt(p.id,potAmount(p)+sh))}},'Split evenly')))}
+
+// ── MonthDiff ─────────────────────────────────────────────────────
+function MonthDiff({pots,cur,prev,prevM}){
+  if(!prev||!Object.keys(prev).length)return null;
+  const diffs=pots.filter(p=>p.kind==='fixed').reduce((acc,p)=>{
+    const d=Math.round(Number(cur[p.id]??p.amount)-Number(prev[p.id]??p.amount));
+    if(Math.abs(d)>=5)acc.push({emoji:p.emoji,name:p.name,d});
+    return acc},[]);
+  if(!diffs.length)return null;
+  return h('div',{className:'diff-bar'},
+    h('span',{className:'eb',style:{flexShrink:0,color:'var(--c-s500)'}},'vs '+prevM+':'),
+    diffs.map((d,i)=>h('span',{key:i,style:{color:d.d>0?'var(--c-er)':'var(--c-ok)',fontWeight:600,fontFamily:'var(--f-m)',whiteSpace:'nowrap'}},
+      d.emoji+'\u00a0'+(d.d>0?'+':'')+gS(d.d)+'\u00a0'+d.name)))}
+
+// ── VarianceTracker ───────────────────────────────────────────────
+function VarianceTracker({pots,potAmount,actual,setActual,dirtyActual,mi,yr,closed}){
+  const[open,setOpen]=useState(false);
+  const fixed=pots.filter(p=>p.kind==='fixed'||p.kind==='list');
+  const hasData=fixed.some(p=>actual[p.id]!==undefined);
+  const mk=yr+':'+mi;
+  return h('div',{className:'card',style:{marginBottom:'.75rem'}},
+    h('div',{className:'sh',onClick:()=>setOpen(o=>!o)},
+      h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem',flex:1}},
+        h('span',{style:{color:'var(--c-s500)',fontSize:10,transform:open?'rotate(90deg)':'none',display:'inline-block',transition:'transform .15s'}},'\u25b6'),
+        h('h3',{className:'h2'},'Actual spend')),
+      h('div',{className:'mu',style:{fontSize:'.8rem',flexShrink:0}},hasData?'data entered':'tap to log')),
+    open&&h('div',{className:'sb'},
+      closed[mk]&&h('div',{className:'ins insi',style:{marginBottom:'.5rem'}},'Month is closed.'),
+      fixed.map(p=>{
+        const plan=Math.round(potAmount(p));
+        const act=actual[p.id]!==undefined?Number(actual[p.id]):'';
+        const diff=act!==''?Math.round(act-plan):null;
+        const chip=diff===null?'':diff>10?'var-over':diff<-10?'var-under':'var-on';
+        return h('div',{key:p.id,className:'var-row'},
+          h('span',{style:{flex:1,fontWeight:500,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',minWidth:0}},p.emoji,' ',p.name),
+          h('span',{className:'m',style:{color:'var(--c-s500)',fontSize:'.75rem',flexShrink:0}},'plan '+gS(plan)),
+          h('div',{style:{width:100,flexShrink:0}},
+            h(MI,{value:act,onChange:v=>{dirtyActual.current=true;setActual(a=>({...a,[p.id]:v}))},cls:'inp-amt',wrapCls:'mw-bare',style:{width:'100%'}})),
+          diff!==null&&h('span',{className:'var-chip '+chip},(diff>0?'+':'')+gS(diff)))})))}
+
+// ── AffordChecker ─────────────────────────────────────────────────
+function AffordChecker({buffer,pots,potAmount}){
+  const[item,setItem]=useState('');const[cost,setCost]=useState('');
+  const costN=parseFloat(cost)||0;const show=item.trim()&&costN>0;
+  const results=useMemo(()=>{
+    if(!show)return[];const r=[];
+    if(buffer>=costN)r.push({ok:true,t:'Yes \u2014 buffer covers this with '+gS(buffer-costN)+' left.'});
+    else if(buffer>0)r.push({ok:false,t:'Buffer only covers '+gS(buffer)+'. Short by '+gS(costN-buffer)+'.'});
+    else r.push({ok:false,t:'No buffer available.'});
+    pots.filter(p=>p.kind==='fixed'&&Number(p.amount||0)>0).forEach(p=>{
+      const a=potAmount(p);
+      if(a>=costN)r.push({ok:true,t:'Yes from '+p.emoji+' '+p.name+' ('+gS(a)+' available).'});
+      else if(a>50)r.push({ok:false,t:'Partial: '+p.emoji+' '+p.name+' has '+gS(a)+', still '+gS(costN-a)+' short.'})});
+    if(costN>200)r.push({ok:true,t:'Yes if split over 2 months ('+gS(Math.ceil(costN/2))+'/month).'});
+    return r},[show,buffer,costN,pots]);
+  return h('div',{className:'afford'},
+    h('div',{className:'eb',style:{marginBottom:'.5rem'}},'Can I afford it?'),
+    h('div',{className:'afford-row'},
+      h('input',{className:'inp',placeholder:'What is it?',value:item,onChange:e=>setItem(e.target.value),style:{flex:1,minWidth:100}}),
+      h(MI,{value:cost||'',onChange:v=>setCost(String(v)),cls:'inp',style:{width:100},wrapStyle:{flex:'0 0 auto'}})),
+    show&&h('div',{style:{marginTop:'.5rem'}},results.map((r,i)=>h('div',{key:i,className:'afford-result '+(r.ok?'insi':'insw')},r.t))))}
+
+// ── App ───────────────────────────────────────────────────────────
+function StatusPill(){
+  const[s,setS]=useState('idle');
+  useEffect(()=>onSaveStatus(setS),[]);
+  if(s==='idle')return null;
+  const label=s==='saving'?'Saving\u2026':s==='ok'?'\u2713 Saved':'\u26a0 Offline \u2014 changes not saved';
+  const cls=s==='ok'?'status-ok':s==='offline'?'status-offline':'status-saving';
+  return h('div',{className:'status-pill '+cls,role:'status','aria-live':'polite'},label)}
+
+function History({currentYear,currentMi}){
+  const[open,setOpen]=useState(false);
+  const[rows,setRows]=useState([]);
+  const[loading,setLoading]=useState(false);
+  useEffect(()=>{
+    if(!open||!sb)return;
+    setLoading(true);
+    const keys=[];let[y,m]=[currentYear,currentMi];
+    for(let i=0;i<6;i++){keys.push('pp:snap:'+y+':'+m);[y,m]=prevMo(y,m)}
+    sb.from('kv_store').select('key,value').in('key',keys).then(({data})=>{
+      const result=(data||[]).map(r=>{
+        const[,,yy,mm]=r.key.split(':');
+        return{year:+yy,mi:+mm,...(r.value||{})}}).sort((a,b)=>b.year-a.year||b.mi-a.mi);
+      setRows(result);setLoading(false);
+    });
+  },[open,currentYear,currentMi]);
+  const maxBuffer=Math.max(...rows.map(r=>Math.abs(Number(r.buffer||0))),1);
+  return h('div',{className:'card'},
+    h('div',{className:'sh',onClick:()=>setOpen(o=>!o)},
+      h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem',flex:1}},
+        h('span',{style:{color:'var(--c-s500)',fontSize:10,transform:open?'rotate(90deg)':'none',display:'inline-block',transition:'transform .15s'}},'\u25b6'),
+        h('h3',{className:'h2'},'History')),
+      h('div',{className:'mu',style:{fontSize:'.8125rem',flexShrink:0}},rows.length?rows.length+' months':'tap to load')),
+    open&&h('div',{className:'sb'},
+      loading?h('div',{className:'mu'},'Loading\u2026'):
+      !rows.length?h('div',{className:'mu'},'No history yet \u2014 snapshots accumulate as you use the app.'):
+      h('table',{className:'hist-tbl'},
+        h('thead',null,h('tr',null,
+          h('th',null,'Month'),h('th',{style:{textAlign:'right'}},'Income'),
+          h('th',{style:{textAlign:'right'}},'Pots'),h('th',{style:{textAlign:'right'}},'Buffer'),
+          h('th',{style:{textAlign:'right'}},'Plan'))),
+        h('tbody',null,rows.map((r,i)=>h('tr',{key:i},
+          h('td',null,MF[r.mi]+' '+r.year,r.final?h('span',{style:{fontSize:'.7rem',color:'var(--c-s500)',marginLeft:'.4rem'}},'\u2713 closed'):''),
+          h('td',{className:'num'},gS(r.income||0)),
+          h('td',{className:'num'},gS(r.potsTotal||0)),
+          h('td',{className:'num',style:{color:(r.buffer||0)<0?'var(--c-er)':'var(--c-ok)'}},gS(r.buffer||0)),
+          h('td',{className:'num'},
+            h('span',{className:'hist-bar'},h('span',{className:'hist-bar-fill',style:{width:(r.pct||0)+'%',background:(r.pct||0)>=90?'var(--c-ok)':(r.pct||0)>=70?'var(--c-wa)':'var(--c-s300)'}})),
+            (r.pct||0)+'%')))))))}
+
+function BackupRestore(){
+  const fileInput=useRef(null);
+  const doBackup=async()=>{
+    if(!sb){alert('No database connected.');return}
+    const{data,error}=await sb.from('kv_store').select('key,value,updated_at');
+    if(error){alert('Backup failed: '+error.message);return}
+    const blob=new Blob([JSON.stringify({exported:new Date().toISOString(),version:1,rows:data},null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='budget-planner-backup-'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    URL.revokeObjectURL(url);};
+  const doRestore=async(file)=>{
+    if(!sb){alert('No database connected.');return}
+    if(!confirm('Restore from this backup? All current data will be replaced.'))return;
+    try{
+      const txt=await file.text();
+      const parsed=JSON.parse(txt);
+      if(!parsed.rows||!Array.isArray(parsed.rows))throw new Error('Invalid backup file');
+      // Delete existing rows that will be replaced
+      const keys=parsed.rows.map(r=>r.key);
+      await sb.from('kv_store').delete().in('key',keys);
+      const{error}=await sb.from('kv_store').upsert(parsed.rows.map(r=>({key:r.key,value:r.value,updated_at:r.updated_at||new Date().toISOString()})));
+      if(error)throw error;
+      alert('Restored '+parsed.rows.length+' records. Reloading\u2026');
+      location.reload();
+    }catch(e){alert('Restore failed: '+e.message)}};
+  return h('div',{className:'backup-row'},
+    h('button',{className:'btn btn-sm',onClick:doBackup},'\u2b07 Download backup'),
+    h('button',{className:'btn btn-sm',onClick:()=>fileInput.current?.click()},'\u2b06 Restore from file'),
+    h('input',{ref:fileInput,type:'file',accept:'application/json',style:{display:'none'},
+      onChange:e=>{const f=e.target.files?.[0];if(f){doRestore(f);e.target.value=''}}}))}
+
+function Forecast({yr,mi,income,pots,monthlyAmts,annualEvents,birthdays,shopRate,friRate,histAvg}){
+  const months=useMemo(()=>{
+    const out=[];let[y,m]=[yr,mi];
+    for(let i=0;i<3;i++){
+      [y,m]=m===11?[y+1,0]:[y,m+1];
+      out.push({y,m,...forecastMonth(y,m,income,pots,monthlyAmts,annualEvents,birthdays,shopRate,friRate,histAvg)});}
+    return out;
+  },[yr,mi,income,pots,monthlyAmts,annualEvents,birthdays,shopRate,friRate,histAvg]);
+  return h('div',null,
+    h('div',{className:'eb',style:{marginBottom:'.5rem',padding:'0 .25rem'}},'Looking ahead'),
+    h('div',{className:'fcast'},
+      months.map(m=>{
+        const cls=m.buffer<0?'fcast-bad':m.buffer<100?'fcast-tight':'fcast-good';
+        const label=m.buffer<0?'shortfall':m.buffer<100?'tight':'on track';
+        return h('div',{key:m.y+'-'+m.m,className:'fcast-month'},
+          h('div',{className:'fcast-label'},MF[m.m]+(m.y!==yr?' '+m.y:'')),
+          h('div',{className:'fcast-value '+cls},(m.buffer<0?'\u2212':'')+gS(Math.abs(m.buffer))),
+          h('div',{className:'fcast-tag '+cls},label),
+          m.reasons.length>0&&h('div',{className:'fcast-tag'},m.reasons.slice(0,2).join(' \u00b7 ')));})));}
+
+function AutoAllocate({pots,monthlyAmts,setMonthlyAmts,dirtyMonthly,income,we,fr,shopRate,friRate,bH,anT,mi,yr}){
+  const[preview,setPreview]=useState(null);
+  const compute=()=>{
+    const result=autoAllocate(pots,monthlyAmts,POT_DEFAULTS,income,0,we,fr,shopRate,friRate,bH,anT);
+    setPreview(result);};
+  const apply=()=>{
+    if(!preview)return;
+    dirtyMonthly.current=true;
+    setMonthlyAmts(preview.amounts);
+    setPreview(null);};
+  const cancel=()=>setPreview(null);
+  if(!preview){
+    return h('div',{className:'aa-panel'},
+      h('div',{className:'aa-row'},
+        h('div',{className:'aa-headline'},
+          h('h3',null,'Auto-allocate '+MF[mi]),
+          h('div',{className:'mu',style:{fontSize:'.875rem'}},'Set discretionary pots to sensible defaults, trimming if money is tight. Calendar costs and birthdays come first.')),
+        h('button',{className:'btn btn-p',onClick:compute},'Plan this month →')));}
+  // Preview state
+  const tag=preview.scenario==='ideal'?{cls:'aa-tag-default',label:'using defaults'}
+    :preview.scenario==='trim'?{cls:'aa-tag-trim',label:'trimmed to fit'}
+    :{cls:'aa-tag-cut',label:'no spare money'};
+  const explainText=preview.scenario==='ideal'
+    ?'You have '+gS(preview.available)+' for discretionary pots, which fully covers the '+gS(preview.totalDefaults)+' of defaults.'
+    :preview.scenario==='trim'
+    ?'You have '+gS(preview.available)+' for discretionary pots, but the defaults add up to '+gS(preview.totalDefaults)+'. Trimmed proportionally to fit.'
+    :'After committed pots ('+gS(preview.committed)+'), there’s nothing left for discretionary spending. Pots set to zero — you may need to push something to next month.';
+  return h('div',{className:'aa-panel'},
+    h('div',{className:'aa-row'},
+      h('div',{className:'aa-headline'},
+        h('h3',null,'Auto-allocate preview',h('span',{className:'aa-tag '+tag.cls},tag.label)),
+        h('div',{className:'aa-explain'},explainText)),
+      h('div',{style:{display:'flex',gap:'.5rem',flexShrink:0}},
+        h('button',{className:'btn btn-sm',onClick:cancel},'Cancel'),
+        h('button',{className:'btn btn-sm btn-p',onClick:apply},'Apply '+preview.changes.length+' change'+(preview.changes.length===1?'':'s')))),
+    preview.changes.length===0
+      ?h('div',{className:'aa-results'},h('div',{className:'mu'},'No changes — your discretionary pots are already at the right amounts.'))
+      :h('div',{className:'aa-results'},
+          preview.changes.map(ch=>h('div',{key:ch.pot.id,className:'aa-result-row'},
+            h('span',{style:{fontSize:'1.125rem'}},ch.pot.emoji),
+            h('span',{className:'aa-result-name'},ch.pot.name),
+            h('span',{className:'aa-result-old'},gS(ch.old)),
+            h('span',{className:'aa-result-arrow'},'→'),
+            h('span',{className:'aa-result-new',style:{color:ch.new===0?'var(--c-er)':ch.new<ch.old?'var(--c-wa)':'var(--c-ok)'}},gS(ch.new))))));}
+
+function App(){
+  const today=new Date();
+  const[dark,setDark]=useState(()=>localStorage.getItem('pp_dark')==='1');
+  useEffect(()=>{document.body.classList.toggle('dark',dark);localStorage.setItem('pp_dark',dark?'1':'0')},[dark]);
+
+  const[L,setL]=useState(false);const[loadErr,setLoadErr]=useState(null);
+  const[yr,setYr]=useState(today.getFullYear());
+  const[mi,setMi]=useState(today.getDate()>14?today.getMonth():(today.getMonth()-1+12)%12);
+  const[s,setS]=useState(DS);const[pots,setPots]=useState(DP);
+  const[an,setAn]=useState(DA);const[bd,setBd]=useState(DD);
+  const[open,setOpen]=useState({});const[editing,setEditing]=useState({});
+  const[monthlyAmts,setMonthlyAmts]=useState({});
+  const[prevAmts,setPrevAmts]=useState({});
+  const[actual,setActual]=useState({});
+  const[closed,setClosed]=useState({});
+  const[histData,setHistData]=useState({});
+  const[bhV,setBhV]=useState(0);
+  const[dragId,setDragId]=useState(null);
+  const[dragOverId,setDragOverId]=useState(null);
+  const[rateInfo,setRateInfo]=useState(LIVE_RATES);
+  const[undoData,setUndoData]=useState(null);const[showUndo,setShowUndo]=useState(false);
+  const dirtyMonthly=useRef(false);const dirtyActual=useRef(false);const potsRef=useRef([]);
+
+  // Init
+  useEffect(()=>{
+    refreshBankHolidays().then(ok=>{if(ok)setBhV(v=>v+1)});
+    loadCachedRates().then(age=>{setRateInfo({...LIVE_RATES});if(age===undefined||age>6)fetchLiveRates().then(r=>{if(r.ok)setRateInfo({...LIVE_RATES})})});
+  },[]);
+  useEffect(()=>{potsRef.current=pots},[pots]);
+  useEffect(()=>{(async()=>{const d=await loadAll();setS(d.settings);setPots(d.pots);setAn(d.annual);setBd(d.birthdays);setActual(d.actual);setClosed(d.closed);if(d.error)setLoadErr(d.error);setL(true)})()},[]);
+
+  // Saves
+  useEffect(()=>{if(L)saveKey('pp:settings',s)},[s,L]);
+  useEffect(()=>{if(L)saveKey('pp:pots',pots)},[pots,L]);
+  useEffect(()=>{if(L)saveKey('pp:annual',an)},[an,L]);
+  useEffect(()=>{if(L)saveKey('pp:birthdays',bd)},[bd,L]);
+  useEffect(()=>{if(L&&dirtyActual.current)saveKey('pp:actual',actual)},[actual,L]);
+  useEffect(()=>{if(L)saveKey('pp:closed',closed)},[closed,L]);
+  useEffect(()=>{
+    if(!L||!dirtyMonthly.current)return;
+    saveKey(MK(yr,mi),monthlyAmts);
+  },[monthlyAmts,L]);
+
+  // Monthly amounts: load current + prev, auto-copy with rollover
+  useEffect(()=>{
+    if(!sb||!L)return;
+    dirtyMonthly.current=false;
+    const[py,pm]=prevMo(yr,mi);
+    (async()=>{
+      const[{data},{data:prev}]=await Promise.all([
+        sb.from('kv_store').select('value').eq('key',MK(yr,mi)).maybeSingle(),
+        sb.from('kv_store').select('value').eq('key',MK(py,pm)).maybeSingle()
+      ]);
+      setPrevAmts(prev?.value||{});
+      if(data?.value&&Object.keys(data.value).length){setMonthlyAmts(data.value);return;}
+      if(prev?.value&&Object.keys(prev.value).length){
+        const n={...prev.value};
+        potsRef.current.filter(p=>p.rollover&&p.kind==='fixed').forEach(p=>{if(n[p.id]!==undefined)n[p.id]=Number(n[p.id])+Number(p.amount||0)});
+        setMonthlyAmts(n);
+      }else setMonthlyAmts({});
+    })();
+  },[mi,yr,L]);
+
+  // Snapshot + history
+  useEffect(()=>{
+    if(!L||!sb)return;
+    const keys=[];let[cy,cm]=[yr,mi];
+    for(let i=0;i<3;i++){[cy,cm]=prevMo(cy,cm);keys.push(`pp:snap:${cy}:${cm}`);}
+    sb.from('kv_store').select('value').in('key',keys).then(({data})=>{
+      if(!data?.length)return;
+      const byPot={};
+      data.forEach(row=>Object.entries(row.value?.perPot||{}).forEach(([id,amt])=>{byPot[id]=byPot[id]||[];byPot[id].push(Number(amt))}));
+      setHistData(Object.fromEntries(Object.entries(byPot).map(([id,amts])=>[id,Math.round(amts.reduce((a,b)=>a+b,0)/amts.length)])));
+    });
+  },[mi,yr,L]);
+
+  useEffect(()=>{
+    if(!L||!sb)return;
+    const perPot={};
+    pots.filter(p=>p.kind==='fixed').forEach(p=>{perPot[p.id]=Number(monthlyAmts[p.id]??p.amount)});
+    sb.from('kv_store').upsert({key:`pp:snap:${yr}:${mi}`,value:{income:s.income,potsTotal,buffer,pct:planningPct,at:new Date().toISOString(),perPot},updated_at:new Date().toISOString()}).then(()=>{});
+  },[L,mi,yr]);
+
+  // Realtime
+  useEffect(()=>{
+    if(!sb)return;let ch=null;
+    try{ch=sb.channel('pp-rt').on('postgres_changes',{event:'UPDATE',schema:'public',table:'kv_store'},ev=>{
+      try{const{key,value}=ev.new||{};if(!KEYS.includes(key)||Date.now()-(lastSaved[key]||0)<2500)return;
+        if(key==='pp:settings')setS(value);if(key==='pp:pots')setPots(value);
+        if(key==='pp:annual')setAn(value);if(key==='pp:birthdays')setBd(value);
+      }catch(e){}}).subscribe((st,err)=>{if(err)console.info('Realtime unavailable')});}
+    catch(e){console.info('Realtime unavailable');}
+    return()=>{try{if(ch)sb.removeChannel(ch)}catch(e){}};
+  },[]);
+
+  const set=(k,v)=>setS(o=>({...o,[k]:v}));
+  const p=useMemo(()=>pd(yr,mi),[yr,mi,bhV]);
+  const np=useMemo(()=>npd(yr,mi),[yr,mi,bhV]);
+  const we=useMemo(()=>cd(p,np,6),[p,np]);
+  const fr=useMemo(()=>termFridays(p,np),[p,np]);
+  const frDates=useMemo(()=>termFridayDates(p,np),[p,np]);
+  const bH=useMemo(()=>bdIn(bd,p),[bd,p]);
+  const anT=useMemo(()=>an.filter(a=>a.pay_month===mi&&(!a.year||Number(a.year)===yr)),[an,mi,yr]);
+
+  const potAmount=useCallback(pot=>calcPotAmount(pot,we,fr,s.shopRate,s.friRate,bH,anT,monthlyAmts),[we,fr,s.shopRate,s.friRate,bH,anT,monthlyAmts]);
+  const setMA=(id,v)=>{dirtyMonthly.current=true;setMonthlyAmts(m=>({...m,[id]:v}))};
+
+  const potsTotal=pots.reduce((a,p)=>a+potAmount(p),0);
+  const buffer=s.income-potsTotal;
+  const planningPct=s.income>0?Math.min(100,Math.round(potsTotal/s.income*100)):0;
+  const dtp=daysUntil(p>=new Date(today.getFullYear(),today.getMonth(),today.getDate())?p:np);
+  const ctLabel=dtp===0?'Payday today! \ud83c\udf89':dtp===1?'Payday tomorrow':dtp>0?`Payday in ${dtp} days`:`Paid ${Math.abs(dtp)}d ago`;
+
+  const updatePot=(id,patch)=>setPots(ps=>ps.map(p=>p.id===id?{...p,...patch}:p));
+  const deletePot=id=>setPots(ps=>ps.filter(p=>p.id!==id));
+  const addPot=()=>{const id='pot-'+uid();setPots(ps=>[...ps,{id,name:'New pot',emoji:'\ud83d\udcb7',kind:'fixed',amount:0,note:''}]);setOpen(o=>({...o,[id]:true}));setEditing(e=>({...e,[id]:true}))};
+  const addSavingsPot=()=>{const id='pot-'+uid();setPots(ps=>[...ps,{id,name:'New savings goal',emoji:'\ud83c\udfaf',kind:'savings',monthly:0,target:0,saved:0,note:''}]);setOpen(o=>({...o,[id]:true}));setEditing(e=>({...e,[id]:true}))};
+  const movePot=(id,dir)=>setPots(ps=>{const i=ps.findIndex(p=>p.id===id),j=i+dir;if(j<0||j>=ps.length)return ps;const a=[...ps];[a[i],a[j]]=[a[j],a[i]];return a});
+  const onPotDragStart=(id)=>(e)=>{setDragId(id);if(e.dataTransfer){e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',id)}};
+  const onPotDragOver=(id)=>(e)=>{e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='move';if(dragId&&dragId!==id)setDragOverId(id)};
+  const onPotDrop=(id)=>(e)=>{e.preventDefault();if(!dragId||dragId===id){setDragId(null);setDragOverId(null);return;}
+    setPots(ps=>{const from=ps.findIndex(p=>p.id===dragId),to=ps.findIndex(p=>p.id===id);if(from===-1||to===-1)return ps;const a=[...ps];const[moved]=a.splice(from,1);a.splice(to,0,moved);return a});
+    setDragId(null);setDragOverId(null);};
+  const onPotDragEnd=()=>{setDragId(null);setDragOverId(null)};
+  const [itemDragKey,setItemDragKey]=useState(null);
+  const [itemDragOver,setItemDragOver]=useState(null);
+  const reorderItem=(potId,fromId,toId)=>{updatePot(potId,{items:(()=>{const items=pots.find(p=>p.id===potId).items;const from=items.findIndex(i=>i.id===fromId),to=items.findIndex(i=>i.id===toId);if(from===-1||to===-1)return items;const a=[...items];const[moved]=a.splice(from,1);a.splice(to,0,moved);return a})()})};
+  const updateItem=(pid,iid,patch)=>updatePot(pid,{items:pots.find(p=>p.id===pid).items.map(it=>it.id===iid?{...it,...patch}:it)});
+  const addItem=pid=>updatePot(pid,{items:[...pots.find(p=>p.id===pid).items,{id:uid(),name:'New item',amount:0}]});
+  const removeItem=(pid,iid)=>updatePot(pid,{items:pots.find(p=>p.id===pid).items.filter(it=>it.id!==iid)});
+  const uA=(id,f,v)=>setAn(l=>l.map(a=>a.id===id?{...a,[f]:(f==='amount'||f==='pay_month')?Number(v):(f==='year')?(v===''||v==null?null:Number(v)):v}:a));
+  const uD=(id,f,v)=>setBd(l=>l.map(b=>b.id===id?{...b,[f]:['amount','day','month'].includes(f)?Number(v):(f==='birthYear')?(v===''||v==null?null:Number(v)):v}:b));
+
+  const mtr=Math.max(0,(2028-yr)*12-mi);
+  const bAR=useMemo(()=>rollM(s.mortBalance,s.mortRate,s.mortPmt,mtr),[s.mortBalance,s.mortRate,s.mortPmt,mtr]);
+  const termAR=Math.max(12,(s.mortTermMonths||361)-mtr);
+
+  const radar=useMemo(()=>{
+    const alerts=[];
+    for(let o=1;o<=3;o++){const fm=(mi+o)%12;const fmN=MF[fm];
+      const fyrR=fm<mi?yr+1:yr;const items=an.filter(a=>a.pay_month===fm&&(!a.year||Number(a.year)===fyrR));
+      const tot=items.reduce((a,b)=>a+Number(b.amount||0),0);
+      if(tot>=150)alerts.push({k:'w',t:'\ud83d\udce1 '+fmN+': '+gS(tot)+' in calendar \u2014 '+items.map(a=>a.name).join(', ')+'.'});
+      const fp=pd(fm<mi?yr+1:yr,fm);const fBds=bdIn(bd,fp);
+      if(fBds.length>=2)alerts.push({k:'i',t:'\ud83d\udce1 '+fmN+': '+fBds.length+' birthdays \u2014 '+fBds.map(b=>b.name).join(', ')+' ('+gS(fBds.reduce((a,b)=>a+Number(b.amount||0),0))+')'});}
+    return alerts},[mi,yr,an,bd]);
+
+  const ins=useMemo(()=>{
+    const o=[];
+    if(we>=5)o.push({k:'i',t:`${we}-weekend month \u2014 shopping pot \u00a3${s.shopRate} higher.`});
+    if(buffer<0)o.push({k:'e',t:'Shortfall of '+gS(Math.abs(buffer))+'. Reduce a pot or push to next month.'});
+    else{
+      // Only flag as "tight" if buffer is low AND discretionary pots are also cut to bone.
+      // High savings allocation is a deliberate choice, not a tight-month signal.
+      const discTotal=pots.filter(p=>p.kind==='fixed'&&POT_DEFAULTS[p.id]).reduce((a,p)=>a+Number(monthlyAmts[p.id]??p.amount??0),0);
+      const discDefaultTotal=pots.filter(p=>p.kind==='fixed'&&POT_DEFAULTS[p.id]).reduce((a,p)=>a+POT_DEFAULTS[p.id],0);
+      const discRatio=discDefaultTotal>0?discTotal/discDefaultTotal:1;
+      if(buffer<50&&discRatio<0.5)o.push({k:'w',t:'Really tight month \u2014 buffer '+gS(buffer)+' and discretionary pots cut to '+Math.round(discRatio*100)+'% of usual.'});
+      else if(buffer<50)o.push({k:'i',t:'Fully allocated \u2014 '+gS(buffer)+' spare. Discretionary pots at '+Math.round(discRatio*100)+'% of usual.'});
+    }
+    const big=anT.reduce((a,b)=>a+Number(b.amount||0),0);
+    if(big>=200)o.push({k:'w',t:'Heavy calendar month: '+gS(big)+' \u2014 '+anT.map(a=>a.name).join(', ')+'.'});
+    if(bH.length)o.push({k:'i',t:bH.length+' birthday'+(bH.length>1?'s':'')+': '+bH.map(b=>b.name+' '+fd(b.dateObj)).join(', ')+'.'});
+    return[...o,...radar]},[we,buffer,anT,bH,s.shopRate,radar]);
+
+  const reset=async()=>{
+    if(!confirm('Reset ALL data to defaults?'))return;
+    setUndoData({s,pots,an,bd,monthlyAmts});setShowUndo(true);setTimeout(()=>setShowUndo(false),10000);
+    if(sb){for(const k of KEYS){try{await sb.from('kv_store').delete().eq('key',k)}catch{}}}
+    setS(DS);setPots(DP);setAn(DA);setBd(DD);setMonthlyAmts({});setOpen({});setEditing({});};
+  const undoReset=()=>{if(!undoData)return;setS(undoData.s);setPots(undoData.pots);setAn(undoData.an);setBd(undoData.bd);setMonthlyAmts(undoData.monthlyAmts);setShowUndo(false);setUndoData(null)};
+  const closeOut=async()=>{
+    const mk=yr+':'+mi;
+    if(closed[mk]){alert(MF[mi]+' '+yr+' is already closed.');return;}
+    if(!confirm('Close out '+MF[mi]+' '+yr+'? Locks plan and advances savings pots.'))return;
+    const perPot={};pots.filter(p=>p.kind==='fixed').forEach(p=>{perPot[p.id]=Number(monthlyAmts[p.id]??p.amount)});
+    if(sb)await sb.from('kv_store').upsert({key:'pp:snap:'+yr+':'+mi,value:{income:s.income,potsTotal,buffer,pct:planningPct,at:new Date().toISOString(),perPot,final:true},updated_at:new Date().toISOString()});
+    setClosed(c=>({...c,[mk]:true}));
+    setPots(pots.map(p=>{
+      if(p.kind==='savings'){const c=Number(monthlyAmts[p.id]??p.monthly??0);return{...p,saved:Math.min(Number(p.target||0),Number(p.saved||0)+c)}}
+      // Fixed pots with a goal also accumulate saved each close-out
+      if(p.kind==='fixed'&&Number(p.target||0)>0){const c=Number(monthlyAmts[p.id]??p.amount??0);return{...p,saved:Math.min(Number(p.target),Number(p.saved||0)+c)}}
+      return p;
+    }));
+    const nm=(mi+1)%12;setMi(nm);setYr(nm===0?yr+1:yr);setOpen({});setEditing({});};
+  const signOut=()=>{localStorage.removeItem(AUTH_KEY);location.reload()};
+
+  if(!CONFIGURED)return h('div',{className:'err-box',style:{margin:'1rem'}},h('h2',null,'Setup required'),h('p',null,'Edit SUPABASE_URL, SUPABASE_ANON_KEY and PASSWORD at top of file.'));
+  if(!L)return h('div',{className:'mu',style:{padding:'1rem'}},'\ud83d\udd04 Loading\u2026');
+
+  const potSubtext=pot=>{
+    if(pot.kind==='list')return pot.items.length+' items';
+    if(pot.kind==='fixed')return pot.id in monthlyAmts?MF[mi]+': '+gS(monthlyAmts[pot.id])+' (base '+gS(pot.amount)+')':'Default \u2014 tap to adjust';
+    if(pot.kind==='auto-shopping')return we+' weekend'+(we===1?'':'s')+' \u00d7 \u00a3'+s.shopRate;
+    if(pot.kind==='auto-afterschool'){const diff=fr-AVG_TERM_FRIDAYS;const tag=diff>=2?' (busy month)':diff<=-2?' (light month)':'';return fr+' term-time Friday'+(fr===1?'':'s')+' \u00d7 \u00a3'+s.friRate+tag;}
+    if(pot.kind==='auto-birthdays')return bH.length?bH.map(b=>b.name).join(', '):'None this month';
+    if(pot.kind==='auto-annual')return anT.length?anT.length+' event'+(anT.length===1?'':'s')+' in '+MF[mi]:'None in '+MF[mi];
+    if(pot.kind==='savings'){const sv=Number(pot.saved||0),tg=Number(pot.target||0);return tg>0?gS(sv)+' of '+gS(tg)+' ('+Math.round(sv/tg*100)+'%)':'Set a target';}
+    return'';};
+
+  const renderBody=pot=>{
+    if(pot.kind==='list')return h('div',null,
+      h('div',{className:'eb',style:{marginBottom:'.375rem'}},'Items · drag to reorder'),
+      pot.items.map(it=>{const key=pot.id+':'+it.id;return h('div',{key:it.id,
+        className:'sub'+(itemDragKey===key?' item-dragging':'')+(itemDragOver===key?' item-drag-over':''),
+        draggable:true,
+        onDragStart:e=>{setItemDragKey(key);if(e.dataTransfer){e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',key)}},
+        onDragOver:e=>{e.preventDefault();if(itemDragKey&&itemDragKey!==key)setItemDragOver(key)},
+        onDrop:e=>{e.preventDefault();if(!itemDragKey||itemDragKey===key){setItemDragKey(null);setItemDragOver(null);return;}
+          const fromId=itemDragKey.split(':')[1];reorderItem(pot.id,fromId,it.id);setItemDragKey(null);setItemDragOver(null)},
+        onDragEnd:()=>{setItemDragKey(null);setItemDragOver(null)}},
+        h('span',{className:'item-drag',title:'Drag to reorder'},'☰'),
+        h('input',{className:'inp bare',style:{flex:1,minWidth:0},value:it.name,onChange:e=>updateItem(pot.id,it.id,{name:e.target.value})}),
+        h(MI,{value:it.amount,onChange:v=>updateItem(pot.id,it.id,{amount:v}),cls:'inp-amt',wrapCls:'mw-bare'}),
+        h('button',{className:'x',onClick:()=>removeItem(pot.id,it.id)},'\u00d7'))}),
+      h('button',{className:'add',onClick:()=>addItem(pot.id)},'+ Add item'));
+
+    if(pot.kind==='fixed'){
+      const mv=monthlyAmts[pot.id]??pot.amount;const isOvr=pot.id in monthlyAmts;
+      const target=Number(pot.target||0);
+      const saved=Number(pot.saved||0);
+      const monthly=Number(mv||0);
+      return h('div',null,
+        h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'.375rem'}},
+          h('div',{className:'eb'},isOvr?MF[mi]+' only':'Monthly default'),
+          isOvr&&h('button',{className:'btn-lnk',onClick:()=>{setMonthlyAmts(m=>{const n={...m};delete n[pot.id];dirtyMonthly.current=true;return n})}},'\u21a9 Reset')),
+        h('div',{className:'mu',style:{fontSize:'.75rem',marginBottom:'.5rem'}},isOvr?'Base is '+gS(pot.amount)+'.':'Change just for this month, or leave as default.'),
+        h(MI,{value:mv,onChange:v=>setMA(pot.id,v),cls:'inp',wrapCls:'mw-lg',style:{width:140,fontSize:'1.125rem',fontWeight:600}}),
+        histData[pot.id]&&Math.abs(histData[pot.id]-Math.round(Number(mv)))>5&&
+          h('div',{className:'pot-ghost'},'\u2197 avg '+gS(histData[pot.id])+' last 3 months'),
+        target>0&&(()=>{
+          const pctDone=Math.min(100,Math.round(saved/target*100));
+          const remaining=Math.max(0,target-saved);
+          const mLeft=saved>=target?0:monthsToTarget(saved,target,monthly);
+          const eta=mLeft>0?new Date(yr,mi+mLeft,1):null;
+          return h('div',{style:{marginTop:'.875rem',paddingTop:'.75rem',borderTop:'1px dashed var(--c-s200)'}},
+            h('div',{className:'eb',style:{marginBottom:'.5rem'}},'Goal progress'),
+            h('div',{className:'target-bar'},h('div',{className:'target-bar-fill',style:{width:pctDone+'%'}})),
+            h('div',{className:'target-row',style:{alignItems:'center',gap:'.75rem'}},
+              h('div',null,h('div',{className:'eb',style:{marginBottom:'.15rem'}},'Saved'),
+                h(MI,{value:saved,onChange:v=>updatePot(pot.id,{saved:v}),cls:'inp-amt',wrapCls:'mw-bare',style:{width:100}})),
+              h('div',null,h('div',{className:'eb',style:{marginBottom:'.15rem'}},'Target'),
+                h('div',{className:'m',style:{fontSize:'.95rem',fontWeight:500,paddingTop:'.3rem'}},gS(target))),
+              h('div',null,h('div',{className:'eb',style:{marginBottom:'.15rem'}},'Remaining'),
+                h('div',{className:'m',style:{fontSize:'.95rem',fontWeight:500,paddingTop:'.3rem'}},gS(remaining)))),
+            h('div',{className:'mu',style:{marginTop:'.5rem',fontSize:'.8rem'}},
+              saved>=target?'\u2705 Target reached!':
+              monthly<=0?'Set a monthly amount above to forecast when you\u2019ll reach the target.':
+              mLeft+' month'+(mLeft===1?'':'s')+' to go at '+gS(monthly)+'/month'+(eta?' \u2014 on track for '+eta.toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'')),
+            h('div',{className:'mu',style:{marginTop:'.25rem',fontSize:'.75rem'}},'Saved increases automatically when you close out each month.'));
+        })());}
+
+    if(pot.kind==='auto-shopping')return h('div',null,
+      h('div',{className:'mu',style:{marginBottom:'.5rem'}},we+' weekend'+(we===1?'':'s')+' between '+fd(p)+' and '+fd(np)+'.'),
+      h('div',{style:{display:'flex',gap:'.5rem',alignItems:'center'}},
+        h('span',{style:{fontSize:'.875rem'}},'Per weekend'),
+        h(MI,{value:s.shopRate,onChange:v=>set('shopRate',v),cls:'inp-amt',style:{width:80},wrapCls:'mw-bare'})));
+
+    if(pot.kind==='auto-afterschool'){
+      const diff=fr-AVG_TERM_FRIDAYS;
+      const tagText=diff>=2?'↑ More Fridays than usual':diff<=-2?'↓ Fewer Fridays than usual (school holidays)':diff>0?'Slightly above average':diff<0?'Slightly below average':'Average month';
+      const tagColor=diff>=2?'var(--c-er)':diff<=-2?'var(--c-ok)':'var(--c-s500)';
+      return h('div',null,
+        h('div',{className:'mu',style:{marginBottom:'.25rem'}},fr+' term-time Friday'+(fr===1?'':'s')+' between '+fd(p)+' and '+fd(np)+'.'),
+        h('div',{style:{fontSize:'.8125rem',color:tagColor,fontWeight:500,marginBottom:'.5rem'}},tagText),
+        frDates.length>0&&h('div',{className:'mu',style:{fontSize:'.75rem',marginBottom:'.5rem'}},'Dates: '+frDates.map(d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short'})).join(' · ')),
+        h('div',{style:{display:'flex',gap:'.5rem',alignItems:'center'}},
+          h('span',{style:{fontSize:'.875rem'}},'Per Friday'),
+          h(MI,{value:s.friRate,onChange:v=>set('friRate',v),cls:'inp-amt',style:{width:80},wrapCls:'mw-bare'})));}
+
+    if(pot.kind==='auto-birthdays'){
+      if(!bH.length)return h('div',{className:'mu'},'No birthdays this month. Edit in \u201cCalendar & Birthdays\u201d below.');
+      return h('div',null,
+        h('div',{className:'eb',style:{marginBottom:'.375rem'}},'Who \u00b7 date \u00b7 amount'),
+        h('table',{className:'tbl'},h('tbody',null,
+          bH.map(b=>{const age=b.birthYear?b.dateObj.getFullYear()-Number(b.birthYear):null;return h('tr',{key:b.id},
+            h('td',{style:{fontWeight:500}},b.name,age!=null&&age>0&&h('span',{className:'mu',style:{fontSize:'.75rem',marginLeft:'.4rem'}},'turns '+age)),
+            h('td',{className:'mu'},b.dateObj.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})),
+            h('td',{className:'m',style:{textAlign:'right'}},gS(b.amount)))}))),
+        h('div',{className:'mu',style:{marginTop:'.5rem',fontSize:'.75rem'}},'Edit amounts in \u201cCalendar & Birthdays\u201d below.'));}
+
+    if(pot.kind==='auto-annual')return h('div',null,
+      h('div',{className:'eb',style:{marginBottom:'.375rem'}},'Events in '+MF[mi]),
+      !anT.length?h('div',{className:'mu'},'Nothing scheduled for '+MF[mi]+'.'):
+      anT.map(a=>h('div',{key:a.id,className:'sub'},
+        h('input',{className:'inp bare',style:{flex:1,minWidth:0},value:a.name,onChange:e=>uA(a.id,'name',e.target.value)}),
+        h('select',{className:'inp bare',style:{width:70,fontSize:'.75rem'},value:a.pay_month,onChange:e=>uA(a.id,'pay_month',e.target.value)},M.map((m,j)=>h('option',{key:m,value:j},m))),
+        h(MI,{value:a.amount,onChange:v=>uA(a.id,'amount',v),cls:'inp-amt',wrapCls:'mw-bare'}),
+        h('button',{className:'x',onClick:()=>setAn(l=>l.filter(a2=>a2.id!==a.id))},'\u00d7'))));
+
+    if(pot.kind==='savings'){
+      const saved=Number(pot.saved||0),target=Number(pot.target||0),monthly=Number(monthlyAmts[pot.id]??pot.monthly??0);
+      const pct=target>0?Math.min(100,saved/target*100):0;
+      const mLeft=monthsToTarget(saved,target,monthly);
+      const doneDate=mLeft>0?new Date(yr,mi+mLeft,1):null;
+      return h('div',null,
+        h('div',{className:'target-row'},
+          h('div',null,h('div',{className:'eb',style:{marginBottom:'.25rem'}},'Monthly'),h(MI,{value:monthly,onChange:v=>{dirtyMonthly.current=true;setMonthlyAmts(m=>({...m,[pot.id]:v}))},cls:'inp',wrapCls:'mw-lg',style:{width:120,fontSize:'1.1rem',fontWeight:600}})),
+          h('div',null,h('div',{className:'eb',style:{marginBottom:'.25rem'}},'Target'),h(MI,{value:target,onChange:v=>updatePot(pot.id,{target:v}),cls:'inp',wrapCls:'mw-lg',style:{width:120,fontSize:'1.1rem',fontWeight:600}})),
+          h('div',null,h('div',{className:'eb',style:{marginBottom:'.25rem'}},'Saved'),h(MI,{value:saved,onChange:v=>updatePot(pot.id,{saved:v}),cls:'inp',wrapCls:'mw-lg',style:{width:120,fontSize:'1.1rem',fontWeight:600}}))),
+        target>0&&h('div',{className:'target-bar'},h('div',{className:'target-bar-fill',style:{width:pct+'%'}})),
+        h('div',{className:'mu',style:{marginTop:'.375rem',fontSize:'.75rem'}},
+          target>0&&saved<target&&mLeft>0?mLeft+' month'+(mLeft===1?'':'s')+' to go'+(doneDate?' \u2014 on track for '+doneDate.toLocaleDateString('en-GB',{month:'short',year:'numeric'}):'')
+          :target>0&&saved>=target?'\u2705 Target reached!'
+          :'Set a target above'));}
+    return null;};
+
+  // Mortgage helpers
+  const ltv=s.propertyValue>0?Math.round(bAR/s.propertyValue*100):null;
+  const band=ltv?mktRate(ltv):null;
+  const ltvColor=v=>v<=60?'var(--c-ok)':v<=75?'var(--c-p500)':v<=85?'var(--c-wa)':'var(--c-er)';
+  const mk=yr+':'+mi;
+
+  return h('div',{className:'app'},
+    h(StatusPill),
+    // Banner
+    h('header',{className:'banner'},
+      h('div',{className:'banner-text'},
+        h('h1',null,'Budget Planner')),
+      h('div',{className:'banner-right'},
+        h('button',{className:'theme-btn','aria-label':dark?'Switch to light mode':'Switch to dark mode',onClick:()=>setDark(d=>!d)},dark?'\u2600\ufe0f':'\ud83c\udf19'),
+        h('button',{className:'btn btn-sm',onClick:signOut},'Sign out'))),
+
+    loadErr&&h('div',{className:'err-box',style:{marginBottom:'1rem'}},h('strong',null,'Supabase error: '),loadErr),
+
+    // Month + income
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'1rem',flexWrap:'wrap',marginBottom:'1.25rem'}},
+      h('div',null,
+        h('div',{className:'eb'},'Planning'),
+        h('div',{style:{display:'flex',gap:'.25rem',flexWrap:'wrap',margin:'.25rem 0'}},
+          h('select',{className:'sel',value:mi,onChange:e=>setMi(Number(e.target.value))},MF.map((m,i)=>h('option',{key:m,value:i},m))),
+          h('select',{className:'sel',value:yr,onChange:e=>setYr(Number(e.target.value))},[2025,2026,2027,2028].map(y=>h('option',{key:y,value:y},y)))),
+        h('div',{className:'mu'},'Payday '+fd(p)+' \u2192 '+fd(np)+' \u00b7 '+we+' weekends \u00b7 '+fr+' Fridays'),
+        h('span',{className:'cdpill'},ctLabel)),
+      h('div',{style:{display:'flex',flexDirection:'column',alignItems:'flex-end',gap:'.25rem'}},
+        h('div',{className:'eb'},'Net monthly income'),
+        h(MI,{value:s.income,onChange:v=>set('income',v),cls:'inp',wrapCls:'mw-lg',style:{width:150,fontSize:'1.125rem',fontWeight:600}}))),
+
+    h(Summary,{pct:planningPct,buffer,bh:bH}),
+    h(MonthDiff,{pots,cur:monthlyAmts,prev:prevAmts,prevM:MF[prevMo(yr,mi)[1]]}),
+    h(Forecast,{yr,mi,income:s.income,pots,monthlyAmts,annualEvents:an,birthdays:bd,shopRate:s.shopRate,friRate:s.friRate,histAvg:histData}),
+    ins.length>0&&h('div',{style:{marginBottom:'1rem'}},ins.map((x,i)=>h('div',{key:i,className:'ins ins'+x.k},x.t))),
+
+    // Close-out banner
+    closed[mk]
+      ?h('div',{className:'closeout'},
+          h('span',null,h('strong',null,MF[mi]+' '+yr),' is locked.'),
+          h('button',{className:'btn btn-sm',onClick:()=>setMi((mi+1)%12)},'Open next month \u2192'))
+      :dtp<=2&&h('div',{className:'closeout'},
+          h('span',null,dtp===0?'Payday today!':dtp===1?'Payday tomorrow!':'Payday in 2 days',' Ready to close?'),
+          h('button',{className:'btn btn-sm btn-p',onClick:closeOut},'Close out + open next month')),
+
+    // Pot header
+    h('div',{className:'eb',style:{marginBottom:'.5rem',display:'flex',justifyContent:'space-between',padding:'0 .25rem'}},
+      h('span',null,'Pots \u00b7 '+pots.length),
+      h('span',{className:'m'},'Total '+gS(potsTotal))),
+
+    // Pots
+    h('div',{className:'pot-grid'},
+      pots.map((pot,idx)=>{const amt=potAmount(pot);const pct=s.income>0?amt/s.income*100:0;
+        return h(PotCard,{key:pot.id,pot,amount:amt,pct,subtext:potSubtext(pot),
+          expanded:!!open[pot.id],onToggle:()=>setOpen(o=>({...o,[pot.id]:!o[pot.id]})),
+          editing:!!editing[pot.id],onEditToggle:v=>setEditing(e=>({...e,[pot.id]:v})),
+          onRename:v=>updatePot(pot.id,{name:v}),onEmoji:v=>updatePot(pot.id,{emoji:v}),
+          onNote:v=>updatePot(pot.id,{note:v}),onDelete:()=>deletePot(pot.id),
+          onMoveUp:()=>movePot(pot.id,-1),onMoveDown:()=>movePot(pot.id,1),
+          onRollover:v=>updatePot(pot.id,{rollover:v}),
+          onTarget:v=>updatePot(pot.id,{target:v}),
+          onDragStart:onPotDragStart(pot.id),onDragOver:onPotDragOver(pot.id),
+          onDrop:onPotDrop(pot.id),onDragEnd:onPotDragEnd,
+          dragging:dragId===pot.id,dragOver:dragOverId===pot.id,
+          isFirst:idx===0,isLast:idx===pots.length-1},renderBody(pot))})),
+
+    // Pot actions
+    h('div',{style:{display:'flex',gap:'.5rem',marginBottom:'1rem',flexWrap:'wrap'}},
+      h('button',{className:'add',style:{flex:1,marginTop:0},onClick:addPot},'+ Add pot'),
+      h('button',{className:'add',style:{flex:1,marginTop:0},onClick:addSavingsPot},'+ Add savings goal'),
+      !closed[mk]&&h('button',{className:'btn',style:{flexShrink:0,alignSelf:'stretch'},onClick:closeOut},'Close out month')),
+
+    !closed[mk]&&h(AutoAllocate,{pots,monthlyAmts,setMonthlyAmts,dirtyMonthly,income:s.income,we,fr,shopRate:s.shopRate,friRate:s.friRate,bH,anT,mi,yr}),
+    h(Distributor,{buffer,pots,potAmount,setMonthlyAmt:setMA}),
+    h(VarianceTracker,{pots,potAmount,actual,setActual,dirtyActual,mi,yr,closed}),
+    h(AffordChecker,{buffer,pots,potAmount}),
+    h('div',{style:{height:'.5rem'}}),
+
+    // Calendar & Birthdays (collapsed by default)
+    h(Sec,{title:'Calendar & Birthdays',right:an.length+' events \u00b7 '+bd.length+' people'},
+      h('div',{style:{display:'grid',gridTemplateColumns:'1fr',gap:'1.25rem'}},
+        h('div',null,
+          h('div',{className:'eb',style:{marginBottom:'.5rem'}},'Annual calendar costs'),
+          h('div',{className:'mu',style:{marginBottom:'.5rem',fontSize:'.8125rem'}},'Tied to pay months. Leave Year blank for recurring annual costs, or set a specific year for one-offs.'),
+          h('table',{className:'tbl zbr'},
+            h('thead',null,h('tr',null,h('th',{className:'eb',style:{textAlign:'left'}},'Month'),h('th',{className:'eb',style:{textAlign:'left'}},'Event'),h('th',{className:'eb',style:{textAlign:'left'}},'Year'),h('th',{className:'eb',style:{textAlign:'right'}},'Amount'),h('th'))),
+            h('tbody',null,[...an].sort((a,b)=>a.pay_month-b.pay_month).map(a=>h('tr',{key:a.id},
+              h('td',{style:{width:80}},h('select',{className:'inp bare',style:{fontSize:'.8rem',padding:'.25rem .375rem'},value:a.pay_month,onChange:e=>uA(a.id,'pay_month',e.target.value)},M.map((m,j)=>h('option',{key:m,value:j},m)))),
+              h('td',null,h('input',{className:'inp bare',value:a.name,onChange:e=>uA(a.id,'name',e.target.value)})),
+              h('td',{style:{width:80}},h('input',{className:'inp bare',placeholder:'every yr',value:a.year||'',onChange:e=>uA(a.id,'year',e.target.value),style:{fontSize:'.8rem'}})),
+              h('td',{style:{width:100}},h(MI,{value:a.amount,onChange:v=>uA(a.id,'amount',v),cls:'inp-amt',wrapCls:'mw-bare'})),
+              h('td',{style:{width:36}},h('button',{className:'x',onClick:()=>setAn(l=>l.filter(a2=>a2.id!==a.id))},'\u00d7')))))),
+          h('button',{className:'add',onClick:()=>setAn(l=>[...l,{id:uid(),pay_month:mi,name:'New event',amount:0}])},'+ Add event')),
+        h('div',null,
+          h('div',{className:'eb',style:{marginBottom:'.5rem'}},'Birthdays'),
+          h('div',{className:'mu',style:{marginBottom:'.5rem',fontSize:'.8rem'}},'The Family birthdays pot pulls anyone whose birthday falls in this pay period.'),
+          h('table',{className:'tbl zbr'},
+            h('thead',null,h('tr',null,h('th',{className:'eb',style:{textAlign:'left'}},'Name'),h('th',{className:'eb',style:{textAlign:'right'}},'Day'),h('th',{className:'eb',style:{textAlign:'right'}},'Month'),h('th',{className:'eb',style:{textAlign:'right'}},'Born'),h('th',{className:'eb',style:{textAlign:'right'}},'Amount'),h('th'))),
+            h('tbody',null,bd.map(b=>{const turning=b.birthYear?yr-Number(b.birthYear):null;return h('tr',{key:b.id},
+              h('td',null,h('input',{className:'inp bare',value:b.name,onChange:e=>uD(b.id,'name',e.target.value)}),
+                turning!=null&&turning>0&&h('span',{className:'mu',style:{fontSize:'.75rem',marginLeft:'.4rem'}},'turns '+turning)),
+              h('td',{style:{width:55}},h(NI,{value:b.day,onChange:v=>uD(b.id,'day',v)})),
+              h('td',{style:{width:55}},h(NI,{value:b.month,onChange:v=>uD(b.id,'month',v)})),
+              h('td',{style:{width:70}},h('input',{className:'inp bare',placeholder:'year',value:b.birthYear||'',onChange:e=>uD(b.id,'birthYear',e.target.value),style:{fontSize:'.8rem',textAlign:'right'}})),
+              h('td',{style:{width:95}},h(MI,{value:b.amount,onChange:v=>uD(b.id,'amount',v),cls:'inp-amt',wrapCls:'mw-bare'})),
+              h('td',{style:{width:36}},h('button',{className:'x',onClick:()=>setBd(l=>l.filter(b2=>b2.id!==b.id))},'\u00d7')))}))),
+          h('button',{className:'add',onClick:()=>setBd(l=>[...l,{id:uid(),name:'New person',day:1,month:1,amount:40}])},'+ Add person')))),
+
+    // Mortgage & Tools (collapsed by default)
+    h(Sec,{title:'Mortgage & Tools',right:gS(bAR)+' projected'+(ltv?' \u00b7 '+ltv+'% LTV':'')},
+      // Settings row
+      h('div',{style:{display:'flex',gap:'1rem',marginBottom:'1rem',flexWrap:'wrap',alignItems:'center'}},
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem'}},h('span',{style:{fontSize:'.875rem'}},'Property value'),h(MI,{value:s.propertyValue||0,onChange:v=>set('propertyValue',v),style:{width:110},wrapCls:'mw-bare'})),
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem'}},h('span',{style:{fontSize:'.875rem'}},'Balance'),h(MI,{value:s.mortBalance,onChange:v=>set('mortBalance',v),style:{width:110},wrapCls:'mw-bare'})),
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem'}},h('span',{style:{fontSize:'.875rem'}},'Current rate %'),h(MI,{value:s.mortRate,onChange:v=>set('mortRate',v),style:{width:70}})),
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem'}},h('span',{style:{fontSize:'.875rem'}},'Monthly DD'),h(MI,{value:s.mortPmt,onChange:v=>set('mortPmt',v),style:{width:100},wrapCls:'mw-bare'})),
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem'}},h('span',{style:{fontSize:'.875rem'}},'Months left'),h(NI,{value:s.mortTermMonths||361,onChange:v=>set('mortTermMonths',v),style:{width:65,textAlign:'right'}}))),
+
+      // LTV Forecast
+      s.propertyValue>0&&(()=>{
+        const propVal=Number(s.propertyValue);
+        const pts=[
+          {label:'Now',bal:Math.round(s.mortBalance),mo:0},
+          {label:'Renewal',bal:Math.round(bAR),mo:mtr},
+          {label:'Midpoint',bal:Math.round(rollM(s.mortBalance,s.mortRate,s.mortPmt,Math.round((s.mortTermMonths||361)/2))),mo:Math.round((s.mortTermMonths||361)/2)},
+          {label:'End',bal:0,mo:s.mortTermMonths||361},
+        ].map(pt=>({...pt,
+          ltv:Math.round(pt.bal/propVal*100),
+          ltvAdj:Math.round(pt.bal/Math.round(propVal*Math.pow(1.03,pt.mo/12))*100)}));
+        return h('div',{style:{marginBottom:'1rem'}},
+          h('div',{className:'eb',style:{marginBottom:'.5rem'}},'LTV over lifetime'),
+          h('div',{style:{display:'flex',gap:'.75rem',flexWrap:'wrap'}},
+            pts.map((pt,i)=>h('div',{key:i,style:{flex:'1 1 110px',background:'var(--c-card)',border:'1px solid var(--c-s200)',borderRadius:'var(--rs)',padding:'.625rem .875rem'}},
+              h('div',{className:'eb',style:{marginBottom:'.2rem'}},pt.label),
+              h('div',{style:{fontSize:'1.375rem',fontFamily:'var(--f-m)',fontWeight:500,color:ltvColor(pt.ltv),lineHeight:1.1}},pt.ltv+'%'),
+              h('div',{className:'mu',style:{fontSize:'.7rem'}},'bal '+gS(pt.bal)),
+              pt.ltvAdj!==pt.ltv&&h('div',{style:{fontSize:'.65rem',color:'var(--c-ok)'}},pt.ltvAdj+'% w/ 3% growth')))),
+          h('div',{className:'mu',style:{fontSize:'.7rem'}},'3% growth column is illustrative.'));
+      })(),
+
+      // Live market rates
+      band&&h('div',{style:{marginBottom:'1rem'}},
+        h('div',{style:{display:'flex',alignItems:'center',gap:'.5rem',marginBottom:'.5rem',flexWrap:'wrap'}},
+          h('div',{className:'eb'},'Market rates for your LTV ('+ltv+'%)'),
+          h('span',{style:{fontSize:'.65rem',fontWeight:700,textTransform:'uppercase',background:rateInfo.source==='BoE'?'var(--c-ok)':rateInfo.source==='cached'?'var(--c-wa)':'var(--c-s300)',color:rateInfo.source==='embedded'?'var(--c-s900)':'#fff',padding:'.15rem .5rem',borderRadius:'9999px'}},
+            rateInfo.source==='BoE'?'Live \u00b7 '+rateInfo.date:rateInfo.source==='cached'?'Cached \u00b7 '+rateInfo.age+'h ago':'Embedded \u00b7 '+rateInfo.date),
+          h('button',{className:'btn-lnk',onClick:()=>fetchLiveRates().then(r=>{if(r.ok)setRateInfo({...LIVE_RATES})})},'Refresh')),
+        h('div',{style:{background:'var(--c-p100)',border:'1px solid var(--c-p200)',borderRadius:'var(--rs)',padding:'.75rem 1rem',display:'flex',gap:'1rem',flexWrap:'wrap',marginBottom:'.375rem'}},
+          [{label:'Best 2yr fix',v:band.y2fix+'%',sub:band.lender2+' \u00b7 \u00a3'+band.fee2},
+           {label:'Best 5yr fix',v:band.y5fix+'%',sub:band.lender5+' \u00b7 \u00a3'+band.fee5},
+           {label:'Best tracker',v:band.tracker+'%',sub:band.lenderT+' \u00b7 variable'},
+           {label:'SVR (do nothing)',v:'\u223c7.13%',sub:'lender standard rate',warn:true}]
+          .map((r,i)=>h('div',{key:i},
+            h('div',{className:'eb',style:{marginBottom:'.2rem'}},r.label),
+            h('div',{style:{fontSize:'1.125rem',fontFamily:'var(--f-m)',fontWeight:500,color:r.warn?'var(--c-er)':'inherit'}},r.v),
+            h('div',{className:'mu',style:{fontSize:'.7rem'}},r.sub)))),
+        h('div',{className:'mu',style:{fontSize:'.7rem'}},'\u26a0\ufe0f Indicative only \u2014 verify with a broker. BoE base: '+rateInfo.base.toFixed(2)+'%. Spreads calibrated Apr 2026.')),
+
+      // Scenarios table — always anchored to Jan 2028 projected balance
+      h('div',{style:{marginBottom:'1rem'}},
+        h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'.375rem',flexWrap:'wrap',gap:'.5rem'}},
+          h('div',{className:'eb'},'Payment scenarios at renewal (Jan 2028)'),
+          h('label',{style:{fontSize:'.8rem',color:'var(--c-s500)',display:'flex',alignItems:'center',gap:'.35rem'}},
+            'Try a rate %',
+            h('input',{type:'number',step:'0.01',min:'0',max:'15',placeholder:'e.g. 4.25',value:s.customRate||'',
+              onChange:e=>set('customRate',e.target.value===''?0:Number(e.target.value)),
+              style:{width:80,padding:'.3rem .5rem',border:'1px solid var(--c-s200)',borderRadius:'var(--rs)',fontSize:'.85rem',fontFamily:'var(--f-m)'}}))),
+        h('table',{className:'tbl'},
+          h('thead',null,h('tr',null,h('th',{className:'eb',style:{textAlign:'left'}},'Scenario'),h('th',{className:'eb',style:{textAlign:'right'}},'New DD'),h('th',{className:'eb',style:{textAlign:'right'}},'Change'))),
+          h('tbody',null,
+            [
+              {rate:s.mortRate,label:'Current rate ('+Number(s.mortRate).toFixed(2)+'%)',current:true},
+              ...(band?[
+                {rate:band.y2fix,label:'Best 2yr fix ('+band.lender2+')',live:true},
+                {rate:band.y5fix,label:'Best 5yr fix ('+band.lender5+')',live:true},
+                {rate:band.tracker,label:'Best tracker ('+band.lenderT+')',live:true},
+                {rate:7.13,label:'SVR \u2014 do nothing',live:true}]:[]),
+              ...[3.25,3.75,4.25,4.75,5.50].map(r=>({rate:r,label:r.toFixed(2)+'% (modelled)'})),
+              ...(Number(s.customRate)>0?[{rate:Number(s.customRate),label:'Your scenario ('+Number(s.customRate).toFixed(2)+'%)',custom:true}]:[])
+            ]
+            .map((r,i)=>{const pmt=pmtFor(bAR,r.rate,termAR);const d=Math.round(pmt-s.mortPmt);
+              const bg=r.current?'var(--c-ok-bg)':r.custom?'var(--c-wa-bg)':r.live?'var(--c-p100)':'';
+              return h('tr',{key:i,style:{borderTop:'1px solid var(--c-s200)',background:bg}},
+                h('td',{className:'m',style:{padding:'.5rem',fontSize:'.8rem'}},
+                  r.current&&h('span',{style:{fontSize:'.55rem',fontWeight:700,textTransform:'uppercase',background:'var(--c-ok)',color:'#fff',padding:'.1rem .35rem',borderRadius:'9999px',marginRight:'.4rem'}},'Now'),
+                  r.live&&h('span',{style:{fontSize:'.55rem',fontWeight:700,textTransform:'uppercase',background:'var(--c-p500)',color:'#fff',padding:'.1rem .35rem',borderRadius:'9999px',marginRight:'.4rem'}},'Live'),
+                  r.custom&&h('span',{style:{fontSize:'.55rem',fontWeight:700,textTransform:'uppercase',background:'var(--c-wa)',color:'#fff',padding:'.1rem .35rem',borderRadius:'9999px',marginRight:'.4rem'}},'You'),
+                  r.label),
+                h('td',{className:'m',style:{textAlign:'right',padding:'.5rem'}},gS(pmt)),
+                h('td',{className:'m',style:{textAlign:'right',padding:'.5rem',color:d>0?'var(--c-er)':d<0?'var(--c-ok)':'var(--c-s500)'}},(d>0?'+':'')+gS(d)))})))),
+
+      // Overpayment
+      h('div',{style:{marginBottom:'1rem'}},
+        h('div',{className:'eb',style:{marginBottom:'.375rem'}},'Overpayment calculator'),
+        h('div',{style:{display:'flex',gap:'.5rem',alignItems:'center',marginBottom:'.25rem'}},
+          h('span',{style:{fontSize:'.875rem'}},'Extra per month'),
+          h(MI,{value:s.overpayAmt||0,onChange:v=>set('overpayAmt',v),cls:'inp-amt',style:{width:100},wrapCls:'mw-bare'})),
+        Number(s.overpayAmt)>0&&(()=>{
+          const pm=pmtFor(bAR,s.mortRate,termAR),iM=s.mortRate/100/12,ex=Number(s.overpayAmt);
+          let bS=bAR,bO=bAR,mS=0,mO=0;
+          while(bS>0.01){bS=Math.max(0,bS-(pm-bS*iM));mS++;}
+          while(bO>0.01){bO=Math.max(0,bO-(pm+ex-bO*iM));mO++;}
+          const saved=mS-mO,intSaved=Math.max(0,Math.round(pm*mS-bAR-((pm+ex)*mO-bAR)));
+          return h('div',{className:'overpay-result'},'Paying an extra ',h('strong',null,gS(ex)),'/month:\u00a0',h('strong',null,saved+' months sooner'),' \u00b7 saves approx. ',h('strong',null,gS(intSaved)),' interest');})())),
+
+    h(History,{currentYear:yr,currentMi:mi}),
+    h(Sec,{title:'Backup & restore',right:'JSON'},
+      h('div',{className:'mu',style:{fontSize:'.875rem',marginBottom:'.75rem'}},'Download a full snapshot of everything in your database, or restore from one. Keep the backup safe \u2014 it contains your budget data.'),
+      h(BackupRestore)),
+
+    h('footer',{style:{textAlign:'center',marginTop:'2rem',display:'flex',justifyContent:'center',gap:'1rem',flexWrap:'wrap',alignItems:'center'}},
+      h('button',{className:'btn btn-sm',onClick:reset,style:{color:'var(--c-s500)',background:'transparent'}},'Reset all to defaults'),
+      h('span',{className:'mu',style:{fontSize:'.8125rem'}},
+        h('span',{className:'tst-dot '+(TEST_RESULTS.fail===0?'tst-dot-ok':'tst-dot-fail'),'aria-label':TEST_RESULTS.fail===0?TEST_RESULTS.pass+' tests passing':TEST_RESULTS.fail+' tests failing'}),
+        TEST_RESULTS.fail===0?'All systems ok':TEST_RESULTS.fail+' tests failing'),
+      h('span',{className:'mu',style:{fontSize:'.8125rem'}},'Saves automatically')),
+
+    showUndo&&h('div',{className:'undo-toast'},
+      h('span',null,'Data reset'),
+      h('button',{onClick:undoReset},'Undo \u21a9')))
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(Gate,null,h(App)));
+
+// Register minimal service worker for offline shell caching
+if('serviceWorker' in navigator){
+  const swCode=`
+    const CACHE='bp-v1';
+    self.addEventListener('install',e=>{self.skipWaiting()});
+    self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});
+    self.addEventListener('fetch',e=>{
+      const r=e.request;
+      if(r.method!=='GET')return;
+      const u=new URL(r.url);
+      // Cache same-origin HTML/CSS/JS; let Supabase + other APIs pass through
+      if(u.origin!==location.origin)return;
+      e.respondWith(
+        caches.open(CACHE).then(cache=>
+          cache.match(r).then(hit=>{
+            const fetchP=fetch(r).then(res=>{if(res&&res.ok)cache.put(r,res.clone());return res}).catch(()=>hit);
+            return hit||fetchP;
+          })));
+    });`;
+  const blob=new Blob([swCode],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+
+</script>
+</body>
+</html>
