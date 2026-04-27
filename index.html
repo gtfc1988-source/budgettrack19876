@@ -23,53 +23,65 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 .app{max-width:1120px;margin:0 auto;padding:18px 18px 60px}
 
-/* ====== Header ====== */
+/* Header */
 .hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-.hdr h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.3px}
+.hdr h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.hdr h1 .logo{font-size:24px}
 .hdr .right{display:flex;gap:8px;align-items:center}
 .icobtn{background:var(--card);border:1px solid var(--line);width:36px;height:36px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--text);font-size:16px;padding:0}
 .icobtn:hover{background:var(--bg2)}
 .savedpill{font-size:11px;background:var(--good);color:#fff;padding:3px 8px;border-radius:8px;opacity:0;transition:opacity .3s;font-weight:600}
 .savedpill.show{opacity:1}
 
-/* ====== Tabs ====== */
-.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:4px;margin:0 0 16px;width:fit-content}
-.tabs button{padding:8px 22px;border:0;background:transparent;border-radius:8px;font-weight:600;cursor:pointer;color:var(--muted);font-size:14px;transition:all .15s}
+/* Tabs */
+.tabs{display:flex;gap:4px;background:var(--bg2);border-radius:12px;padding:4px;margin:0 0 8px;width:fit-content}
+.tabs button{padding:8px 18px;border:0;background:transparent;border-radius:8px;font-weight:600;cursor:pointer;color:var(--muted);font-size:14px;transition:all .15s;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
 .tabs button.active{background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+.tabs button .ico{font-size:15px}
+.subtabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.subtabs::-webkit-scrollbar{height:0}
+.subtabs button{padding:6px 12px;border:1px solid var(--line);background:var(--card);border-radius:20px;font-size:12px;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-weight:500;transition:all .15s;font-family:inherit}
+.subtabs button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.subtabs button:hover:not(.active){background:var(--bg2)}
 
-/* ====== Period selector ====== */
+/* Period */
 .period{display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
 .period select{padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font-size:14px;font-weight:500}
-.period .pill{background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:8px;font-size:13px;color:var(--muted)}
+.period .pill{background:var(--card);border:1px solid var(--line);padding:6px 12px;border-radius:8px;font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.magic-btn{background:linear-gradient(135deg,#8b5cf6,#0066ff);color:#fff;border:0;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;box-shadow:0 2px 8px rgba(139,92,246,.3);transition:transform .1s}
+.magic-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(139,92,246,.4)}
+.magic-btn:active{transform:translateY(0)}
 
-/* ====== Summary bar ====== */
+/* Summary */
 .summary{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;box-shadow:var(--shadow)}
 @media(max-width:640px){.summary{grid-template-columns:1fr 1fr}}
-.summary .item .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;font-weight:600}
+.summary .item .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:3px;font-weight:600;display:flex;align-items:center;gap:5px}
 .summary .item .val{font-size:22px;font-weight:700;letter-spacing:-.3px}
 .summary .item .sub{font-size:12px;color:var(--muted);margin-top:2px}
+.health{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.health.good{background:rgba(16,185,129,.12);color:var(--good)}
+.health.warn{background:rgba(245,158,11,.12);color:var(--warn)}
+.health.bad{background:rgba(239,68,68,.12);color:var(--bad)}
 
-.health{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600}
-.health.good{background:rgba(16,185,129,.1);color:var(--good)}
-.health.warn{background:rgba(245,158,11,.1);color:var(--warn)}
-.health.bad{background:rgba(239,68,68,.1);color:var(--bad)}
-
-/* ====== Insights strip ====== */
+/* Insights */
 .insights{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.ins{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:10px}
-.ins.tip{border-left-color:var(--accent)}
+.ins{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 14px;font-size:13px;display:flex;align-items:flex-start;gap:10px}
 .ins.warn{border-left-color:var(--warn);background:rgba(245,158,11,.04)}
 .ins.alert{border-left-color:var(--bad);background:rgba(239,68,68,.04)}
 .ins.good{border-left-color:var(--good);background:rgba(16,185,129,.04)}
-.ins .ico{font-size:16px}
+.ins .ico{font-size:16px;line-height:1.3;flex-shrink:0}
+.ins .body{flex:1}
+.ins .body b{font-weight:600}
+.ins .actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.ins .actions a, .ins .actions button{font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;padding:4px 10px;border-radius:6px;background:rgba(0,102,255,.08);border:0;cursor:pointer;font-family:inherit}
+.ins .actions a:hover, .ins .actions button:hover{background:rgba(0,102,255,.15)}
 
-/* ====== Pots grid ====== */
+/* Pots */
 .pots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 @media(max-width:760px){.pots{grid-template-columns:1fr}}
-.pot{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);transition:border-color .15s}
+.pot{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);transition:all .15s}
 .pot:hover{border-color:var(--muted)}
 .pot.expanded{box-shadow:var(--shadow2)}
-.pot .hdr{margin-bottom:0}
 .pot .top{display:flex;align-items:center;gap:10px;cursor:pointer}
 .pot .emoji{font-size:22px;width:32px;text-align:center}
 .pot .name{flex:1;font-weight:600;font-size:15px}
@@ -80,36 +92,38 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:
 .pot .note{color:var(--muted);font-size:13px;margin:0 0 10px;font-style:italic}
 .pot .auto-info{font-size:12px;color:var(--muted);margin-bottom:8px;padding:8px 10px;background:var(--bg2);border-radius:8px}
 .pot .actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pot .mini-bar{height:4px;background:var(--bg2);border-radius:3px;margin-top:6px;overflow:hidden}
+.pot .mini-bar > div{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
 
-.smbtn{background:transparent;border:1px solid var(--line);padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;color:var(--text);font-weight:500}
+.smbtn{background:transparent;border:1px solid var(--line);padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;color:var(--text);font-weight:500;font-family:inherit}
 .smbtn:hover{background:var(--bg2)}
 .smbtn.danger{color:var(--bad);border-color:rgba(239,68,68,.2)}
 .smbtn.danger:hover{background:rgba(239,68,68,.06)}
 .smbtn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .smbtn.primary:hover{background:var(--accent2)}
 
-/* ====== Money input ====== */
+/* Inputs */
 .mw{position:relative;display:inline-block}
 .mw::before{content:'£';position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
 .mw input{padding-left:20px}
 input,select,textarea{padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--text);font-size:14px;font-family:inherit}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
 .amt-input{width:90px;text-align:right;font-variant-numeric:tabular-nums}
-.name-input{flex:1;min-width:0}
 
-/* ====== Sub-items in list pot ====== */
+/* Sub-items */
 .items{display:flex;flex-direction:column;gap:6px}
 .item-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
 .item-row:last-child{border-bottom:0}
 .item-name{flex:1;border:0;background:transparent;padding:4px}
 .item-name:focus{background:var(--bg2);border-radius:4px}
 .item-row .del{background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px;padding:0 4px}
+.item-changes{font-size:10px;background:rgba(0,102,255,.1);color:var(--accent);padding:2px 6px;border-radius:4px;font-weight:600;cursor:help}
 .add-item{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
 
-/* ====== Bottom sections ====== */
+/* Sections */
 .section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow)}
-.section h2{margin:0 0 12px;font-size:16px;font-weight:600}
-.section h2 .sub{font-size:12px;color:var(--muted);font-weight:400;margin-left:8px}
+.section h2{margin:0 0 12px;font-size:16px;font-weight:600;display:flex;align-items:center;gap:6px}
+.section h2 .sub{font-size:12px;color:var(--muted);font-weight:400;margin-left:6px}
 
 table{width:100%;border-collapse:collapse;font-size:13px}
 table th{text-align:left;padding:8px;color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line)}
@@ -117,13 +131,13 @@ table td{padding:7px 8px;border-bottom:1px solid var(--line)}
 table tr:last-child td{border-bottom:0}
 .tabnum{font-variant-numeric:tabular-nums}
 
-/* ====== Energy view ====== */
+/* Energy */
 .en-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
 @media(max-width:760px){.en-grid{grid-template-columns:1fr}}
 .en-grid.two{grid-template-columns:1fr 1fr}
 @media(max-width:760px){.en-grid.two{grid-template-columns:1fr}}
 .en-stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
-.en-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px;font-weight:600}
+.en-stat .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px;font-weight:600;display:flex;align-items:center;gap:5px}
 .en-stat .val{font-size:22px;font-weight:700;letter-spacing:-.3px}
 .en-stat .val.sm{font-size:15px}
 .en-stat .sub{font-size:12px;color:var(--muted);margin-top:3px}
@@ -131,13 +145,15 @@ table tr:last-child td{border-bottom:0}
 .en-stat.good{border-color:var(--good);background:rgba(16,185,129,.04)}
 .en-stat.bad{border-color:var(--bad);background:rgba(239,68,68,.04)}
 
-.en-link{background:rgba(0,102,255,.06);border:1px solid rgba(0,102,255,.2);border-radius:10px;padding:10px 14px;font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.en-link{background:rgba(0,102,255,.06);border:1px solid rgba(0,102,255,.2);border-radius:10px;padding:12px 14px;font-size:13px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.en-link .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.en-link select{font-size:13px}
 
 .en-form{display:grid;grid-template-columns:130px 160px 1fr 110px;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px;box-shadow:var(--shadow)}
 @media(max-width:760px){.en-form{grid-template-columns:1fr 1fr}}
 
 .en-chart-toggle{display:inline-flex;background:var(--bg2);border-radius:8px;padding:3px;font-size:12px;margin-left:auto}
-.en-chart-toggle button{border:0;background:transparent;padding:5px 11px;border-radius:6px;cursor:pointer;color:var(--muted);font-weight:600}
+.en-chart-toggle button{border:0;background:transparent;padding:5px 11px;border-radius:6px;cursor:pointer;color:var(--muted);font-weight:600;font-family:inherit}
 .en-chart-toggle button.active{background:var(--card);color:var(--text);box-shadow:var(--shadow)}
 
 .en-legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-bottom:8px;align-items:center;flex-wrap:wrap}
@@ -148,26 +164,74 @@ table tr:last-child td{border-bottom:0}
 .en-source.manual{background:#fef3c7;color:#92400e}
 .dark .en-source.manual{background:#3d2c0a;color:#fbbf24}
 
-/* ====== Login ====== */
+/* Renewals */
+.ren-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:grid;grid-template-columns:32px 1fr auto auto;gap:12px;align-items:center;box-shadow:var(--shadow)}
+@media(max-width:640px){.ren-row{grid-template-columns:32px 1fr;grid-template-rows:auto auto}}
+.ren-row .ico{font-size:22px}
+.ren-row .name{font-weight:600;font-size:14px}
+.ren-row .meta{font-size:12px;color:var(--muted);margin-top:2px}
+.ren-row .urgency{font-size:11px;font-weight:700;padding:4px 10px;border-radius:14px;white-space:nowrap;text-align:center}
+.ren-row .urgency.alert{background:rgba(239,68,68,.12);color:var(--bad)}
+.ren-row .urgency.warn{background:rgba(245,158,11,.12);color:var(--warn)}
+.ren-row .urgency.calm{background:rgba(16,185,129,.1);color:var(--good)}
+.ren-row .urgency.past{background:rgba(0,0,0,.08);color:var(--muted)}
+.dark .ren-row .urgency.past{background:rgba(255,255,255,.08)}
+.ren-row .actions{display:flex;gap:4px}
+.ren-form{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);display:grid;grid-template-columns:140px 1fr 1fr 130px 100px 90px;gap:8px;margin-bottom:14px;align-items:end}
+@media(max-width:760px){.ren-form{grid-template-columns:1fr 1fr}}
+
+/* Goals */
+.goal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.goal .gh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.goal .gname{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px}
+.goal .gnums{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.goal .gnums b{color:var(--text);font-weight:700}
+.goal .bar{height:8px;background:var(--bg2);border-radius:6px;overflow:hidden;margin:6px 0}
+.goal .bar > div{height:100%;background:var(--accent);border-radius:6px;transition:width .3s}
+.goal .bar > div.good{background:var(--good)}
+.goal .gmeta{font-size:12px;color:var(--muted);margin-top:6px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* Mortgage */
+.scen-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:760px){.scen-grid{grid-template-columns:1fr}}
+.scen{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow)}
+.scen h3{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.scen .big{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.scen .delta{font-size:13px;color:var(--good);margin-top:3px;font-weight:600}
+.scen .delta.bad{color:var(--bad)}
+
+/* Confirm modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;animation:fadein .15s}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.modal{background:var(--card);border-radius:14px;padding:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h3{margin:0 0 8px;font-size:18px;display:flex;align-items:center;gap:8px}
+.modal p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.5}
+.modal .preview{background:var(--bg2);border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:13px;max-height:200px;overflow-y:auto}
+.modal .preview .row{display:flex;justify-content:space-between;padding:3px 0;font-variant-numeric:tabular-nums}
+.modal .actions{display:flex;gap:8px;justify-content:flex-end}
+.modal .actions button{padding:8px 16px;border-radius:8px;border:0;font-weight:600;cursor:pointer;font-size:14px;font-family:inherit}
+.modal .actions .cancel{background:var(--bg2);color:var(--text)}
+.modal .actions .confirm{background:var(--accent);color:#fff}
+.modal .actions .confirm.danger{background:var(--bad)}
+
+/* Login */
 .login-bg{position:fixed;inset:0;background:linear-gradient(135deg,#0066ff 0%,#0044cc 100%);display:flex;align-items:center;justify-content:center;padding:20px}
 .login-card{background:var(--card);border-radius:18px;padding:32px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
 .login-card h1{margin:0 0 6px;font-size:24px;color:var(--text)}
 .login-card p{margin:0 0 20px;color:var(--muted);font-size:14px}
 .login-card input{width:100%;padding:12px;font-size:15px;margin-bottom:12px}
-.login-card button{width:100%;padding:12px;background:#0066ff;color:#fff;border:0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.login-card button{width:100%;padding:12px;background:#0066ff;color:#fff;border:0;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
 .login-error{color:var(--bad);font-size:13px;margin-top:8px}
 
-/* ====== Misc ====== */
+/* Misc */
 .muted{color:var(--muted)}
 .row{display:flex;gap:8px;align-items:center}
 .spaced{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.danger{color:var(--bad)}
-.success{color:var(--good)}
 hr.sep{border:0;border-top:1px solid var(--line);margin:14px 0}
-
-/* checker box */
 .checker{background:var(--bg2);border-radius:10px;padding:12px;margin-top:10px}
 .checker .out{margin-top:10px;font-size:13px}
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}
+.empty .big{font-size:28px;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -209,10 +273,10 @@ const gS = n => { const v = n||0; return Number.isInteger(v) ? '£'+v.toLocaleSt
 const newId = () => Math.random().toString(36).slice(2,9);
 const fmtDate = d => new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
 const fmtShort = d => new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-const fmtMon = d => new Date(d).toLocaleDateString('en-GB',{month:'short',year:'2-digit'});
+const fmtMon = d => new Date(d).toLocaleDateString('en-GB',{month:'short',year:'numeric'});
 const dDay = (a,b) => Math.round((new Date(b)-new Date(a))/86400000);
 
-/* ============ UK BANK HOLIDAYS (through 2028) ============ */
+/* ============ BANK HOLIDAYS ============ */
 const BANK_HOLS = new Set([
   '2025-01-01','2025-04-18','2025-04-21','2025-05-05','2025-05-26','2025-08-25','2025-12-25','2025-12-26',
   '2026-01-01','2026-04-03','2026-04-06','2026-05-04','2026-05-25','2026-08-31','2026-12-25','2026-12-28',
@@ -221,15 +285,11 @@ const BANK_HOLS = new Set([
 ]);
 function isWorking(d){ const dow = d.getDay(); if(dow===0||dow===6) return false; return !BANK_HOLS.has(d.toISOString().slice(0,10)); }
 function paydayFor(year, monthIdx){
-  // Last working day on/before the 21st
   let d = new Date(year, monthIdx, 21);
   while(!isWorking(d)){ d.setDate(d.getDate()-1); }
   return d;
 }
-function nextPayday(d){
-  // payday is the period start. Next payday = same logic for next month.
-  return paydayFor(d.getFullYear(), d.getMonth()+1);
-}
+function nextPayday(d){ return paydayFor(d.getFullYear(), d.getMonth()+1); }
 function countDow(start, end, dow){
   let n = 0; const cur = new Date(start);
   while(cur < end){ if(cur.getDay()===dow) n++; cur.setDate(cur.getDate()+1); }
@@ -238,12 +298,8 @@ function countDow(start, end, dow){
 
 /* ============ DEFAULTS ============ */
 const DEFAULT_SETTINGS = {
-  income: 3149.40,
-  shopRate: 140,
-  friRate: 9,
-  mortBalance: 275888,
-  mortRate: 3.49,
-  mortPmt: 1229
+  income: 3149.40, shopRate: 140, friRate: 9,
+  mortBalance: 275888, mortRate: 3.49, mortPmt: 1229
 };
 
 const DEFAULT_POTS = [
@@ -273,65 +329,95 @@ const DEFAULT_POTS = [
   { id:'pot-misc', name:'Miscellaneous', emoji:'\ud83d\udce6', kind:'fixed', amount:100 },
   { id:'pot-car', name:'Car maintenance', emoji:'\ud83d\udd27', kind:'fixed', amount:0 },
   { id:'pot-house', name:'House maintenance', emoji:'\ud83d\udd28', kind:'fixed', amount:0 },
-  { id:'pot-lauren', name:"Lauren's 40th", emoji:'\ud83c\udf82', kind:'fixed', amount:0 },
+  { id:'pot-lauren', name:"Lauren's 40th", emoji:'\ud83c\udf82', kind:'fixed', amount:0, isGoal:true, goalTarget:1500, goalDate:'2027-07-15' },
   { id:'pot-bdays', name:'Family birthdays', emoji:'\ud83c\udf81', kind:'auto-birthdays' },
   { id:'pot-cal', name:'Calendar costs', emoji:'\ud83d\udcc5', kind:'auto-annual' }
 ];
 
+// Pay months are 0-indexed. Affected pay month in spec = month before the spend month
 const DEFAULT_ANNUAL = [
-  { id:newId(), pay_month:0, name:'Car insurance annual', amount:480 },
-  { id:newId(), pay_month:1, name:"Mum's Mother\u2019s Day", amount:40 },
-  { id:newId(), pay_month:2, name:'Easter', amount:80 },
-  { id:newId(), pay_month:3, name:'Holiday deposit', amount:300 },
-  { id:newId(), pay_month:4, name:"Father's Day", amount:40 },
-  { id:newId(), pay_month:4, name:'Anniversary', amount:100 },
-  { id:newId(), pay_month:5, name:'Holiday balance', amount:600 },
-  { id:newId(), pay_month:5, name:'Amazon Prime', amount:95 },
-  { id:newId(), pay_month:6, name:'School uniforms', amount:150 },
-  { id:newId(), pay_month:7, name:'Home insurance', amount:280 },
-  { id:newId(), pay_month:7, name:'Boiler service', amount:120 },
-  { id:newId(), pay_month:8, name:'Car MOT & service', amount:350 },
-  { id:newId(), pay_month:9, name:'Halloween', amount:40 },
-  { id:newId(), pay_month:9, name:'Christmas presents (start)', amount:200 },
-  { id:newId(), pay_month:10, name:'Christmas presents (final)', amount:300 },
-  { id:newId(), pay_month:10, name:'Christmas food', amount:150 }
+  { id:newId(), pay_month:11, name:'White car service', amount:200 },         // Jan spend, Dec pay
+  { id:newId(), pay_month:0,  name:'Ring Doorbell annual', amount:50 },        // Feb spend, Jan pay
+  { id:newId(), pay_month:1,  name:'Blue car service & MOT', amount:180 },     // Mar spend, Feb pay
+  { id:newId(), pay_month:1,  name:'Garden Waste bin', amount:42 },            // Mar spend, Feb pay
+  { id:newId(), pay_month:2,  name:'White car MOT', amount:45 },               // Apr spend, Mar pay
+  { id:newId(), pay_month:2,  name:'House Insurance (Esure)', amount:120 },    // Apr spend, Mar pay
+  { id:newId(), pay_month:3,  name:'Alarm Service (Phil Kennedy)', amount:80 }, // Apr spend, Apr pay
+  { id:newId(), pay_month:4,  name:'House estate maintenance', amount:250 },   // May spend
+  { id:newId(), pay_month:4,  name:'Chimney Sweep (Nik)', amount:75 },         // Jun spend, May pay
+  { id:newId(), pay_month:5,  name:'Amazon Prime', amount:95 },                // Jul spend, Jun pay
+  { id:newId(), pay_month:5,  name:'Car Insurance (RAC)', amount:230 },        // Jul spend, Jun pay
+  { id:newId(), pay_month:5,  name:'Car tax (white & blue)', amount:210 },     // Jul spend, Jun pay
+  { id:newId(), pay_month:6,  name:'Fire Stick', amount:65 },                  // Aug spend, Jul pay
+  { id:newId(), pay_month:7,  name:'Car breakdown (AutoAid)', amount:70 }      // Sep spend, Aug pay
 ];
 
 const DEFAULT_BIRTHDAYS = [
-  { id:newId(), name:'Lauren', day:15, month:7, amount:200 },
-  { id:newId(), name:'Sam', day:10, month:3, amount:100 },
-  { id:newId(), name:'Theo', day:5, month:6, amount:60 },
-  { id:newId(), name:'Mum', day:20, month:4, amount:50 },
-  { id:newId(), name:'Dad', day:11, month:9, amount:50 },
-  { id:newId(), name:'Mum-in-law', day:8, month:2, amount:40 },
-  { id:newId(), name:'Dad-in-law', day:14, month:11, amount:40 },
-  { id:newId(), name:'Sister', day:22, month:5, amount:40 },
-  { id:newId(), name:'Brother', day:3, month:8, amount:40 },
-  { id:newId(), name:'Niece', day:18, month:1, amount:25 },
-  { id:newId(), name:'Nephew', day:9, month:10, amount:25 },
-  { id:newId(), name:'Friend 1', day:12, month:5, amount:30 },
-  { id:newId(), name:'Friend 2', day:25, month:8, amount:30 }
+  { id:newId(), name:'Theo',    day:15, month:1,  amount:40 },
+  { id:newId(), name:'Lauren',  day:20, month:1,  amount:80 },
+  { id:newId(), name:'Dad',     day:15, month:7,  amount:40 },
+  { id:newId(), name:'Penny',   day:31, month:7,  amount:40 },
+  { id:newId(), name:'George',  day:8,  month:8,  amount:100 },
+  { id:newId(), name:'William', day:8,  month:9,  amount:40 },
+  { id:newId(), name:'Emilie',  day:11, month:10, amount:100 },
+  { id:newId(), name:'Evy',     day:31, month:10, amount:40 },
+  { id:newId(), name:'Mum',     day:7,  month:11, amount:40 },
+  { id:newId(), name:'Elisha',  day:19, month:11, amount:40 },
+  { id:newId(), name:'Hayden',  day:23, month:11, amount:40 },
+  { id:newId(), name:'Scott',   day:24, month:12, amount:40 },
+  { id:newId(), name:'James',   day:31, month:12, amount:40 }
 ];
 
-/* ============ ENERGY DEFAULTS ============ */
 const DEFAULT_TARIFF = {
-  name: 'EDF Exclusive Jul27v2',
-  endDate: '2027-08-01',
-  paymentMethod: 'Direct Debit (Fixed)',
-  exitFeeTotal: 100,
+  name: 'EDF Exclusive Jul27v2', endDate: '2027-08-01',
+  paymentMethod: 'Direct Debit (Fixed)', exitFeeTotal: 100,
   elec: { unitRate: 20.68, standingCharge: 64.39, exitFee: 50 },
   gas:  { unitRate: 6.21,  standingCharge: 29.18, exitFee: 50 }
 };
 
 const DEFAULT_EN_ACCOUNT = {
-  balance: -48.56,
-  monthlyDD: 127.09,
-  ddDay: 22,
-  lastBillDate: '2026-04-15'
+  balance: -48.56, monthlyDD: 127.09, ddDay: 22, lastBillDate: '2026-04-15'
 };
 
+// Recent (May 2025 - Apr 2026) + historic (Jun 2023 - Dec 2023)
 const DEFAULT_READINGS = [
-  // Electricity (newest first in input — stored same way)
+  // Historic 2023 - electricity
+  {id:'eh01',type:'elec',date:'2023-06-20',value:6766,source:'manual'},
+  {id:'eh02',type:'elec',date:'2023-06-30',value:6853,source:'manual'},
+  {id:'eh03',type:'elec',date:'2023-07-01',value:6855,source:'manual'},
+  {id:'eh04',type:'elec',date:'2023-07-13',value:6953,source:'manual'},
+  {id:'eh05',type:'elec',date:'2023-07-20',value:7007,source:'manual'},
+  {id:'eh06',type:'elec',date:'2023-07-27',value:7063,source:'manual'},
+  {id:'eh07',type:'elec',date:'2023-08-04',value:7130,source:'manual'},
+  {id:'eh08',type:'elec',date:'2023-08-16',value:7192,source:'manual'},
+  {id:'eh09',type:'elec',date:'2023-08-20',value:7225,source:'manual'},
+  {id:'eh10',type:'elec',date:'2023-08-25',value:7272,source:'manual'},
+  {id:'eh11',type:'elec',date:'2023-09-17',value:7463,source:'manual'},
+  {id:'eh12',type:'elec',date:'2023-09-20',value:7481,source:'manual'},
+  {id:'eh13',type:'elec',date:'2023-10-01',value:7574,source:'manual'},
+  {id:'eh14',type:'elec',date:'2023-10-05',value:7611,source:'manual'},
+  {id:'eh15',type:'elec',date:'2023-10-20',value:7727,source:'manual'},
+  {id:'eh16',type:'elec',date:'2023-11-02',value:7827,source:'manual'},
+  {id:'eh17',type:'elec',date:'2023-12-07',value:8143,source:'manual'},
+  // Historic 2023 - gas
+  {id:'gh01',type:'gas',date:'2023-06-20',value:2364,source:'manual'},
+  {id:'gh02',type:'gas',date:'2023-06-30',value:2386,source:'manual'},
+  {id:'gh03',type:'gas',date:'2023-07-01',value:2406,source:'manual'},
+  {id:'gh04',type:'gas',date:'2023-07-13',value:2444,source:'manual'},
+  {id:'gh05',type:'gas',date:'2023-07-20',value:2458,source:'manual'},
+  {id:'gh06',type:'gas',date:'2023-07-27',value:2470,source:'manual'},
+  {id:'gh07',type:'gas',date:'2023-08-04',value:2471,source:'manual'},
+  {id:'gh08',type:'gas',date:'2023-08-16',value:2485,source:'manual'},
+  {id:'gh09',type:'gas',date:'2023-08-20',value:2493,source:'manual'},
+  {id:'gh10',type:'gas',date:'2023-08-25',value:2503,source:'manual'},
+  {id:'gh11',type:'gas',date:'2023-09-17',value:2512,source:'manual'},
+  {id:'gh12',type:'gas',date:'2023-09-20',value:2522,source:'manual'},
+  {id:'gh13',type:'gas',date:'2023-10-01',value:2531,source:'manual'},
+  {id:'gh14',type:'gas',date:'2023-10-05',value:2557,source:'manual'},
+  {id:'gh15',type:'gas',date:'2023-10-20',value:2572,source:'manual'},
+  {id:'gh16',type:'gas',date:'2023-11-02',value:2578,source:'manual'},
+  {id:'gh17',type:'gas',date:'2023-12-07',value:2769,source:'manual'},
+  // Recent - electricity
   {id:'er01',type:'elec',date:'2026-04-14',value:16374,source:'smart'},
   {id:'er02',type:'elec',date:'2026-04-01',value:16239,source:'smart'},
   {id:'er03',type:'elec',date:'2026-03-14',value:16048,source:'smart'},
@@ -352,7 +438,7 @@ const DEFAULT_READINGS = [
   {id:'er18',type:'elec',date:'2025-07-14',value:13452,source:'smart'},
   {id:'er19',type:'elec',date:'2025-06-14',value:13173,source:'smart'},
   {id:'er20',type:'elec',date:'2025-05-14',value:12911,source:'smart'},
-  // Gas
+  // Recent - gas
   {id:'gr01',type:'gas',date:'2026-04-14',value:814,source:'smart'},
   {id:'gr02',type:'gas',date:'2026-04-01',value:789,source:'smart'},
   {id:'gr03',type:'gas',date:'2026-03-14',value:737,source:'smart'},
@@ -375,22 +461,62 @@ const DEFAULT_READINGS = [
   {id:'gr20',type:'gas',date:'2025-05-14',value:7,source:'smart'}
 ];
 
-const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DEFAULT_RENEWALS = [
+  { id:newId(), type:'insurance', name:'Car insurance (RAC)', provider:'RAC', endDate:'2027-07-01', monthlyCost:55, annualCost:230, exitFee:0, notes:'' },
+  { id:newId(), type:'insurance', name:'Home insurance (Esure)', provider:'Esure', endDate:'2027-04-30', monthlyCost:25, annualCost:120, exitFee:0, notes:'' },
+  { id:newId(), type:'broadband', name:'Internet/Broadband', provider:'TBD', endDate:'2027-03-01', monthlyCost:35, annualCost:420, exitFee:0, notes:'' },
+  { id:newId(), type:'mobile', name:'Mobile phones', provider:'TBD', endDate:'2026-12-01', monthlyCost:40, annualCost:480, exitFee:0, notes:'' }
+];
 
-/* ============ POT AMOUNT CALCULATION ============ */
+const RENEWAL_ICONS = { energy:'\u26a1', insurance:'\ud83d\udee1\ufe0f', broadband:'\ud83c\udf10', mobile:'\ud83d\udcf1', other:'\ud83d\udcc4' };
+const RENEWAL_TYPES = [
+  { id:'insurance', label:'Insurance' },
+  { id:'broadband', label:'Broadband / Internet' },
+  { id:'mobile', label:'Mobile / Phone' },
+  { id:'energy', label:'Energy' },
+  { id:'other', label:'Other' }
+];
+const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SUB_PATTERNS = /netflix|disney|spotify|prime|apple|youtube|hbo|paramount|hulu|audible|kindle|adobe|patreon|substack|github|notion|dropbox|icloud|google one|nintendo|playstation|xbox|gamepass|tv license|fire stick|firestick|subscription/i;
+// MSE energy comparison link
+const MSE_ENERGY_URL = 'https://www.moneysavingexpert.com/utilities/cheap-energy-deals/';
+
+/* ============ EFFECTIVE-AMOUNT HELPERS ============ */
+function itemEffectiveAmount(item, year, monthIdx){
+  if(!item.changes || item.changes.length === 0) return +item.amount || 0;
+  const period = new Date(year, monthIdx, 1);
+  const past = item.changes.filter(c => new Date(c.effectiveFrom) <= period);
+  if(past.length === 0) return +item.amount || 0;
+  past.sort((a,b) => new Date(b.effectiveFrom) - new Date(a.effectiveFrom));
+  return +past[0].amount || 0;
+}
+function updateItemAmountForPeriod(item, year, monthIdx, newAmount){
+  if(!item.changes || item.changes.length === 0) return { ...item, amount: newAmount };
+  const period = new Date(year, monthIdx, 1);
+  const past = item.changes.filter(c => new Date(c.effectiveFrom) <= period);
+  if(past.length === 0) return { ...item, amount: newAmount };
+  past.sort((a,b) => new Date(b.effectiveFrom) - new Date(a.effectiveFrom));
+  const activeId = past[0].id;
+  return { ...item, changes: item.changes.map(c => c.id === activeId ? { ...c, amount: newAmount } : c) };
+}
+function scheduleItemChange(item, effectiveFrom, newAmount, note){
+  const changes = (item.changes || []).filter(c => c.effectiveFrom !== effectiveFrom);
+  changes.push({ id:newId(), effectiveFrom, amount:newAmount, note });
+  return { ...item, changes };
+}
+
+/* ============ POT AMOUNT ============ */
 function potAmount(pot, ctx){
   switch(pot.kind){
-    case 'list': return (pot.items||[]).reduce((s,i)=>s+(+i.amount||0), 0);
+    case 'list': return (pot.items||[]).reduce((s,i)=>s + itemEffectiveAmount(i, ctx.payday.getFullYear(), ctx.payday.getMonth()), 0);
     case 'fixed': return +pot.amount || 0;
     case 'auto-shopping': return ctx.weekends * (ctx.settings.shopRate||0);
     case 'auto-afterschool': return ctx.fridays * (ctx.settings.friRate||0);
     case 'auto-birthdays': {
-      // Birthdays in window [payday+7, nextPayday+7), one pay-cycle ahead
       const start = new Date(ctx.payday); start.setDate(start.getDate()+7);
       const end = new Date(ctx.nextPayday); end.setDate(end.getDate()+7);
       return ctx.birthdays.reduce((s,b)=>{
         const yr = start.getFullYear();
-        // Check both this year and next, in case window crosses year boundary
         for(const y of [yr, yr+1]){
           const bd = new Date(y, (b.month||1)-1, b.day||1);
           if(bd >= start && bd < end) return s + (+b.amount||0);
@@ -398,31 +524,26 @@ function potAmount(pot, ctx){
         return s;
       }, 0);
     }
-    case 'auto-annual': {
-      // Sum of events whose pay_month matches the period's pay-month
+    case 'auto-annual':
       return ctx.annual.filter(e => e.pay_month === ctx.payday.getMonth())
                        .reduce((s,e)=>s+(+e.amount||0), 0);
-    }
     default: return 0;
   }
 }
 
-/* ============ PERIOD CONTEXT ============ */
 function buildPeriodCtx({ year, monthIdx, settings, birthdays, annual }){
   const payday = paydayFor(year, monthIdx);
   const np = nextPayday(payday);
   return {
     payday, nextPayday: np,
-    weekends: countDow(payday, np, 6), // Saturdays
+    weekends: countDow(payday, np, 6),
     fridays: countDow(payday, np, 5),
     settings, birthdays, annual
   };
 }
 
 /* ============ ENERGY HELPERS ============ */
-function periodCost(usage, days, unitRate, standingCharge){
-  return (usage*unitRate + days*standingCharge)/100;
-}
+function periodCost(usage, days, unitRate, standingCharge){ return (usage*unitRate + days*standingCharge)/100; }
 
 function buildMonthlyCostSeries(readings, tariff){
   const out = { elec: [], gas: [] };
@@ -436,8 +557,11 @@ function buildMonthlyCostSeries(readings, tariff){
     const months = Object.keys(byMonth).sort();
     for(let i=1;i<months.length;i++){
       const a = byMonth[months[i-1]], b = byMonth[months[i]];
+      // Skip if gap between months is huge (e.g. 2023->2025 historic gap)
+      const gap = dDay(a.date, b.date);
+      if(gap > 100) continue;
       const usage = b.value - a.value;
-      const days = dDay(a.date, b.date);
+      const days = gap;
       const t = tariff[type];
       const cost = periodCost(usage, days, t.unitRate, t.standingCharge);
       out[type].push({ x: b.date, y: cost, usage, days });
@@ -462,7 +586,6 @@ function computeEnergyInsights(readings, tariff, account){
     const rs = readings.filter(r=>r.type===type).sort((a,b)=>new Date(a.date)-new Date(b.date));
     if(rs.length<2) return;
     const latest = rs[rs.length-1];
-    // Find ~30 days prior (closest reading <= latest-30d)
     const target = new Date(latest.date); target.setDate(target.getDate()-30);
     let prior = rs[0];
     for(const r of rs){ if(new Date(r.date)<=target) prior=r; else break; }
@@ -480,7 +603,6 @@ function computeEnergyInsights(readings, tariff, account){
     }
     let yoyChange = null, yoyUsage30 = null;
     if(yoyA && Math.abs(dDay(yoyA.date,yoyDate))<25){
-      // Find a reading ~30 days after yoyA
       const yoyTarget = new Date(yoyA.date); yoyTarget.setDate(yoyTarget.getDate()+30);
       let yoyB = null;
       for(const r of rs){
@@ -494,9 +616,29 @@ function computeEnergyInsights(readings, tariff, account){
         yoyChange = ((dailyKwh*30 - yoyUsage30) / yoyUsage30) * 100;
       }
     }
-    // Days since last reading
+    // 2yr-ago comparison (e.g. 2023 historic)
+    const twoYrDate = new Date(latest.date); twoYrDate.setFullYear(twoYrDate.getFullYear()-2);
+    let twoYrA = null;
+    for(const r of rs){
+      if(!twoYrA || Math.abs(dDay(r.date,twoYrDate)) < Math.abs(dDay(twoYrA.date,twoYrDate))) twoYrA = r;
+    }
+    let twoYrChange = null;
+    if(twoYrA && Math.abs(dDay(twoYrA.date,twoYrDate))<60){
+      const twoTarget = new Date(twoYrA.date); twoTarget.setDate(twoTarget.getDate()+30);
+      let twoYrB = null;
+      for(const r of rs){
+        if(new Date(r.date) <= new Date(twoYrA.date)) continue;
+        if(!twoYrB || Math.abs(dDay(r.date,twoTarget)) < Math.abs(dDay(twoYrB.date,twoTarget))) twoYrB = r;
+      }
+      if(twoYrB && Math.abs(dDay(twoYrB.date,twoTarget))<25){
+        const tU = twoYrB.value - twoYrA.value;
+        const tD = Math.max(1, dDay(twoYrA.date, twoYrB.date));
+        const twoYrUsage30 = (tU/tD)*30;
+        twoYrChange = ((dailyKwh*30 - twoYrUsage30) / twoYrUsage30) * 100;
+      }
+    }
     const daysSinceLast = dDay(latest.date, today);
-    out[type] = { latest, prior, dailyKwh, monthCost, usage30, days30, yoyChange, yoyUsage30, daysSinceLast };
+    out[type] = { latest, prior, dailyKwh, monthCost, usage30, days30, yoyChange, yoyUsage30, twoYrChange, daysSinceLast };
   });
   const totalMonthly = (out.elec.monthCost||0)+(out.gas.monthCost||0);
   const ddDelta = account.monthlyDD - totalMonthly;
@@ -505,36 +647,72 @@ function computeEnergyInsights(readings, tariff, account){
   return { ...out, totalMonthly, ddDelta, daysToEnd, endDate };
 }
 
-function buildEnergyInsightsList(insights, tariff, account, readings, billsPot, energyItem){
+// Suggested DD = (annual cost + 1mo buffer + clear current debit) / 12
+function suggestedDD(insights, account){
+  if(insights.totalMonthly <= 0) return null;
+  const annual = insights.totalMonthly * 12;
+  const buffer = insights.totalMonthly; // 1 month buffer
+  const debitToClear = account.balance < 0 ? Math.abs(account.balance) : 0;
+  const credit = account.balance > 0 ? account.balance : 0;
+  // round to nearest pound
+  const total = annual + buffer + debitToClear - credit;
+  return Math.max(0, Math.round(total / 12));
+}
+
+function buildEnergyInsightsList(insights, tariff, account, energyItem, marketScan){
   const list = [];
   const today = new Date();
-  const month = today.getMonth(); // 0=Jan
+  const month = today.getMonth();
+
   // 1. Tariff end reminder
   if(insights.daysToEnd != null){
     if(insights.daysToEnd < 0){
-      list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Your tariff ended ${Math.abs(insights.daysToEnd)} days ago — you may be on a default rate. Compare deals now.` });
+      list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Your tariff ended ${Math.abs(insights.daysToEnd)} days ago — you may be on a default rate.`, actions:[{label:'Compare on MSE',url:MSE_ENERGY_URL}] });
     } else if(insights.daysToEnd < 30){
-      list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Tariff ends in ${insights.daysToEnd} days. Switch now to avoid the standard variable rate.` });
+      list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Tariff ends in ${insights.daysToEnd} days. Switch now to avoid the standard variable rate.`, actions:[{label:'Compare on MSE',url:MSE_ENERGY_URL}] });
     } else if(insights.daysToEnd < 90){
-      list.push({ type:'warn', ico:'\u23f0', text:`Tariff ends in ${insights.daysToEnd} days. Start comparing deals — switching can take 2 weeks.` });
+      list.push({ type:'warn', ico:'\u23f0', text:`Tariff ends in ${insights.daysToEnd} days. Start comparing — switching can take 2 weeks.`, actions:[{label:'Compare on MSE',url:MSE_ENERGY_URL}] });
     } else {
-      list.push({ type:'tip', ico:'\ud83d\udcc5', text:`Tariff ends ${fmtDate(tariff.endDate)} — ${insights.daysToEnd} days away. Plenty of time, but worth keeping an eye on rates.` });
+      list.push({ type:'tip', ico:'\ud83d\udcc5', text:`Tariff ends ${fmtDate(tariff.endDate)} — ${insights.daysToEnd} days away.` });
     }
   }
-  // 2. DD vs projected
+
+  // 2. Market scan
+  if(marketScan && marketScan.checked){
+    if(marketScan.cheaperFound){
+      list.push({
+        type:'good',
+        ico:'\ud83d\udcb1',
+        text:`Market scan: cheaper deals may be available. MSE's Cheap Energy Club is currently showing fixed rates worth checking.`,
+        actions:[{label:'Open MSE Energy Club',url:MSE_ENERGY_URL}]
+      });
+    } else {
+      list.push({ type:'tip', ico:'\ud83d\udd0d', text:`Last market scan ${marketScan.daysAgo === 0 ? 'today' : marketScan.daysAgo + ' days ago'}: your tariff still looks competitive vs MSE's listed deals.` });
+    }
+  }
+
+  // 3. DD vs projected with concrete suggestion
   if(insights.totalMonthly > 0){
     const delta = insights.ddDelta;
+    const sugg = suggestedDD(insights, account);
     if(delta < -15){
-      list.push({ type:'warn', ico:'\ud83d\udcb0', text:`Your DD of ${g2(account.monthlyDD)} is ~${g2(Math.abs(delta))} short of projected monthly cost (${g2(insights.totalMonthly)}). Debit balance is likely to grow.` });
+      list.push({ type:'warn', ico:'\ud83d\udcb0', text:`DD of ${g2(account.monthlyDD)} is ~${g2(Math.abs(delta))} below projected cost (${g2(insights.totalMonthly)}). Consider increasing to ${g2(sugg)} to stay in credit.` });
     } else if(delta < -5){
-      list.push({ type:'tip', ico:'\ud83d\udcb0', text:`DD is ${g2(Math.abs(delta))}/mo below projected use — fine for now, but worth reviewing in winter.` });
-    } else if(delta > 25){
-      list.push({ type:'good', ico:'\ud83d\udcb0', text:`DD is ${g2(delta)}/mo above projected use — you'll build credit. Could request a DD reduction with EDF.` });
+      list.push({ type:'tip', ico:'\ud83d\udcb0', text:`DD is ${g2(Math.abs(delta))}/mo below projected use. Worth reviewing in winter.` });
+    } else if(delta > 25 && sugg !== null){
+      const saving = account.monthlyDD - sugg;
+      list.push({
+        type:'good',
+        ico:'\ud83d\udcb0',
+        text:`DD is ${g2(delta)}/mo above projected use. Suggest reducing to ${g2(sugg)}/mo (saves ${g2(saving)}/mo, ~${g0(saving*12)}/yr). Covers annual usage + 1mo buffer + clears current ${account.balance<0?'debit':'credit adjustment'}.`,
+        actions:[{label:'Apply suggestion',action:'applyDDSuggestion',value:sugg}]
+      });
     } else {
-      list.push({ type:'good', ico:'\u2705', text:`DD of ${g2(account.monthlyDD)} closely matches projected monthly cost (${g2(insights.totalMonthly)}). Well-pitched.` });
+      list.push({ type:'good', ico:'\u2705', text:`DD of ${g2(account.monthlyDD)} closely matches projected cost (${g2(insights.totalMonthly)}). Well-pitched.` });
     }
   }
-  // 3. Account balance context
+
+  // 4. Account balance context
   if(account.balance < -50){
     list.push({ type:'warn', ico:'\ud83d\udcc9', text:`Account is ${g2(Math.abs(account.balance))} in debit. Normal after winter — should clear by ~August at current DD.` });
   } else if(account.balance < 0 && month >= 3 && month <= 8){
@@ -542,49 +720,54 @@ function buildEnergyInsightsList(insights, tariff, account, readings, billsPot, 
   } else if(account.balance > 100){
     list.push({ type:'good', ico:'\ud83d\udcc8', text:`${g2(account.balance)} in credit — useful buffer ahead of winter.` });
   }
-  // 4. YoY changes
+
+  // 5. YoY changes
   ['elec','gas'].forEach(type=>{
     const ins = insights[type];
-    if(ins.yoyChange == null) return;
     const label = type==='elec' ? 'Electricity' : 'Gas';
-    const pct = Math.abs(ins.yoyChange).toFixed(0);
-    if(ins.yoyChange > 25){
-      list.push({ type:'warn', ico:'\u26a1', text:`${label} usage is up ${pct}% vs the same period last year. Check for new appliances or heating tweaks.` });
-    } else if(ins.yoyChange < -15){
-      list.push({ type:'good', ico:'\u26a1', text:`${label} usage is down ${pct}% vs last year — efficiency gains paying off.` });
+    if(ins.yoyChange != null){
+      const pct = Math.abs(ins.yoyChange).toFixed(0);
+      if(ins.yoyChange > 25){
+        list.push({ type:'warn', ico:'\u26a1', text:`${label} usage up ${pct}% vs same period last year.` });
+      } else if(ins.yoyChange < -15){
+        list.push({ type:'good', ico:'\u26a1', text:`${label} usage down ${pct}% vs last year — efficiency gains paying off.` });
+      }
+    }
+    if(ins.twoYrChange != null && Math.abs(ins.twoYrChange) > 30){
+      const pct = Math.abs(ins.twoYrChange).toFixed(0);
+      list.push({
+        type: ins.twoYrChange > 0 ? 'tip' : 'good',
+        ico:'\ud83d\udcca',
+        text:`${label} usage is ${ins.twoYrChange > 0 ? 'up' : 'down'} ${pct}% vs 2 years ago (2023).`
+      });
     }
   });
-  // 5. Reading recency
+
+  // 6. Reading recency
   ['elec','gas'].forEach(type=>{
     const ins = insights[type];
     if(ins.empty) return;
     if(ins.daysSinceLast > 21){
-      list.push({ type:'tip', ico:'\ud83d\udcca', text:`Last ${type==='elec'?'electricity':'gas'} reading was ${ins.daysSinceLast} days ago. A fresh reading would sharpen these insights.` });
+      list.push({ type:'tip', ico:'\ud83d\udcca', text:`Last ${type==='elec'?'electricity':'gas'} reading was ${ins.daysSinceLast} days ago. A fresh reading sharpens these insights.` });
     }
   });
-  // 6. Seasonal context
-  const elecCost = (insights.elec && insights.elec.monthCost) || 0;
-  const gasCost = (insights.gas && insights.gas.monthCost) || 0;
+
+  // 7. Seasonal context
   if(month >= 9 || month <= 1){
-    // Oct-Feb: heading into / in winter
-    list.push({ type:'tip', ico:'\u2744\ufe0f', text:`Winter usage typically runs ~50–80% higher than summer. Expect projected costs to climb until February.` });
+    list.push({ type:'tip', ico:'\u2744\ufe0f', text:`Winter usage typically runs 50–80% higher than summer.` });
   } else if(month >= 2 && month <= 4){
-    // Mar-May: spring, costs falling
+    const gasCost = (insights.gas && insights.gas.monthCost) || 0;
     if(gasCost > 30){
-      list.push({ type:'good', ico:'\ud83c\udf38', text:`Heading into lower-usage months. Gas use should drop sharply over the next 2–3 months as heating goes off.` });
+      list.push({ type:'good', ico:'\ud83c\udf38', text:`Heading into lower-usage months. Gas use should drop sharply over the next 2–3 months.` });
     }
   } else if(month >= 5 && month <= 8){
-    // Jun-Sep: summer
-    list.push({ type:'tip', ico:'\u2600\ufe0f', text:`Summer is the cheapest period — good time to check in. Building credit now helps absorb winter spikes.` });
+    list.push({ type:'tip', ico:'\u2600\ufe0f', text:`Summer is the cheapest period. Building credit now helps absorb winter spikes.` });
   }
-  // 7. Loose link to Bills pot
-  if(energyItem && Math.abs(energyItem.amount - account.monthlyDD) > 0.5){
-    list.push({ type:'warn', ico:'\ud83d\udd17', text:`Bills > ${energyItem.name} is set to ${g2(energyItem.amount)} but your actual DD is ${g2(account.monthlyDD)}. Use the sync banner above to align them.` });
-  }
+
   return list;
 }
 
-/* ============ LINE CHART (SVG) ============ */
+/* ============ LINE CHART ============ */
 function LineChart({ series, height=220, formatY=v=>v, formatX=fmtShort }){
   const W=720, H=height, pad={t:14,r:18,b:32,l:54};
   const all = series.flatMap(s=>s.points);
@@ -607,9 +790,21 @@ function LineChart({ series, height=220, formatY=v=>v, formatX=fmtShort }){
     series.map((s,si)=>{
       const pts = s.points.slice().sort((a,b)=>+new Date(a.x)-+new Date(b.x));
       if(pts.length<2) return null;
-      const path = pts.map((p,i)=>(i?'L':'M')+sx(p.x)+','+sy(p.y)).join(' ');
+      // Break path on big time gaps
+      const segments = [];
+      let cur = [pts[0]];
+      for(let i=1;i<pts.length;i++){
+        const gap = dDay(pts[i-1].x, pts[i].x);
+        if(gap > 100){ segments.push(cur); cur = [pts[i]]; }
+        else cur.push(pts[i]);
+      }
+      segments.push(cur);
       return h('g',{key:'s'+si},
-        h('path',{d:path,fill:'none',stroke:s.color,strokeWidth:2.2,strokeLinecap:'round',strokeLinejoin:'round'}),
+        segments.map((seg, segi) => {
+          if(seg.length<2) return null;
+          const path = seg.map((p,i)=>(i?'L':'M')+sx(p.x)+','+sy(p.y)).join(' ');
+          return h('path',{key:'seg'+segi,d:path,fill:'none',stroke:s.color,strokeWidth:2.2,strokeLinecap:'round',strokeLinejoin:'round'});
+        }),
         pts.map((p,i)=>h('circle',{key:i,cx:sx(p.x),cy:sy(p.y),r:3.5,fill:s.color,stroke:'var(--card)',strokeWidth:1.5},
           h('title',null,`${formatX(p.x)}: ${formatY(p.y)}`)
         ))
@@ -622,15 +817,42 @@ function LineChart({ series, height=220, formatY=v=>v, formatX=fmtShort }){
   );
 }
 
+/* ============ CONFIRM MODAL ============ */
+function ConfirmModal({ title, ico, message, preview, confirmLabel, cancelLabel, danger, onConfirm, onCancel }){
+  return h('div',{className:'modal-bg',onClick:onCancel},
+    h('div',{className:'modal',onClick:e=>e.stopPropagation()},
+      h('h3',null, ico && h('span',null,ico), title),
+      h('p',null, message),
+      preview && h('div',{className:'preview'},
+        preview.map((p,i)=>h('div',{key:i,className:'row'},
+          h('span',null, p.label),
+          h('span',null, p.value)
+        ))
+      ),
+      h('div',{className:'actions'},
+        h('button',{className:'cancel',onClick:onCancel}, cancelLabel || 'Cancel'),
+        h('button',{className:'confirm '+(danger?'danger':''),onClick:onConfirm}, confirmLabel || 'Confirm')
+      )
+    )
+  );
+}
+
 /* ============ POT CARD ============ */
-function PotCard({ pot, idx, total, ctx, settings, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast, income }){
+function PotCard({ pot, ctx, settings, onChange, onDelete, onMoveUp, onMoveDown, isFirst, isLast, income }){
   const [expanded, setExpanded] = useState(false);
   const amount = potAmount(pot, ctx);
   const pct = income > 0 ? Math.round((amount/income)*100) : 0;
+  const year = ctx.payday.getFullYear();
+  const monthIdx = ctx.payday.getMonth();
+  const [confirmDel, setConfirmDel] = useState(false);
+  const [confirmClearChanges, setConfirmClearChanges] = useState(null);
 
   function update(patch){ onChange({ ...pot, ...patch }); }
-  function updateItem(itemId, patch){
-    update({ items: pot.items.map(i => i.id===itemId ? { ...i, ...patch } : i) });
+  function updateItemAmount(itemId, newAmount){
+    update({ items: pot.items.map(i => i.id===itemId ? updateItemAmountForPeriod(i, year, monthIdx, newAmount) : i) });
+  }
+  function updateItemName(itemId, name){
+    update({ items: pot.items.map(i => i.id===itemId ? { ...i, name } : i) });
   }
   function delItem(itemId){
     if(confirm('Remove this item?')) update({ items: pot.items.filter(i => i.id!==itemId) });
@@ -638,99 +860,126 @@ function PotCard({ pot, idx, total, ctx, settings, onChange, onDelete, onMoveUp,
   function addItem(){
     update({ items: [...(pot.items||[]), { id:newId(), name:'New item', amount:0 }] });
   }
+  function clearItemSchedule(itemId){
+    update({ items: pot.items.map(i => i.id===itemId ? { ...i, changes: [] } : i) });
+    setConfirmClearChanges(null);
+  }
 
   const isAuto = pot.kind && pot.kind.startsWith('auto');
   const autoLabel = pot.kind==='auto-shopping' ? `${ctx.weekends} weekends \u00d7 ${g0(settings.shopRate)} = ${g2(amount)}`
                   : pot.kind==='auto-afterschool' ? `${ctx.fridays} Fridays \u00d7 ${g0(settings.friRate)} = ${g2(amount)}`
                   : pot.kind==='auto-birthdays' ? `Auto-pulled from birthdays in window`
-                  : pot.kind==='auto-annual' ? `Pulled from calendar events for ${MONTH_NAMES[ctx.payday.getMonth()]}` : '';
+                  : pot.kind==='auto-annual' ? `Pulled from calendar events for ${MONTH_NAMES[monthIdx]}` : '';
 
-  return h('div',{className:'pot' + (expanded ? ' expanded' : '')},
-    h('div',{className:'top',onClick:()=>setExpanded(!expanded)},
-      h('span',{className:'emoji'}, pot.emoji || '\ud83d\udcb0'),
-      h('span',{className:'name'}, pot.name, isAuto && h('span',{className:'auto-tag'},'auto')),
-      h('span',{className:'amount'}, gS(amount), pct>0 && h('span',{className:'pct'},` ${pct}%`))
-    ),
-    expanded && h('div',{className:'body'},
-      pot.note && h('p',{className:'note'}, pot.note),
-      isAuto && h('div',{className:'auto-info'}, autoLabel),
-      pot.kind==='fixed' && h('div',{className:'row'},
-        h('span',null,'Monthly amount'),
-        h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:pot.amount||0,className:'amt-input',onChange:e=>update({amount:+e.target.value}),onFocus:e=>e.target.select()})),
-        h('span',{className:'muted',style:{fontSize:12,marginLeft:8}},'stays until you change it')
+  return h(Fragment, null,
+    confirmDel && h(ConfirmModal,{
+      title:'Delete pot?', ico:'\ud83d\uddd1\ufe0f', danger:true,
+      message:`Remove "${pot.name}" from your budget? This affects every month, not just ${MONTH_NAMES[monthIdx]}.`,
+      confirmLabel:'Delete pot',
+      onConfirm:()=>{ setConfirmDel(false); onDelete(); },
+      onCancel:()=>setConfirmDel(false)
+    }),
+    confirmClearChanges && h(ConfirmModal,{
+      title:'Clear scheduled changes?', ico:'\ud83d\udcc5',
+      message:`Remove all scheduled future amounts for "${confirmClearChanges.name}"? It will revert to the base amount everywhere.`,
+      confirmLabel:'Clear schedule', danger:true,
+      onConfirm:()=>clearItemSchedule(confirmClearChanges.id),
+      onCancel:()=>setConfirmClearChanges(null)
+    }),
+    h('div',{className:'pot' + (expanded ? ' expanded' : '')},
+      h('div',{className:'top',onClick:()=>setExpanded(!expanded)},
+        h('span',{className:'emoji'}, pot.emoji || '\ud83d\udcb0'),
+        h('span',{className:'name'}, pot.name, isAuto && h('span',{className:'auto-tag'},'auto')),
+        h('span',{className:'amount'}, gS(amount), pct>0 && h('span',{className:'pct'},` ${pct}%`))
       ),
-      pot.kind==='list' && h('div',null,
-        h('div',{className:'items'},
-          (pot.items||[]).map(it=>h('div',{key:it.id,className:'item-row'},
-            h('input',{className:'item-name',value:it.name,onChange:e=>updateItem(it.id,{name:e.target.value}),onFocus:e=>e.target.select()}),
-            h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:it.amount,className:'amt-input',onChange:e=>updateItem(it.id,{amount:+e.target.value}),onFocus:e=>e.target.select()})),
-            h('button',{className:'del',onClick:()=>delItem(it.id),title:'Remove'},'\u00d7')
-          ))
+      // mini progress bar showing pct of income (visual cue without text)
+      pct > 0 && !expanded && h('div',{className:'mini-bar'}, h('div',{style:{width:Math.min(100,pct*2.5)+'%'}})),
+      expanded && h('div',{className:'body'},
+        pot.note && h('p',{className:'note'}, pot.note),
+        isAuto && h('div',{className:'auto-info'}, autoLabel),
+        pot.kind==='fixed' && h('div',{className:'row'},
+          h('span',null,'Monthly'),
+          h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:pot.amount||0,className:'amt-input',onChange:e=>update({amount:+e.target.value}),onFocus:e=>e.target.select()})),
+          h('span',{className:'muted',style:{fontSize:12,marginLeft:8}},'stays until you change it')
         ),
-        h('div',{className:'add-item'},
-          h('button',{className:'smbtn',onClick:addItem},'+ Add item')
+        pot.kind==='list' && h('div',null,
+          h('div',{className:'items'},
+            (pot.items||[]).map(it=>{
+              const eff = itemEffectiveAmount(it, year, monthIdx);
+              const futureChanges = (it.changes||[]).filter(c => new Date(c.effectiveFrom) > new Date(year, monthIdx, 1));
+              const hasChanges = (it.changes||[]).length > 0;
+              return h('div',{key:it.id,className:'item-row'},
+                h('input',{className:'item-name',value:it.name,onChange:e=>updateItemName(it.id,e.target.value),onFocus:e=>e.target.select()}),
+                hasChanges && h('span',{
+                  className:'item-changes',
+                  title: 'Scheduled:\n' + (it.changes||[]).map(c=>`${fmtMon(c.effectiveFrom)}: ${g2(c.amount)}${c.note?' \u2014 '+c.note:''}`).join('\n') + '\n\nClick to clear.',
+                  onClick:()=>setConfirmClearChanges(it)
+                }, futureChanges.length > 0 ? `\ud83d\udcc5+${futureChanges.length}` : '\ud83d\udcc5'),
+                h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:eff,className:'amt-input',onChange:e=>updateItemAmount(it.id,+e.target.value),onFocus:e=>e.target.select()})),
+                h('button',{className:'del',onClick:()=>delItem(it.id),title:'Remove'},'\u00d7')
+              );
+            })
+          ),
+          h('div',{className:'add-item'},
+            h('button',{className:'smbtn',onClick:addItem},'+ Add item')
+          )
+        ),
+        pot.kind==='auto-annual' && h('div',{className:'muted',style:{fontSize:12,marginTop:8}},
+          ctx.annual.filter(e=>e.pay_month===monthIdx).map(e=>h('div',{key:e.id},`\u2022 ${e.name} \u2014 ${g2(e.amount)}`))
+        ),
+        pot.kind==='auto-birthdays' && h('div',{className:'muted',style:{fontSize:12,marginTop:8}},
+          (function(){
+            const start = new Date(ctx.payday); start.setDate(start.getDate()+7);
+            const end = new Date(ctx.nextPayday); end.setDate(end.getDate()+7);
+            const yr = start.getFullYear();
+            const matches = ctx.birthdays.filter(b=>{
+              for(const y of [yr, yr+1]){
+                const bd = new Date(y, (b.month||1)-1, b.day||1);
+                if(bd >= start && bd < end) return true;
+              }
+              return false;
+            });
+            return matches.length===0 ? h('div',null,'No birthdays in this period')
+              : matches.map(b=>h('div',{key:b.id},`\u2022 ${b.name} \u2014 ${g2(b.amount)}`));
+          })()
+        ),
+        h('hr',{className:'sep'}),
+        h('div',{className:'row',style:{gap:6}},
+          h('span',{style:{fontSize:12,color:'var(--muted)'}},'Note:'),
+          h('input',{type:'text',value:pot.note||'',placeholder:'Optional',onChange:e=>update({note:e.target.value}),style:{flex:1}})
+        ),
+        h('div',{className:'row',style:{gap:6,marginTop:8}},
+          h('input',{type:'text',value:pot.name,onChange:e=>update({name:e.target.value}),style:{flex:1}}),
+          h('input',{type:'text',value:pot.emoji,onChange:e=>update({emoji:e.target.value}),style:{width:46,textAlign:'center',fontSize:18}})
+        ),
+        h('div',{className:'actions'},
+          h('button',{className:'smbtn',disabled:isFirst,onClick:onMoveUp,style:{opacity:isFirst?0.4:1}},'\u25b2'),
+          h('button',{className:'smbtn',disabled:isLast,onClick:onMoveDown,style:{opacity:isLast?0.4:1}},'\u25bc'),
+          h('span',{style:{flex:1}}),
+          h('button',{className:'smbtn danger',onClick:()=>setConfirmDel(true)},'\ud83d\uddd1\ufe0f')
         )
-      ),
-      pot.kind==='auto-annual' && h('div',{className:'muted',style:{fontSize:12,marginTop:8}},
-        ctx.annual.filter(e=>e.pay_month===ctx.payday.getMonth()).map(e=>h('div',{key:e.id},`\u2022 ${e.name} — ${g2(e.amount)}`))
-      ),
-      pot.kind==='auto-birthdays' && h('div',{className:'muted',style:{fontSize:12,marginTop:8}},
-        (function(){
-          const start = new Date(ctx.payday); start.setDate(start.getDate()+7);
-          const end = new Date(ctx.nextPayday); end.setDate(end.getDate()+7);
-          const yr = start.getFullYear();
-          const matches = ctx.birthdays.filter(b=>{
-            for(const y of [yr, yr+1]){
-              const bd = new Date(y, (b.month||1)-1, b.day||1);
-              if(bd >= start && bd < end) return true;
-            }
-            return false;
-          });
-          return matches.length===0 ? h('div',null,'No birthdays in this period')
-            : matches.map(b=>h('div',{key:b.id},`\u2022 ${b.name} — ${g2(b.amount)}`));
-        })()
-      ),
-      h('hr',{className:'sep'}),
-      h('div',{className:'row',style:{gap:6}},
-        h('span',{style:{fontSize:12,color:'var(--muted)'}},'Note:'),
-        h('input',{type:'text',value:pot.note||'',placeholder:'Optional note',onChange:e=>update({note:e.target.value}),style:{flex:1}})
-      ),
-      h('div',{className:'row',style:{gap:6,marginTop:8}},
-        h('span',{style:{fontSize:12,color:'var(--muted)'}},'Name:'),
-        h('input',{type:'text',value:pot.name,onChange:e=>update({name:e.target.value}),style:{flex:1}}),
-        h('input',{type:'text',value:pot.emoji,onChange:e=>update({emoji:e.target.value}),style:{width:46,textAlign:'center',fontSize:18}})
-      ),
-      h('div',{className:'actions'},
-        h('button',{className:'smbtn',disabled:isFirst,onClick:onMoveUp,style:{opacity:isFirst?0.4:1}},'\u25b2'),
-        h('button',{className:'smbtn',disabled:isLast,onClick:onMoveDown,style:{opacity:isLast?0.4:1}},'\u25bc'),
-        h('span',{style:{flex:1}}),
-        h('button',{className:'smbtn danger',onClick:onDelete},'Delete')
       )
     )
   );
 }
 
-/* ============ INSIGHTS STRIP (BUDGET) ============ */
-function buildBudgetInsights({ pots, ctx, totals, income, buffer, annual, birthdays, payday, nextPayday }){
+/* ============ BUDGET INSIGHTS ============ */
+function buildBudgetInsights({ ctx, income, buffer, annual, birthdays, payday, nextPayday }){
   const list = [];
-  // 5+ Saturday weekends (heavy shopping)
   if(ctx.weekends >= 5){
     list.push({ type:'warn', ico:'\ud83d\udecd\ufe0f', text:`5 Saturdays this period — shopping pot is higher than usual.` });
   }
-  // Buffer health
   if(buffer < 0){
-    list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Shortfall of ${g2(Math.abs(buffer))}. Reduce a flexible pot or shift money around.` });
+    list.push({ type:'alert', ico:'\u26a0\ufe0f', text:`Shortfall of ${g2(Math.abs(buffer))}. Reduce a flexible pot.` });
   } else if(buffer < income*0.03){
-    list.push({ type:'warn', ico:'\u26a0\ufe0f', text:`Buffer is tight (${g2(buffer)} = ${Math.round((buffer/income)*100)}% of income). One surprise could cause a shortfall.` });
+    list.push({ type:'warn', ico:'\u26a0\ufe0f', text:`Buffer is tight (${g2(buffer)} = ${Math.round((buffer/income)*100)}% of income).` });
   } else if(buffer > income*0.15){
-    list.push({ type:'good', ico:'\ud83d\udcb8', text:`Healthy buffer of ${g2(buffer)} — room for fun, savings boosts, or absorbing surprises.` });
+    list.push({ type:'good', ico:'\ud83d\udcb8', text:`Healthy buffer of ${g2(buffer)} — room for fun, savings boosts, or surprises.` });
   }
-  // Heavy calendar month
   const calThisMonth = annual.filter(e=>e.pay_month===payday.getMonth()).reduce((s,e)=>s+(+e.amount||0),0);
   if(calThisMonth >= 300){
     list.push({ type:'warn', ico:'\ud83d\udcc5', text:`Heavy calendar month: ${g2(calThisMonth)} in scheduled annual costs.` });
   }
-  // Upcoming birthdays in window
   const start = new Date(payday); start.setDate(start.getDate()+7);
   const end = new Date(nextPayday); end.setDate(end.getDate()+7);
   const yr = start.getFullYear();
@@ -742,52 +991,97 @@ function buildBudgetInsights({ pots, ctx, totals, income, buffer, annual, birthd
     return false;
   });
   if(upcomingBdays.length > 0){
-    const names = upcomingBdays.map(b=>b.name).join(', ');
-    list.push({ type:'tip', ico:'\ud83c\udf81', text:`Birthdays in this period: ${names}.` });
+    list.push({ type:'tip', ico:'\ud83c\udf81', text:`Birthdays this period: ${upcomingBdays.map(b=>b.name).join(', ')}.` });
   }
-  // Cost radar — next 3 months
   const nm = payday.getMonth();
   for(let i=1;i<=3;i++){
     const m = (nm+i)%12;
     const cal = annual.filter(e=>e.pay_month===m).reduce((s,e)=>s+(+e.amount||0),0);
     if(cal >= 200){
       list.push({ type:'tip', ico:'\ud83d\udd2d', text:`Heads up: ${MONTH_NAMES[m]} has ${g2(cal)} in calendar costs coming up.` });
-      break; // only show the nearest
+      break;
     }
   }
   return list;
 }
 
 /* ============ ENERGY VIEW ============ */
-function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadings, pots, setPots }){
+function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadings, pots, setPots, marketScan, setMarketScan }){
   const [type, setType] = useState('elec');
   const [date, setDate] = useState(new Date().toISOString().slice(0,10));
   const [value, setValue] = useState('');
   const [editTariff, setEditTariff] = useState(false);
-  const [chartMode, setChartMode] = useState('monthly'); // 'monthly' | 'all'
+  const [chartMode, setChartMode] = useState('monthly');
+  const [historicView, setHistoricView] = useState(false);
+  const [syncDismissed, setSyncDismissed] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
 
-  const insights = useMemo(()=>computeEnergyInsights(readings, tariff, account), [readings, tariff, account]);
-  const monthlySeries = useMemo(()=>buildMonthlyCostSeries(readings, tariff), [readings, tariff]);
-  const rawSeries = useMemo(()=>buildAllReadingSeries(readings), [readings]);
+  // Filter readings to recent (last 18mo) unless historic toggle on
+  const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth()-18);
+  const visibleReadings = historicView ? readings : readings.filter(r => new Date(r.date) >= cutoff);
 
-  // Loose link
+  const insights = useMemo(()=>computeEnergyInsights(visibleReadings, tariff, account), [visibleReadings, tariff, account]);
+  const monthlySeries = useMemo(()=>buildMonthlyCostSeries(visibleReadings, tariff), [visibleReadings, tariff]);
+  const rawSeries = useMemo(()=>buildAllReadingSeries(visibleReadings), [visibleReadings]);
+
   const billsPot = pots.find(p=>p.kind==='list' && /bill/i.test(p.name));
   const energyItem = billsPot && billsPot.items && billsPot.items.find(i=>/energy|gas|electric/i.test(i.name));
-  const linkMismatch = energyItem && Math.abs(energyItem.amount - account.monthlyDD) > 0.5;
 
-  const insightsList = useMemo(()=>buildEnergyInsightsList(insights, tariff, account, readings, billsPot, energyItem), [insights, tariff, account, readings, billsPot, energyItem]);
+  const today = new Date();
+  const defaultSyncDate = new Date(today.getFullYear(), today.getMonth()+1, 1).toISOString().slice(0,10);
+  const [syncDate, setSyncDate] = useState(defaultSyncDate);
 
-  function syncBillsToDD(){
-    if(!billsPot || !energyItem) return;
-    setPots(pots.map(p => p.id !== billsPot.id ? p : {
+  const ddMismatch = energyItem && Math.abs(itemEffectiveAmount(energyItem, today.getFullYear(), today.getMonth()+1) - account.monthlyDD) > 0.5;
+  const showSyncBanner = ddMismatch && !syncDismissed;
+
+  const insightsList = useMemo(()=>buildEnergyInsightsList(insights, tariff, account, energyItem, marketScan), [insights, tariff, account, energyItem, marketScan]);
+
+  // Daily market scan check
+  useEffect(()=>{
+    const now = Date.now();
+    const lastScan = marketScan?.lastScan ? new Date(marketScan.lastScan).getTime() : 0;
+    const oneDayMs = 24*60*60*1000;
+    if(now - lastScan > oneDayMs){
+      // Simulate scan: check if our current rates beat MSE typical fixed deals
+      // MSE typical Apr 2026 fixes are around 18-22p elec, 5-7p gas
+      // Our rates: 20.68p elec, 6.21p gas — competitive but not the absolute cheapest
+      const elecCompetitive = tariff.elec.unitRate <= 20;
+      const gasCompetitive = tariff.gas.unitRate <= 6;
+      const cheaperFound = !elecCompetitive || !gasCompetitive;
+      setMarketScan({
+        checked: true,
+        cheaperFound,
+        lastScan: new Date().toISOString(),
+        daysAgo: 0,
+        notes: cheaperFound ? 'Better fixed-rate deals may be available' : 'Your rates look competitive'
+      });
+    } else if(marketScan){
+      // Update daysAgo
+      const days = Math.floor((now - lastScan) / oneDayMs);
+      if(days !== marketScan.daysAgo){
+        setMarketScan({ ...marketScan, daysAgo: days });
+      }
+    }
+  }, [tariff.elec.unitRate, tariff.gas.unitRate]);
+
+  function syncDDToBills(){
+    if(!billsPot || !energyItem || !syncDate) return;
+    const newPots = pots.map(p => p.id !== billsPot.id ? p : {
       ...p,
-      items: p.items.map(i => i.id !== energyItem.id ? i : { ...i, amount: account.monthlyDD })
-    }));
+      items: p.items.map(i => i.id !== energyItem.id ? i : scheduleItemChange(i, syncDate, account.monthlyDD, 'DD update'))
+    });
+    setPots(newPots);
+    setSyncDismissed(true);
+  }
+
+  function applyDDSuggestion(newDD){
+    setAccount({ ...account, monthlyDD: newDD });
+    setSyncDismissed(false);
   }
 
   function addReading(){
     const v = parseFloat(value);
-    if(!v || !date){ alert('Enter both a date and a meter reading'); return; }
+    if(!v || !date){ alert('Enter a date and a meter reading'); return; }
     const sameType = readings.filter(r=>r.type===type).sort((a,b)=>new Date(b.date)-new Date(a.date));
     const newer = sameType.filter(r=>new Date(r.date) <= new Date(date));
     if(newer[0] && v < newer[0].value){
@@ -801,123 +1095,146 @@ function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadi
     if(confirm('Delete this reading?')) setReadings(readings.filter(r=>r.id!==id));
   }
 
-  const sortedReadings = readings.slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const monthOpts = [];
+  for(let i=0; i<18; i++){
+    const d = new Date(today.getFullYear(), today.getMonth()+i, 1);
+    monthOpts.push({ val: d.toISOString().slice(0,10), label: fmtMon(d) });
+  }
 
+  const sortedReadings = readings.slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
   const tariffWarn = insights.daysToEnd != null && insights.daysToEnd < 90;
   const tariffAlert = insights.daysToEnd != null && insights.daysToEnd < 30;
   const ddStatus = insights.totalMonthly > 0 ? (insights.ddDelta >= 0 ? 'good' : (insights.ddDelta < -15 ? 'bad' : 'warn')) : '';
   const balanceStatus = account.balance < -100 ? 'bad' : (account.balance < 0 ? 'warn' : 'good');
-
   const elecColor = '#0066ff';
   const gasColor = '#f59e0b';
 
   return h('div', null,
-    // Loose link banner
-    linkMismatch && h('div',{className:'en-link'},
-      h('span',null, `Bills > ${energyItem.name} is ${g2(energyItem.amount)}, but your actual DD is ${g2(account.monthlyDD)}.`),
-      h('button',{className:'smbtn primary',onClick:syncBillsToDD}, `Sync to ${g2(account.monthlyDD)}`)
+    confirmReset && h(ConfirmModal,{
+      title:'Reset energy data?', ico:'\u26a0\ufe0f', danger:true,
+      message:'This wipes all readings, the tariff, account balance, and DD. Everything reverts to defaults. This cannot be undone.',
+      confirmLabel:'Reset everything',
+      onConfirm:()=>{ setReadings(DEFAULT_READINGS); setTariff(DEFAULT_TARIFF); setAccount(DEFAULT_EN_ACCOUNT); setConfirmReset(false); },
+      onCancel:()=>setConfirmReset(false)
+    }),
+
+    showSyncBanner && h('div',{className:'en-link'},
+      h('div',{style:{flex:1,minWidth:200}},
+        h('div',{style:{fontWeight:600,marginBottom:2}},`\ud83d\udd17 Update Bills > ${energyItem.name}?`),
+        h('div',{className:'muted',style:{fontSize:12}}, `Currently ${g2(itemEffectiveAmount(energyItem, today.getFullYear(), today.getMonth()+1))} \u2192 sync to ${g2(account.monthlyDD)}`)
+      ),
+      h('div',{className:'controls'},
+        h('span',{className:'muted',style:{fontSize:12}},'From:'),
+        h('select',{value:syncDate,onChange:e=>setSyncDate(e.target.value)},
+          monthOpts.map(o=>h('option',{key:o.val,value:o.val},o.label))
+        ),
+        h('button',{className:'smbtn primary',onClick:syncDDToBills}, 'Sync'),
+        h('button',{className:'smbtn',onClick:()=>setSyncDismissed(true)}, 'Not now')
+      )
     ),
 
-    // Top stats
     h('div',{className:'en-grid'},
       h('div',{className:'en-stat ' + (tariffAlert?'bad':tariffWarn?'warn':'')},
-        h('div',{className:'lbl'},'Current tariff'),
+        h('div',{className:'lbl'},'\ud83d\udcc4 Tariff'),
         h('div',{className:'val sm'}, tariff.name),
         h('div',{className:'sub'},
           insights.daysToEnd >= 0
-            ? `Ends ${fmtDate(tariff.endDate)} (${insights.daysToEnd} days)`
-            : `Ended ${Math.abs(insights.daysToEnd)} days ago`
+            ? `Ends ${fmtDate(tariff.endDate)} \u2022 ${insights.daysToEnd}d`
+            : `Ended ${Math.abs(insights.daysToEnd)}d ago`
         ),
-        h('button',{
-          className:'smbtn',
-          onClick:()=>setEditTariff(!editTariff),
-          style:{marginTop:'10px'}
-        }, editTariff ? 'Done editing' : 'Edit tariff')
+        h('button',{className:'smbtn',onClick:()=>setEditTariff(!editTariff),style:{marginTop:'10px'}}, editTariff ? 'Done' : 'Edit')
       ),
       h('div',{className:'en-stat ' + balanceStatus},
-        h('div',{className:'lbl'},'Account balance'),
+        h('div',{className:'lbl'},'\ud83d\udcb3 Balance'),
         h('div',{className:'val'}, g2(Math.abs(account.balance))),
         h('div',{className:'sub'},
-          account.balance < 0 ? 'in debit (you owe EDF)' : (account.balance > 0 ? 'in credit' : 'cleared'),
-          ' \u2022 last bill ', fmtShort(account.lastBillDate)
+          account.balance < 0 ? 'in debit' : (account.balance > 0 ? 'in credit' : 'cleared'),
+          ' \u2022 ', fmtShort(account.lastBillDate)
         )
       ),
       h('div',{className:'en-stat ' + ddStatus},
-        h('div',{className:'lbl'},'Monthly DD vs projected'),
+        h('div',{className:'lbl'},'\ud83d\udd04 Monthly DD'),
         h('div',{className:'val'}, g2(account.monthlyDD)),
         h('div',{className:'sub'},
           insights.totalMonthly > 0
-            ? `Projected ~${g2(insights.totalMonthly)}/mo \u2022 ${insights.ddDelta >= 0 ? `${g2(insights.ddDelta)} surplus` : `${g2(Math.abs(insights.ddDelta))} short`}`
-            : `Add readings to calculate projection`
+            ? `Projected ~${g2(insights.totalMonthly)} \u2022 ${insights.ddDelta >= 0 ? `+${g2(insights.ddDelta)}` : `\u2212${g2(Math.abs(insights.ddDelta))}`}`
+            : `Add readings`
         )
       )
     ),
 
-    // Tariff editor
     editTariff && h('div',{className:'section'},
-      h('h2',null,'Tariff details'),
+      h('h2',null,'\ud83d\udcdd Tariff details'),
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
         h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Tariff name'),h('input',{value:tariff.name,onChange:e=>setTariff({...tariff,name:e.target.value}),style:{width:'100%'}})),
         h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'End date'),h('input',{type:'date',value:tariff.endDate,onChange:e=>setTariff({...tariff,endDate:e.target.value}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Electricity unit rate (p/kWh)'),h('input',{type:'number',step:'0.01',value:tariff.elec.unitRate,onChange:e=>setTariff({...tariff,elec:{...tariff.elec,unitRate:+e.target.value}}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Electricity standing charge (p/day)'),h('input',{type:'number',step:'0.01',value:tariff.elec.standingCharge,onChange:e=>setTariff({...tariff,elec:{...tariff.elec,standingCharge:+e.target.value}}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Gas unit rate (p/kWh)'),h('input',{type:'number',step:'0.01',value:tariff.gas.unitRate,onChange:e=>setTariff({...tariff,gas:{...tariff.gas,unitRate:+e.target.value}}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Gas standing charge (p/day)'),h('input',{type:'number',step:'0.01',value:tariff.gas.standingCharge,onChange:e=>setTariff({...tariff,gas:{...tariff.gas,standingCharge:+e.target.value}}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Monthly Direct Debit (£)'),h('input',{type:'number',step:'0.01',value:account.monthlyDD,onChange:e=>setAccount({...account,monthlyDD:+e.target.value}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Account balance (£, negative = in debit)'),h('input',{type:'number',step:'0.01',value:account.balance,onChange:e=>setAccount({...account,balance:+e.target.value}),style:{width:'100%'}}))
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Elec unit (p/kWh)'),h('input',{type:'number',step:'0.01',value:tariff.elec.unitRate,onChange:e=>setTariff({...tariff,elec:{...tariff.elec,unitRate:+e.target.value}}),style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Elec standing (p/day)'),h('input',{type:'number',step:'0.01',value:tariff.elec.standingCharge,onChange:e=>setTariff({...tariff,elec:{...tariff.elec,standingCharge:+e.target.value}}),style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Gas unit (p/kWh)'),h('input',{type:'number',step:'0.01',value:tariff.gas.unitRate,onChange:e=>setTariff({...tariff,gas:{...tariff.gas,unitRate:+e.target.value}}),style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Gas standing (p/day)'),h('input',{type:'number',step:'0.01',value:tariff.gas.standingCharge,onChange:e=>setTariff({...tariff,gas:{...tariff.gas,standingCharge:+e.target.value}}),style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Monthly DD (£)'),h('input',{type:'number',step:'0.01',value:account.monthlyDD,onChange:e=>{setAccount({...account,monthlyDD:+e.target.value}); setSyncDismissed(false);},style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Balance (£, neg = debit)'),h('input',{type:'number',step:'0.01',value:account.balance,onChange:e=>setAccount({...account,balance:+e.target.value}),style:{width:'100%'}}))
       )
     ),
 
-    // Per-fuel insights
     h('div',{className:'en-grid two'},
       ['elec','gas'].map(t=>{
         const ins = insights[t];
         const color = t==='elec' ? elecColor : gasColor;
         if(ins.empty){
           return h('div',{key:t,className:'en-stat'},
-            h('div',{className:'lbl'}, t==='elec' ? 'Electricity' : 'Gas'),
-            h('div',{className:'val sm'},'Not enough data'),
-            h('div',{className:'sub'},'Add at least 2 readings'));
+            h('div',{className:'lbl'}, t==='elec' ? '\u26a1 Electricity' : '\ud83d\udd25 Gas'),
+            h('div',{className:'val sm'},'Not enough data'));
         }
         const yoyTxt = ins.yoyChange != null
-          ? (ins.yoyChange > 0 ? `\u2191 ${ins.yoyChange.toFixed(0)}% vs last year` : `\u2193 ${Math.abs(ins.yoyChange).toFixed(0)}% vs last year`)
-          : 'No year-on-year data yet';
+          ? (ins.yoyChange > 0 ? `\u2191${ins.yoyChange.toFixed(0)}%` : `\u2193${Math.abs(ins.yoyChange).toFixed(0)}%`)
+          : '\u2014';
         return h('div',{key:t,className:'en-stat',style:{borderLeft:`3px solid ${color}`}},
           h('div',{className:'lbl'}, t==='elec' ? '\u26a1 Electricity' : '\ud83d\udd25 Gas'),
           h('div',{className:'val'}, `${ins.dailyKwh.toFixed(1)} kWh/day`),
-          h('div',{className:'sub'},
-            `~${g2(ins.monthCost)}/mo at current rate \u2022 ${yoyTxt}`
-          )
+          h('div',{className:'sub'}, `~${g2(ins.monthCost)}/mo \u2022 ${yoyTxt} vs last year`)
         );
       })
     ),
 
-    // Insights bullets
     insightsList.length > 0 && h('div',{className:'insights'},
       insightsList.map((ins,i) => h('div',{key:i,className:'ins '+ins.type},
         h('span',{className:'ico'}, ins.ico),
-        h('span',null, ins.text)
+        h('div',{className:'body'},
+          h('span',null, ins.text),
+          ins.actions && ins.actions.length > 0 && h('div',{className:'actions'},
+            ins.actions.map((a,ai)=>{
+              if(a.url) return h('a',{key:ai,href:a.url,target:'_blank',rel:'noopener'}, a.label, ' \u2197');
+              if(a.action === 'applyDDSuggestion') return h('button',{key:ai,onClick:()=>applyDDSuggestion(a.value)}, a.label);
+              return null;
+            })
+          )
+        )
       ))
     ),
 
-    // Add reading form
     h('div',{className:'en-form'},
       h('select',{value:type,onChange:e=>setType(e.target.value)},
         h('option',{value:'elec'},'\u26a1 Electricity'),
         h('option',{value:'gas'},'\ud83d\udd25 Gas')
       ),
       h('input',{type:'date',value:date,onChange:e=>setDate(e.target.value)}),
-      h('input',{type:'number',step:'1',placeholder:'Meter reading (kWh)',value:value,onChange:e=>setValue(e.target.value)}),
-      h('button',{className:'smbtn primary',onClick:addReading},'Add reading')
+      h('input',{type:'number',step:'1',placeholder:'Reading (kWh)',value:value,onChange:e=>setValue(e.target.value)}),
+      h('button',{className:'smbtn primary',onClick:addReading},'+ Add')
     ),
 
-    // Cost chart
     h('div',{className:'section'},
       h('div',{className:'spaced',style:{marginBottom:12}},
-        h('h2',{style:{margin:0}},'Monthly cost (£)'),
-        h('div',{className:'en-chart-toggle'},
-          h('button',{className:chartMode==='monthly'?'active':'',onClick:()=>setChartMode('monthly')},'Monthly'),
-          h('button',{className:chartMode==='all'?'active':'',onClick:()=>setChartMode('all')},'All readings')
+        h('h2',{style:{margin:0}},'\ud83d\udcb7 Cost'),
+        h('div',{className:'row',style:{gap:8}},
+          h('label',{style:{fontSize:12,color:'var(--muted)',display:'inline-flex',alignItems:'center',gap:4,cursor:'pointer'}},
+            h('input',{type:'checkbox',checked:historicView,onChange:e=>setHistoricView(e.target.checked),style:{margin:0}}),
+            'Show 2023'
+          ),
+          h('div',{className:'en-chart-toggle'},
+            h('button',{className:chartMode==='monthly'?'active':'',onClick:()=>setChartMode('monthly')},'Monthly'),
+            h('button',{className:chartMode==='all'?'active':'',onClick:()=>setChartMode('all')},'Raw')
+          )
         )
       ),
       h('div',{className:'en-legend'},
@@ -925,23 +1242,16 @@ function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadi
         h('span',null, h('i',{style:{background:gasColor}}), 'Gas')
       ),
       chartMode === 'monthly'
-        ? h(LineChart,{
-            series:[
-              { color:elecColor, points: monthlySeries.elec.map(p=>({x:p.x,y:p.y})) },
-              { color:gasColor,  points: monthlySeries.gas.map(p=>({x:p.x,y:p.y})) }
-            ],
-            formatY: v => '£'+v.toFixed(0)
-          })
-        : h('div',{style:{padding:'30px',color:'var(--muted)',textAlign:'center',fontSize:'13px'}},'Cost is calculated per period — switch to Monthly view.')
+        ? h(LineChart,{ series:[{ color:elecColor, points: monthlySeries.elec.map(p=>({x:p.x,y:p.y})) },{ color:gasColor,  points: monthlySeries.gas.map(p=>({x:p.x,y:p.y})) }], formatY: v => '£'+v.toFixed(0) })
+        : h('div',{style:{padding:'30px',color:'var(--muted)',textAlign:'center',fontSize:'13px'}},'Cost is per period \u2014 switch to Monthly.')
     ),
 
-    // Usage chart
     h('div',{className:'section'},
       h('div',{className:'spaced',style:{marginBottom:12}},
-        h('h2',{style:{margin:0}},'Usage', h('span',{className:'sub'}, chartMode==='monthly' ? 'kWh per month' : 'meter readings over time')),
+        h('h2',{style:{margin:0}},'\ud83d\udcca Usage'),
         h('div',{className:'en-chart-toggle'},
           h('button',{className:chartMode==='monthly'?'active':'',onClick:()=>setChartMode('monthly')},'Monthly'),
-          h('button',{className:chartMode==='all'?'active':'',onClick:()=>setChartMode('all')},'All readings')
+          h('button',{className:chartMode==='all'?'active':'',onClick:()=>setChartMode('all')},'Raw')
         )
       ),
       h('div',{className:'en-legend'},
@@ -949,40 +1259,25 @@ function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadi
         h('span',null, h('i',{style:{background:gasColor}}), 'Gas')
       ),
       chartMode === 'monthly'
-        ? h(LineChart,{
-            series:[
-              { color:elecColor, points: monthlySeries.elec.map(p=>({x:p.x,y:p.usage})) },
-              { color:gasColor,  points: monthlySeries.gas.map(p=>({x:p.x,y:p.usage})) }
-            ],
-            formatY: v => v.toFixed(0)+' kWh'
-          })
-        : h(LineChart,{
-            series:[
-              { color:elecColor, points: rawSeries.elec },
-              { color:gasColor,  points: rawSeries.gas }
-            ],
-            formatY: v => v.toLocaleString()
-          })
+        ? h(LineChart,{ series:[{ color:elecColor, points: monthlySeries.elec.map(p=>({x:p.x,y:p.usage})) },{ color:gasColor,  points: monthlySeries.gas.map(p=>({x:p.x,y:p.usage})) }], formatY: v => v.toFixed(0)+' kWh' })
+        : h(LineChart,{ series:[{ color:elecColor, points: rawSeries.elec },{ color:gasColor,  points: rawSeries.gas }], formatY: v => v.toLocaleString() })
     ),
 
-    // Reading history
     h('div',{className:'section'},
-      h('h2',null,`Reading history `, h('span',{className:'sub'}, `${sortedReadings.length} readings`)),
-      h('div',{style:{maxHeight:'460px',overflowY:'auto'}},
+      h('div',{className:'spaced',style:{marginBottom:8}},
+        h('h2',{style:{margin:0}},`\ud83d\udcdc Readings `, h('span',{className:'sub'}, `${sortedReadings.length}`)),
+        h('button',{className:'smbtn danger',onClick:()=>setConfirmReset(true)},'\u21bb Reset')
+      ),
+      h('div',{style:{maxHeight:'400px',overflowY:'auto'}},
         h('table',null,
-          h('thead',null,h('tr',null,
-            h('th',null,'Date'),h('th',null,'Type'),h('th',{style:{textAlign:'right'}},'Reading'),h('th',null,'Source'),h('th',null,'')
-          )),
+          h('thead',null,h('tr',null,h('th',null,'Date'),h('th',null,'Type'),h('th',{style:{textAlign:'right'}},'Reading'),h('th',null,'Source'),h('th',null,''))),
           h('tbody',null,
             sortedReadings.map(r=>h('tr',{key:r.id},
               h('td',null, fmtDate(r.date)),
-              h('td',null, r.type==='elec' ? '\u26a1 Elec' : '\ud83d\udd25 Gas'),
+              h('td',null, r.type==='elec' ? '\u26a1' : '\ud83d\udd25'),
               h('td',{className:'tabnum',style:{textAlign:'right'}}, r.value.toLocaleString()),
               h('td',null, h('span',{className:'en-source '+(r.source==='manual'?'manual':'')}, r.source)),
-              h('td',{style:{textAlign:'right'}}, h('button',{
-                onClick:()=>delReading(r.id),
-                style:{background:'transparent',border:0,color:'var(--muted)',cursor:'pointer',fontSize:18,padding:'0 4px'}
-              }, '\u00d7'))
+              h('td',{style:{textAlign:'right'}}, h('button',{onClick:()=>delReading(r.id),style:{background:'transparent',border:0,color:'var(--muted)',cursor:'pointer',fontSize:18,padding:'0 4px'}}, '\u00d7'))
             ))
           )
         )
@@ -991,30 +1286,494 @@ function EnergyView({ tariff, setTariff, account, setAccount, readings, setReadi
   );
 }
 
+/* ============ RENEWALS VIEW ============ */
+function RenewalsView({ renewals, setRenewals, tariff, setActiveView }){
+  const [editingId, setEditingId] = useState(null);
+  const [adding, setAdding] = useState(false);
+  const [draft, setDraft] = useState({ type:'insurance', name:'', provider:'', endDate:'', monthlyCost:0, annualCost:0, exitFee:0, notes:'' });
+  const [confirmDelId, setConfirmDelId] = useState(null);
+  const today = new Date();
+
+  const energySynth = {
+    id:'syn-energy', type:'energy', name:tariff.name || 'Energy tariff', provider:'EDF Energy',
+    endDate: tariff.endDate, monthlyCost: 127.09, annualCost: 127.09*12,
+    exitFee: tariff.exitFeeTotal || 100, notes:'Edit in Energy tab', synthetic:true
+  };
+  const all = [energySynth, ...renewals].sort((a,b)=> new Date(a.endDate) - new Date(b.endDate));
+
+  function urgencyClass(days){
+    if(days < 0) return 'past';
+    if(days < 30) return 'alert';
+    if(days < 90) return 'warn';
+    return 'calm';
+  }
+  function urgencyText(days){
+    if(days < 0) return `${Math.abs(days)}d ago`;
+    if(days === 0) return 'Today';
+    if(days < 365) return `${days}d left`;
+    return `${Math.round(days/30)}mo`;
+  }
+  function startEdit(r){ setEditingId(r.id); setAdding(false); setDraft({ ...r }); }
+  function cancelEdit(){ setEditingId(null); setAdding(false); }
+  function saveEdit(){
+    if(!draft.name || !draft.endDate){ alert('Name and end date required'); return; }
+    if(adding){
+      setRenewals([...renewals, { ...draft, id:newId() }]);
+    } else {
+      setRenewals(renewals.map(r => r.id === editingId ? { ...draft, id:r.id } : r));
+    }
+    setEditingId(null); setAdding(false);
+  }
+  function startAdd(){
+    setAdding(true); setEditingId(null);
+    const nextYear = new Date(); nextYear.setFullYear(nextYear.getFullYear()+1);
+    setDraft({ type:'insurance', name:'', provider:'', endDate:nextYear.toISOString().slice(0,10), monthlyCost:0, annualCost:0, exitFee:0, notes:'' });
+  }
+
+  const insightsList = [];
+  const expiring30 = all.filter(r=>{ const d=dDay(today,r.endDate); return d>=0 && d<=30; });
+  const expiring90 = all.filter(r=>{ const d=dDay(today,r.endDate); return d>=0 && d<=90; });
+  const expired = all.filter(r=>dDay(today,r.endDate) < 0);
+  if(expired.length > 0) insightsList.push({ type:'alert', ico:'\u26a0\ufe0f', text:`${expired.length} renewal${expired.length>1?'s have':' has'} already passed.` });
+  if(expiring30.length > 0) insightsList.push({ type:'warn', ico:'\u23f0', text:`${expiring30.length} renewal${expiring30.length>1?'s':''} expiring within 30 days.` });
+  if(expiring90.length > 0 && expiring30.length === 0) insightsList.push({ type:'tip', ico:'\ud83d\udcc5', text:`${expiring90.length} renewal${expiring90.length>1?'s':''} expiring within 90 days.` });
+  const totalAnnual = all.reduce((s,r)=>s+(+r.annualCost||0),0);
+  if(totalAnnual > 0) insightsList.push({ type:'tip', ico:'\ud83d\udcb0', text:`Total tracked: ${g2(totalAnnual)}/year across ${all.length} contract${all.length>1?'s':''}.` });
+
+  const delTarget = confirmDelId ? renewals.find(r=>r.id===confirmDelId) : null;
+
+  return h('div', null,
+    delTarget && h(ConfirmModal,{
+      title:'Delete renewal?', ico:'\ud83d\uddd1\ufe0f', danger:true,
+      message:`Remove "${delTarget.name}" from your tracked renewals?`,
+      confirmLabel:'Delete',
+      onConfirm:()=>{ setRenewals(renewals.filter(r=>r.id!==confirmDelId)); setConfirmDelId(null); },
+      onCancel:()=>setConfirmDelId(null)
+    }),
+
+    insightsList.length > 0 && h('div',{className:'insights'},
+      insightsList.map((ins,i)=>h('div',{key:i,className:'ins '+ins.type},
+        h('span',{className:'ico'},ins.ico), h('div',{className:'body'}, ins.text)
+      ))
+    ),
+
+    h('div',{className:'spaced',style:{marginBottom:12}},
+      h('h2',{style:{margin:0,fontSize:16}},'\ud83d\udcc4 Tracked contracts'),
+      !adding && !editingId && h('button',{className:'smbtn primary',onClick:startAdd},'+ Add')
+    ),
+
+    (adding || editingId) && h('div',{className:'ren-form'},
+      h('label',null,h('div',{className:'muted',style:{fontSize:11,marginBottom:3}},'Type'),
+        h('select',{value:draft.type,onChange:e=>setDraft({...draft,type:e.target.value}),style:{width:'100%'}},
+          RENEWAL_TYPES.map(t=>h('option',{key:t.id,value:t.id},t.label))
+        )
+      ),
+      h('label',null,h('div',{className:'muted',style:{fontSize:11,marginBottom:3}},'Name'),
+        h('input',{value:draft.name,onChange:e=>setDraft({...draft,name:e.target.value}),placeholder:'e.g. Car insurance',style:{width:'100%'}})
+      ),
+      h('label',null,h('div',{className:'muted',style:{fontSize:11,marginBottom:3}},'Provider'),
+        h('input',{value:draft.provider,onChange:e=>setDraft({...draft,provider:e.target.value}),placeholder:'e.g. Aviva',style:{width:'100%'}})
+      ),
+      h('label',null,h('div',{className:'muted',style:{fontSize:11,marginBottom:3}},'End date'),
+        h('input',{type:'date',value:draft.endDate,onChange:e=>setDraft({...draft,endDate:e.target.value}),style:{width:'100%'}})
+      ),
+      h('label',null,h('div',{className:'muted',style:{fontSize:11,marginBottom:3}},'Annual £'),
+        h('span',{className:'mw'},h('input',{type:'number',step:'0.01',value:draft.annualCost,onChange:e=>setDraft({...draft,annualCost:+e.target.value,monthlyCost:+e.target.value/12}),style:{width:'100%'}}))
+      ),
+      h('div',{style:{display:'flex',gap:6}},
+        h('button',{className:'smbtn primary',onClick:saveEdit},'Save'),
+        h('button',{className:'smbtn',onClick:cancelEdit},'Cancel')
+      )
+    ),
+
+    all.length === 0 && !adding && h('div',{className:'empty'},
+      h('div',{className:'big'},'\ud83d\udd04'),
+      h('div',null,'No renewals tracked yet.'),
+      h('div',{style:{marginTop:8}}, h('button',{className:'smbtn primary',onClick:startAdd},'Add first renewal'))
+    ),
+
+    all.map(r => {
+      const days = dDay(today, r.endDate);
+      const cls = urgencyClass(days);
+      return h('div',{key:r.id,className:'ren-row'},
+        h('span',{className:'ico'}, RENEWAL_ICONS[r.type] || '\ud83d\udcc4'),
+        h('div',null,
+          h('div',{className:'name'}, r.name, r.synthetic && h('span',{className:'auto-tag',style:{marginLeft:8}},'synced')),
+          h('div',{className:'meta'},
+            r.provider && r.provider !== 'TBD' ? `${r.provider} \u2022 ` : '',
+            `${fmtDate(r.endDate)}`,
+            r.annualCost > 0 ? ` \u2022 ${g2(r.annualCost)}/yr` : ''
+          )
+        ),
+        h('span',{className:'urgency '+cls}, urgencyText(days)),
+        h('div',{className:'actions'},
+          r.synthetic
+            ? h('button',{className:'smbtn',onClick:()=>setActiveView('energy')},'Edit')
+            : h(Fragment, null,
+                h('button',{className:'smbtn',onClick:()=>startEdit(r)},'Edit'),
+                h('button',{className:'smbtn danger',onClick:()=>setConfirmDelId(r.id)},'\u00d7')
+              )
+        )
+      );
+    })
+  );
+}
+
+/* ============ MORTGAGE VIEW ============ */
+function MortgageView({ settings, setSettings }){
+  const [overpay, setOverpay] = useState(0);
+  const today = new Date();
+  const renewal = new Date(2028, 0, 1);
+  const monthsUntil = Math.max(0, (renewal.getFullYear()-today.getFullYear())*12 + (renewal.getMonth()-today.getMonth()));
+  const monthlyRate = (settings.mortRate||0) / 100 / 12;
+
+  function projectBalance(startBalance, payment, months){
+    let bal = startBalance;
+    for(let i=0; i<months && bal > 0; i++){
+      const interest = bal * monthlyRate;
+      bal = Math.max(0, bal - (payment - interest));
+    }
+    return bal;
+  }
+  function pmt(p, r, n){ const m=r/100/12; return n>0 && m>0 ? p*m/(1-Math.pow(1+m,-n)) : 0; }
+  function monthsToZero(startBalance, payment){
+    let bal = startBalance, m = 0;
+    while(bal > 0 && m < 600){
+      const interest = bal * monthlyRate;
+      const principal = payment - interest;
+      if(principal <= 0) return Infinity;
+      bal -= principal; m++;
+    }
+    return m;
+  }
+
+  const baseProjBal = projectBalance(settings.mortBalance, settings.mortPmt, monthsUntil);
+  const overpayProjBal = projectBalance(settings.mortBalance, settings.mortPmt + overpay, monthsUntil);
+  const baseMonthsToZero = monthsToZero(settings.mortBalance, settings.mortPmt);
+  const overpayMonthsToZero = monthsToZero(settings.mortBalance, settings.mortPmt + overpay);
+  const monthsSaved = baseMonthsToZero - overpayMonthsToZero;
+  const interestSaved = (baseMonthsToZero * settings.mortPmt) - (overpayMonthsToZero * (settings.mortPmt + overpay));
+  const remainingMonthsAfterRenewal = 361 - monthsUntil;
+  const rates = [3.25, 3.75, 4.25, 4.75, 5.50];
+  const propertyValue = 439000;
+  const equity = propertyValue - settings.mortBalance;
+  const equityPct = (equity / propertyValue * 100).toFixed(1);
+
+  return h('div', null,
+    h('div',{className:'en-grid'},
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\ud83d\udcb7 Balance'),
+        h('div',{className:'val'}, g0(settings.mortBalance)),
+        h('div',{className:'sub'}, `${settings.mortRate}% \u2022 ${g2(settings.mortPmt)}/mo`)
+      ),
+      h('div',{className:'en-stat good'},
+        h('div',{className:'lbl'},'\ud83c\udfe1 Equity'),
+        h('div',{className:'val'}, g0(equity)),
+        h('div',{className:'sub'}, `${equityPct}% of ${g0(propertyValue)}`)
+      ),
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\u23f3 Renewal'),
+        h('div',{className:'val'}, `${monthsUntil}mo`),
+        h('div',{className:'sub'}, `Jan 2028 \u2022 proj ${g0(baseProjBal)}`)
+      )
+    ),
+
+    h('div',{className:'section'},
+      h('h2',null,'\u2699\ufe0f Settings'),
+      h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12}},
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Balance'),h('span',{className:'mw',style:{display:'block'}},h('input',{type:'number',step:'1',value:settings.mortBalance,onChange:e=>setSettings({...settings,mortBalance:+e.target.value}),style:{width:'100%'}}))),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Rate (%)'),h('input',{type:'number',step:'0.01',value:settings.mortRate,onChange:e=>setSettings({...settings,mortRate:+e.target.value}),style:{width:'100%'}})),
+        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Monthly'),h('span',{className:'mw',style:{display:'block'}},h('input',{type:'number',step:'0.01',value:settings.mortPmt,onChange:e=>setSettings({...settings,mortPmt:+e.target.value}),style:{width:'100%'}})))
+      )
+    ),
+
+    h('div',{className:'section'},
+      h('h2',null,'\ud83d\udcc8 Overpayment scenario'),
+      h('div',{style:{marginBottom:12}},
+        h('div',{className:'spaced',style:{marginBottom:6}},
+          h('span',null,'Extra per month:'),
+          h('span',{className:'mw'}, h('input',{type:'number',step:'10',value:overpay,onChange:e=>setOverpay(+e.target.value),className:'amt-input'}))
+        ),
+        h('input',{type:'range',min:0,max:1000,step:10,value:overpay,onChange:e=>setOverpay(+e.target.value),style:{width:'100%'}})
+      ),
+      overpay > 0 ? h('div',{className:'scen-grid'},
+        h('div',{className:'scen'},
+          h('h3',null,'\u23f1\ufe0f Time saved'),
+          h('div',{className:'big'}, monthsSaved < 600 ? `${Math.floor(monthsSaved/12)}y ${monthsSaved%12}mo` : '\u2014'),
+        ),
+        h('div',{className:'scen'},
+          h('h3',null,'\ud83d\udcb0 Interest saved'),
+          h('div',{className:'big'}, interestSaved > 0 ? g0(interestSaved) : '\u2014'),
+        ),
+        h('div',{className:'scen'},
+          h('h3',null,'\ud83d\udcca At renewal'),
+          h('div',{className:'big'}, g0(overpayProjBal)),
+          h('div',{className:'delta'}, `${g0(baseProjBal - overpayProjBal)} less`)
+        ),
+        h('div',{className:'scen'},
+          h('h3',null,'\ud83d\udcb3 Total monthly'),
+          h('div',{className:'big'}, g2(settings.mortPmt + overpay)),
+          h('div',{className:'delta bad'}, `+${g2(overpay)}/mo`)
+        )
+      ) : h('p',{className:'muted',style:{fontSize:13}},'Slide above to model overpayments.')
+    ),
+
+    h('div',{className:'section'},
+      h('h2',null,'\ud83d\udcca Renewal rates ', h('span',{className:'sub'},`Proj ${g0(baseProjBal)} \u00d7 ${remainingMonthsAfterRenewal}mo`)),
+      h('table',null,
+        h('thead',null,h('tr',null,h('th',null,'Rate'),h('th',{style:{textAlign:'right'}},'Monthly'),h('th',{style:{textAlign:'right'}},'vs current'))),
+        h('tbody',null,
+          rates.map(r=>{
+            const m = pmt(baseProjBal, r, remainingMonthsAfterRenewal);
+            const diff = m - settings.mortPmt;
+            return h('tr',{key:r},
+              h('td',null, r.toFixed(2)+'%'),
+              h('td',{className:'tabnum',style:{textAlign:'right'}}, g2(m)),
+              h('td',{className:'tabnum',style:{textAlign:'right',color:diff>0?'var(--bad)':'var(--good)'}}, (diff>0?'+':'')+g2(diff))
+            );
+          })
+        )
+      )
+    )
+  );
+}
+
+/* ============ SUBSCRIPTIONS VIEW ============ */
+function SubscriptionsView({ pots, setPots }){
+  const [confirmDelId, setConfirmDelId] = useState(null);
+  const billsPot = pots.find(p=>/bill/i.test(p.name));
+  const items = (billsPot && billsPot.items) || [];
+  const detected = items.filter(i => SUB_PATTERNS.test(i.name));
+  const totalMonthly = detected.reduce((s,i)=>s+(+i.amount||0), 0);
+  const totalAnnual = totalMonthly * 12;
+  const sorted = [...detected].sort((a,b)=>(b.amount||0)-(a.amount||0));
+
+  function delSub(id){
+    setPots(pots.map(p => p.id !== billsPot.id ? p : { ...p, items: p.items.filter(i=>i.id!==id) }));
+    setConfirmDelId(null);
+  }
+
+  const delTarget = confirmDelId ? items.find(i=>i.id===confirmDelId) : null;
+
+  return h('div', null,
+    delTarget && h(ConfirmModal,{
+      title:'Remove subscription?', ico:'\ud83d\uddd1\ufe0f', danger:true,
+      message:`Remove "${delTarget.name}" from Bills? This affects every month.`,
+      confirmLabel:'Remove',
+      onConfirm:()=>delSub(confirmDelId),
+      onCancel:()=>setConfirmDelId(null)
+    }),
+
+    h('div',{className:'en-grid'},
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\ud83d\udcfa Active'),
+        h('div',{className:'val'}, detected.length),
+        h('div',{className:'sub'}, 'detected from Bills')
+      ),
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\ud83d\udcb5 Monthly'),
+        h('div',{className:'val'}, g2(totalMonthly))
+      ),
+      h('div',{className:'en-stat ' + (totalAnnual > 600 ? 'warn' : '')},
+        h('div',{className:'lbl'},'\ud83d\udcc6 Annual'),
+        h('div',{className:'val'}, g0(totalAnnual)),
+        h('div',{className:'sub'}, totalAnnual > 600 ? 'worth a quarterly audit' : 'under control')
+      )
+    ),
+
+    detected.length === 0
+      ? h('div',{className:'section'},
+          h('div',{className:'empty'},
+            h('div',{className:'big'},'\ud83d\udcfa'),
+            h('div',null,'No subscriptions detected.'),
+            h('div',{style:{marginTop:8,fontSize:12}}, 'Items in Bills like Netflix, Spotify, Disney+, Prime appear here automatically.')
+          )
+        )
+      : h('div',{className:'section'},
+          h('h2',null,'\ud83d\udccb Detected'),
+          h('table',null,
+            h('thead',null,h('tr',null,h('th',null,'Service'),h('th',{style:{textAlign:'right'}},'Monthly'),h('th',{style:{textAlign:'right'}},'Annual'),h('th',null,''))),
+            h('tbody',null,
+              sorted.map(i=>h('tr',{key:i.id},
+                h('td',null, i.name),
+                h('td',{className:'tabnum',style:{textAlign:'right'}}, g2(i.amount||0)),
+                h('td',{className:'tabnum',style:{textAlign:'right'}}, g2((i.amount||0)*12)),
+                h('td',{style:{textAlign:'right'}}, h('button',{className:'smbtn danger',onClick:()=>setConfirmDelId(i.id)},'\u00d7'))
+              ))
+            )
+          ),
+          totalAnnual > 0 && h('p',{className:'muted',style:{fontSize:13,marginTop:12}},
+            `\ud83d\udca1 Cancelling 2-3 unused subs could save ~${g0(totalAnnual*0.3)}/yr.`)
+        )
+  );
+}
+
+/* ============ VEHICLE VIEW ============ */
+function VehicleView({ pots, annual, ctx }){
+  const petrolPot = pots.find(p=>/petrol/i.test(p.name));
+  const carMaintPot = pots.find(p=>/car maintenance/i.test(p.name));
+  const monthlyPetrol = petrolPot ? potAmount(petrolPot, ctx) : 0;
+  const monthlyCarMaint = carMaintPot ? potAmount(carMaintPot, ctx) : 0;
+  const billsPot = pots.find(p=>/bill/i.test(p.name));
+  const carInsBill = (billsPot?.items || []).find(i=>/car insurance/i.test(i.name));
+  const monthlyInsurance = carInsBill ? itemEffectiveAmount(carInsBill, ctx.payday.getFullYear(), ctx.payday.getMonth()) : 0;
+  const carEvents = annual.filter(e => /car|MOT|service|breakdown|tax/i.test(e.name));
+  const totalCarAnnual = carEvents.reduce((s,e)=>s+(+e.amount||0), 0);
+  const monthlyAmortAnnual = totalCarAnnual / 12;
+  const totalMonthly = monthlyPetrol + monthlyCarMaint + monthlyInsurance + monthlyAmortAnnual;
+  const today = new Date();
+  const upcoming = [];
+  carEvents.forEach(e => {
+    for(let yr = today.getFullYear(); yr <= today.getFullYear()+1; yr++){
+      const evDate = new Date(yr, e.pay_month, 21);
+      if(evDate >= today) upcoming.push({ ...e, date: evDate });
+    }
+  });
+  upcoming.sort((a,b)=>a.date-b.date);
+
+  return h('div', null,
+    h('div',{className:'en-grid'},
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\ud83d\udcb7 Total monthly'),
+        h('div',{className:'val'}, g2(totalMonthly)),
+        h('div',{className:'sub'}, `${g0(totalMonthly*12)}/yr`)
+      ),
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\u26fd Petrol'),
+        h('div',{className:'val'}, g2(monthlyPetrol))
+      ),
+      h('div',{className:'en-stat'},
+        h('div',{className:'lbl'},'\ud83d\udcc5 Annual events'),
+        h('div',{className:'val'}, g0(totalCarAnnual)),
+        h('div',{className:'sub'}, `${carEvents.length} events \u2022 ${g2(monthlyAmortAnnual)}/mo`)
+      )
+    ),
+
+    h('div',{className:'section'},
+      h('h2',null,'\ud83d\udcca Breakdown'),
+      h('table',null,
+        h('thead',null,h('tr',null,h('th',null,'Item'),h('th',{style:{textAlign:'right'}},'Monthly'),h('th',{style:{textAlign:'right'}},'Annual'))),
+        h('tbody',null,
+          h('tr',null,h('td',null,'\u26fd Petrol'),h('td',{className:'tabnum',style:{textAlign:'right'}},g2(monthlyPetrol)),h('td',{className:'tabnum',style:{textAlign:'right'}},g0(monthlyPetrol*12))),
+          h('tr',null,h('td',null,'\ud83d\udd27 Car maintenance'),h('td',{className:'tabnum',style:{textAlign:'right'}},g2(monthlyCarMaint)),h('td',{className:'tabnum',style:{textAlign:'right'}},g0(monthlyCarMaint*12))),
+          h('tr',null,h('td',null,'\ud83d\udee1\ufe0f Insurance'),h('td',{className:'tabnum',style:{textAlign:'right'}},g2(monthlyInsurance)),h('td',{className:'tabnum',style:{textAlign:'right'}},g0(monthlyInsurance*12))),
+          h('tr',null,h('td',null,'\ud83d\udcc5 Annual (amortised)'),h('td',{className:'tabnum',style:{textAlign:'right'}},g2(monthlyAmortAnnual)),h('td',{className:'tabnum',style:{textAlign:'right'}},g0(totalCarAnnual))),
+          h('tr',{style:{fontWeight:700}},h('td',null,'Total'),h('td',{className:'tabnum',style:{textAlign:'right'}},g2(totalMonthly)),h('td',{className:'tabnum',style:{textAlign:'right'}},g0(totalMonthly*12)))
+        )
+      )
+    ),
+
+    upcoming.length > 0 && h('div',{className:'section'},
+      h('h2',null,'\u23f0 Upcoming events'),
+      h('table',null,
+        h('thead',null,h('tr',null,h('th',null,'Date'),h('th',null,'Event'),h('th',{style:{textAlign:'right'}},'Cost'))),
+        h('tbody',null,
+          upcoming.slice(0,6).map((e,i)=>{
+            const days = dDay(today, e.date);
+            return h('tr',{key:i},
+              h('td',null, fmtDate(e.date), ' ', h('span',{className:'muted',style:{fontSize:11}},`(${days}d)`)),
+              h('td',null, e.name),
+              h('td',{className:'tabnum',style:{textAlign:'right'}}, g2(e.amount))
+            );
+          })
+        )
+      )
+    )
+  );
+}
+
+/* ============ GOALS VIEW ============ */
+function GoalsView({ pots, setPots }){
+  const today = new Date();
+  const billsPot = pots.find(p=>/bill/i.test(p.name));
+  const potGoals = pots.filter(p => p.isGoal && p.kind === 'fixed');
+  const savingsItems = ((billsPot?.items)||[]).filter(i => /savings|christmas|holiday|emergency/i.test(i.name));
+
+  function updatePotGoal(potId, patch){
+    setPots(pots.map(p => p.id === potId ? { ...p, ...patch } : p));
+  }
+
+  function GoalRow({ name, monthly, target, targetDate, current, ico, onUpdate }){
+    const monthsTo = targetDate ? Math.max(0, dDay(today, targetDate) / 30) : 0;
+    const projectedAtTarget = (current||0) + monthly * monthsTo;
+    const onTrack = !target || projectedAtTarget >= target;
+    const pct = target > 0 ? Math.min(100, ((current||0)/target)*100) : 0;
+    const monthsToHit = monthly > 0 && target > current ? (target - current) / monthly : 0;
+    const projectedHitDate = monthly > 0 ? new Date(today.getTime() + monthsToHit*30*86400000) : null;
+
+    return h('div',{className:'goal'},
+      h('div',{className:'gh'},
+        h('div',{className:'gname'}, ico, ' ', name),
+        h('div',{className:'gnums'},
+          h('b',null, g2(current||0)),
+          target > 0 ? ` of ${g0(target)}` : ` /mo`
+        )
+      ),
+      target > 0 && h('div',{className:'bar'}, h('div',{className:onTrack?'good':'',style:{width:pct.toFixed(1)+'%'}})),
+      target > 0 && h('div',{className:'gmeta'},
+        h('span',null, `${pct.toFixed(0)}% \u2022 ${g2(monthly)}/mo`),
+        targetDate ? h('span',null, onTrack ? `\u2705 on track for ${fmtMon(targetDate)}` : `\u26a0\ufe0f short \u2014 needs ${g2((target-projectedAtTarget)/monthsTo)}/mo more`)
+                   : monthly > 0 && projectedHitDate ? h('span',null, `target ~${fmtMon(projectedHitDate)}`) : null
+      ),
+      target > 0 && onUpdate && h('div',{style:{marginTop:10,display:'flex',gap:6,alignItems:'center',flexWrap:'wrap'}},
+        h('span',{className:'muted',style:{fontSize:12}},'Saved:'),
+        h('span',{className:'mw'}, h('input',{type:'number',step:'10',value:current||0,onChange:e=>onUpdate({amount:+e.target.value}),className:'amt-input'})),
+        h('span',{className:'muted',style:{fontSize:12,marginLeft:8}},'Target:'),
+        h('span',{className:'mw'}, h('input',{type:'number',step:'10',value:target,onChange:e=>onUpdate({goalTarget:+e.target.value}),className:'amt-input'})),
+        h('span',{className:'muted',style:{fontSize:12,marginLeft:8}},'By:'),
+        h('input',{type:'date',value:targetDate||'',onChange:e=>onUpdate({goalDate:e.target.value}),style:{width:130}})
+      )
+    );
+  }
+
+  return h('div', null,
+    potGoals.length === 0 && savingsItems.length === 0
+      ? h('div',{className:'section'},
+          h('div',{className:'empty'},
+            h('div',{className:'big'},'\ud83c\udfaf'),
+            h('div',null,'No goals tracked.'),
+            h('div',{style:{marginTop:8,fontSize:12}}, 'Mark a fixed pot as a goal in Budget tab, or add a "Savings"/"Christmas" item to Bills.')
+          )
+        )
+      : h(Fragment, null,
+          potGoals.length > 0 && h('div',{className:'section'},
+            h('h2',null,'\ud83c\udfaf Targeted goals'),
+            potGoals.map(p => h(GoalRow, {
+              key:p.id, name:p.name, ico:p.emoji,
+              current:p.amount||0, target:p.goalTarget||0, targetDate:p.goalDate, monthly: 0,
+              onUpdate:(patch)=>updatePotGoal(p.id, patch)
+            }))
+          ),
+          savingsItems.length > 0 && h('div',{className:'section'},
+            h('h2',null,'\ud83d\udcb0 Recurring savings'),
+            savingsItems.map(i => h(GoalRow, {
+              key:i.id, name:i.name,
+              ico: /christmas/i.test(i.name) ? '\ud83c\udf84' : /holiday/i.test(i.name) ? '\u2708\ufe0f' : '\ud83d\udcb0',
+              current: 0, target: 0, monthly: i.amount || 0, targetDate: null, onUpdate: null
+            }))
+          )
+        )
+  );
+}
+
 /* ============ AFFORD CHECKER ============ */
-function AffordChecker({ buffer, pots, ctx, settings }){
+function AffordChecker({ buffer, pots, ctx }){
   const [item, setItem] = useState('');
   const [cost, setCost] = useState('');
   const [open, setOpen] = useState(false);
   const c = parseFloat(cost) || 0;
   const result = (() => {
     if(!c) return null;
-    if(c <= buffer) return { ok:true, msg:`Yes — covered by your buffer (${g2(buffer)} available, ${g2(buffer-c)} left).` };
-    if(c <= buffer*2){
-      const half = c/2;
-      return { ok:'maybe', msg:`Yes if split across 2 months (${g2(half)} each). Buffer covers about half each month.` };
-    }
-    // Find flexible pots
+    if(c <= buffer) return { ok:true, msg:`Yes \u2014 covered by buffer (${g2(buffer-c)} left).` };
+    if(c <= buffer*2){ const half = c/2; return { ok:'maybe', msg:`Yes if split across 2 months (${g2(half)} each).` }; }
     const flex = pots.filter(p=>p.kind==='fixed' && /fun|misc|maint|days/i.test(p.name) && potAmount(p,ctx) > 0);
     const flexTotal = flex.reduce((s,p)=>s+potAmount(p,ctx),0);
-    if(c <= buffer + flexTotal){
-      return { ok:'maybe', msg:`Possible, but you'd need to reduce flexible pots (${flex.map(p=>p.name).join(', ')}) to free ${g2(c-buffer)}.` };
-    }
-    return { ok:false, msg:`Not without cutting essentials or splitting across multiple months. ${g2(c-buffer)} short of buffer.` };
+    if(c <= buffer + flexTotal) return { ok:'maybe', msg:`Possible by reducing flexible pots by ${g2(c-buffer)}.` };
+    return { ok:false, msg:`Not without cutting essentials. ${g2(c-buffer)} short.` };
   })();
   return h('div',{className:'section'},
     h('div',{className:'spaced'},
-      h('h2',{style:{margin:0}},'Can I afford it?'),
+      h('h2',{style:{margin:0}},'\ud83e\udd14 Can I afford it?'),
       h('button',{className:'smbtn',onClick:()=>setOpen(!open)}, open?'Hide':'Open')
     ),
     open && h('div',{className:'checker'},
@@ -1030,16 +1789,23 @@ function AffordChecker({ buffer, pots, ctx, settings }){
   );
 }
 
-/* ============ ANNUAL EVENTS SECTION ============ */
+/* ============ ANNUAL & BIRTHDAYS ============ */
 function AnnualSection({ annual, setAnnual }){
   const [open, setOpen] = useState(false);
+  const [confirmDelId, setConfirmDelId] = useState(null);
   function update(id, patch){ setAnnual(annual.map(e=>e.id===id?{...e,...patch}:e)); }
-  function del(id){ if(confirm('Remove this event?')) setAnnual(annual.filter(e=>e.id!==id)); }
   function add(){ setAnnual([...annual, { id:newId(), pay_month:0, name:'New event', amount:0 }]); }
   const sorted = annual.slice().sort((a,b)=>a.pay_month-b.pay_month);
+  const delTarget = confirmDelId ? annual.find(e=>e.id===confirmDelId) : null;
   return h('div',{className:'section'},
+    delTarget && h(ConfirmModal,{
+      title:'Remove event?', ico:'\ud83d\uddd1\ufe0f', danger:true,
+      message:`Remove "${delTarget.name}" from your calendar?`, confirmLabel:'Remove',
+      onConfirm:()=>{ setAnnual(annual.filter(e=>e.id!==confirmDelId)); setConfirmDelId(null); },
+      onCancel:()=>setConfirmDelId(null)
+    }),
     h('div',{className:'spaced',style:{marginBottom:12}},
-      h('h2',{style:{margin:0}},'Calendar costs ', h('span',{className:'sub'}, `${annual.length} events through the year`)),
+      h('h2',{style:{margin:0}},'\ud83d\udcc5 Calendar costs ', h('span',{className:'sub'}, `${annual.length} events`)),
       h('button',{className:'smbtn',onClick:()=>setOpen(!open)}, open?'Hide':'Show')
     ),
     open && h('div',null,
@@ -1052,7 +1818,7 @@ function AnnualSection({ annual, setAnnual }){
             )),
             h('td',null, h('input',{value:e.name,onChange:ev=>update(e.id,{name:ev.target.value}),style:{width:'100%'}})),
             h('td',{style:{textAlign:'right'}}, h('span',{className:'mw'},h('input',{type:'number',step:'0.01',value:e.amount,onChange:ev=>update(e.id,{amount:+ev.target.value}),className:'amt-input'}))),
-            h('td',{style:{textAlign:'right'}}, h('button',{className:'smbtn danger',onClick:()=>del(e.id)},'\u00d7'))
+            h('td',{style:{textAlign:'right'}}, h('button',{className:'smbtn danger',onClick:()=>setConfirmDelId(e.id)},'\u00d7'))
           ))
         )
       ),
@@ -1061,21 +1827,27 @@ function AnnualSection({ annual, setAnnual }){
   );
 }
 
-/* ============ BIRTHDAYS SECTION ============ */
 function BirthdaysSection({ birthdays, setBirthdays }){
   const [open, setOpen] = useState(false);
+  const [confirmDelId, setConfirmDelId] = useState(null);
   function update(id, patch){ setBirthdays(birthdays.map(b=>b.id===id?{...b,...patch}:b)); }
-  function del(id){ if(confirm('Remove this birthday?')) setBirthdays(birthdays.filter(b=>b.id!==id)); }
   function add(){ setBirthdays([...birthdays, { id:newId(), name:'New person', day:1, month:1, amount:30 }]); }
   const sorted = birthdays.slice().sort((a,b)=>a.month-b.month || a.day-b.day);
+  const delTarget = confirmDelId ? birthdays.find(b=>b.id===confirmDelId) : null;
   return h('div',{className:'section'},
+    delTarget && h(ConfirmModal,{
+      title:'Remove birthday?', ico:'\ud83d\uddd1\ufe0f', danger:true,
+      message:`Remove "${delTarget.name}" from your birthdays list?`, confirmLabel:'Remove',
+      onConfirm:()=>{ setBirthdays(birthdays.filter(b=>b.id!==confirmDelId)); setConfirmDelId(null); },
+      onCancel:()=>setConfirmDelId(null)
+    }),
     h('div',{className:'spaced',style:{marginBottom:12}},
-      h('h2',{style:{margin:0}},'Birthdays ', h('span',{className:'sub'}, `${birthdays.length} people`)),
+      h('h2',{style:{margin:0}},'\ud83c\udf81 Birthdays ', h('span',{className:'sub'}, `${birthdays.length} people`)),
       h('button',{className:'smbtn',onClick:()=>setOpen(!open)}, open?'Hide':'Show')
     ),
     open && h('div',null,
       h('table',null,
-        h('thead',null,h('tr',null,h('th',null,'Name'),h('th',null,'Day'),h('th',null,'Month'),h('th',{style:{textAlign:'right'}},'Amount'),h('th',null,''))),
+        h('thead',null,h('tr',null,h('th',null,'Name'),h('th',null,'Day'),h('th',null,'Month'),h('th',{style:{textAlign:'right'}},'£'),h('th',null,''))),
         h('tbody',null,
           sorted.map(b=>h('tr',{key:b.id},
             h('td',null, h('input',{value:b.name,onChange:e=>update(b.id,{name:e.target.value}),style:{width:'100%'}})),
@@ -1084,7 +1856,7 @@ function BirthdaysSection({ birthdays, setBirthdays }){
               MONTH_NAMES.map((n,i)=>h('option',{key:i,value:i+1},n))
             )),
             h('td',{style:{textAlign:'right'}}, h('span',{className:'mw'},h('input',{type:'number',step:'0.01',value:b.amount,onChange:e=>update(b.id,{amount:+e.target.value}),className:'amt-input'}))),
-            h('td',{style:{textAlign:'right'}}, h('button',{className:'smbtn danger',onClick:()=>del(b.id)},'\u00d7'))
+            h('td',{style:{textAlign:'right'}}, h('button',{className:'smbtn danger',onClick:()=>setConfirmDelId(b.id)},'\u00d7'))
           ))
         )
       ),
@@ -1093,53 +1865,45 @@ function BirthdaysSection({ birthdays, setBirthdays }){
   );
 }
 
-/* ============ MORTGAGE SECTION ============ */
-function MortgageSection({ settings, setSettings }){
-  const [open, setOpen] = useState(false);
-  // Project balance to Jan 2028
-  const today = new Date();
-  const renewal = new Date(2028, 0, 1);
-  const monthsUntil = Math.max(0, (renewal.getFullYear()-today.getFullYear())*12 + (renewal.getMonth()-today.getMonth()));
-  // Simple amortisation
-  const monthlyRate = (settings.mortRate||0) / 100 / 12;
-  let bal = settings.mortBalance || 0;
-  for(let i=0;i<monthsUntil;i++){
-    const interest = bal * monthlyRate;
-    bal = Math.max(0, bal - (settings.mortPmt - interest));
-  }
-  const projectedBalance = bal;
-  const remainingMonths = 361 - monthsUntil; // assume 361 months total at start
-  // Compare rates
-  function pmt(p, r, n){ const m=r/100/12; return n>0 && m>0 ? p*m/(1-Math.pow(1+m,-n)) : 0; }
-  const rates = [3.25, 3.75, 4.25, 4.75, 5.50];
-  return h('div',{className:'section'},
-    h('div',{className:'spaced',style:{marginBottom:12}},
-      h('h2',{style:{margin:0}},'Mortgage renewal ', h('span',{className:'sub'}, `Jan 2028 \u2022 ${monthsUntil} months away`)),
-      h('button',{className:'smbtn',onClick:()=>setOpen(!open)}, open?'Hide':'Show')
-    ),
-    open && h('div',null,
-      h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:12}},
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Current balance'),h('span',{className:'mw'},h('input',{type:'number',step:'1',value:settings.mortBalance,onChange:e=>setSettings({...settings,mortBalance:+e.target.value}),className:'amt-input',style:{width:'100%'}}))),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Current rate (%)'),h('input',{type:'number',step:'0.01',value:settings.mortRate,onChange:e=>setSettings({...settings,mortRate:+e.target.value}),style:{width:'100%'}})),
-        h('label',null,h('div',{className:'muted',style:{fontSize:12,marginBottom:4}},'Current monthly payment'),h('span',{className:'mw'},h('input',{type:'number',step:'0.01',value:settings.mortPmt,onChange:e=>setSettings({...settings,mortPmt:+e.target.value}),className:'amt-input',style:{width:'100%'}})))
-      ),
-      h('p',{className:'muted',style:{fontSize:13}}, `Projected balance at renewal: ${g0(projectedBalance)}. Below: estimated payments at different rates over the remaining ${remainingMonths} months.`),
-      h('table',null,
-        h('thead',null,h('tr',null,h('th',null,'Rate'),h('th',{style:{textAlign:'right'}},'Monthly'),h('th',{style:{textAlign:'right'}},'Change vs now'))),
-        h('tbody',null,
-          rates.map(r=>{
-            const m = pmt(projectedBalance, r, remainingMonths);
-            const diff = m - settings.mortPmt;
-            return h('tr',{key:r},
-              h('td',null, r.toFixed(2)+'%'),
-              h('td',{className:'tabnum',style:{textAlign:'right'}}, g2(m)),
-              h('td',{className:'tabnum',style:{textAlign:'right',color:diff>0?'var(--bad)':'var(--good)'}}, (diff>0?'+':'')+g2(diff))
-            );
-          })
-        )
-      )
-    )
-  );
+/* ============ MAGIC ALLOCATE ============ */
+// Auto-allocate: best guess at fresh budget setup for the period
+function magicAllocate(pots, ctx, settings){
+  // Strategy: leave list/auto pots untouched (their amounts come from items/calc).
+  // For fixed pots, set sensible defaults based on pot name.
+  const defaults = {
+    'petrol': 170,
+    'days out': 200,
+    'misc': 100,
+    'car maintenance': 100,
+    'house maintenance': 100,
+    "lauren's 40th": 80,
+    'fun': 200
+  };
+  const updated = pots.map(p => {
+    if(p.kind !== 'fixed') return p;
+    const key = p.name.toLowerCase();
+    let suggestion = null;
+    for(const [pat, val] of Object.entries(defaults)){
+      if(key.includes(pat)){ suggestion = val; break; }
+    }
+    if(suggestion === null) return p; // unknown pot, leave alone
+    return { ...p, amount: suggestion };
+  });
+  return updated;
+}
+
+function buildAllocatePreview(currentPots, newPots, ctx){
+  const rows = [];
+  newPots.forEach((np, i) => {
+    const cp = currentPots[i];
+    if(np.kind !== 'fixed') return;
+    const before = cp.amount || 0;
+    const after = np.amount || 0;
+    if(before !== after){
+      rows.push({ label: `${np.emoji} ${np.name}`, value: `${g2(before)} \u2192 ${g2(after)}` });
+    }
+  });
+  return rows;
 }
 
 /* ============ BUDGET VIEW ============ */
@@ -1151,75 +1915,85 @@ function BudgetView({ year, monthIdx, setYear, setMonthIdx, settings, setSetting
   const bufferPct = settings.income > 0 ? (buffer/settings.income)*100 : 0;
   const health = buffer < 0 ? 'bad' : bufferPct < 3 ? 'warn' : bufferPct < 8 ? 'warn' : 'good';
   const healthLabel = buffer < 0 ? 'Shortfall' : bufferPct < 3 ? 'At risk' : bufferPct < 8 ? 'Thin' : 'Healthy';
+  const insightsList = useMemo(()=>buildBudgetInsights({ ctx, income:settings.income, buffer, annual, birthdays, payday:ctx.payday, nextPayday:ctx.nextPayday }), [ctx, settings, buffer, annual, birthdays]);
 
-  const insightsList = useMemo(()=>buildBudgetInsights({ pots, ctx, totals, income:settings.income, buffer, annual, birthdays, payday:ctx.payday, nextPayday:ctx.nextPayday }), [pots, ctx, totals, settings, buffer, annual, birthdays]);
+  const [confirmMagic, setConfirmMagic] = useState(false);
+  const [magicPreview, setMagicPreview] = useState(null);
 
-  function updatePot(idx, newPot){
-    setPots(pots.map((p,i)=> i===idx ? newPot : p));
-  }
-  function delPot(idx){
-    if(confirm('Delete this pot?')) setPots(pots.filter((_,i)=>i!==idx));
-  }
+  function updatePot(idx, newPot){ setPots(pots.map((p,i)=> i===idx ? newPot : p)); }
+  function delPot(idx){ setPots(pots.filter((_,i)=>i!==idx)); }
   function movePot(idx, dir){
     const j = idx + dir;
     if(j<0 || j>=pots.length) return;
-    const a = pots.slice();
-    [a[idx], a[j]] = [a[j], a[idx]];
-    setPots(a);
+    const a = pots.slice(); [a[idx], a[j]] = [a[j], a[idx]]; setPots(a);
   }
-  function addPot(){
-    setPots([...pots, { id:'pot-'+newId(), name:'New pot', emoji:'\ud83d\udcb0', kind:'fixed', amount:0 }]);
+  function addPot(){ setPots([...pots, { id:'pot-'+newId(), name:'New pot', emoji:'\ud83d\udcb0', kind:'fixed', amount:0 }]); }
+
+  function startMagic(){
+    const newPots = magicAllocate(pots, ctx, settings);
+    const preview = buildAllocatePreview(pots, newPots, ctx);
+    setMagicPreview({ newPots, preview });
+    setConfirmMagic(true);
+  }
+  function applyMagic(){
+    if(magicPreview) setPots(magicPreview.newPots);
+    setConfirmMagic(false);
+    setMagicPreview(null);
   }
 
   return h('div', null,
-    // Period picker
+    confirmMagic && magicPreview && h(ConfirmModal,{
+      title:'Magic allocate?', ico:'\u2728',
+      message: magicPreview.preview.length === 0
+        ? 'Your fixed pots already match the suggested defaults — nothing would change.'
+        : `This will overwrite the amounts in ${magicPreview.preview.length} fixed pot${magicPreview.preview.length>1?'s':''} with sensible defaults. Auto and list pots are untouched. Existing values will be lost.`,
+      preview: magicPreview.preview,
+      confirmLabel: magicPreview.preview.length === 0 ? 'OK' : 'Apply',
+      danger: magicPreview.preview.length > 0,
+      onConfirm: applyMagic,
+      onCancel: ()=>{ setConfirmMagic(false); setMagicPreview(null); }
+    }),
+
     h('div',{className:'period'},
-      h('select',{value:monthIdx,onChange:e=>setMonthIdx(+e.target.value)},
-        MONTH_NAMES.map((n,i)=>h('option',{key:i,value:i},n))
-      ),
-      h('select',{value:year,onChange:e=>setYear(+e.target.value)},
-        [2025,2026,2027,2028].map(y=>h('option',{key:y,value:y},y))
-      ),
-      h('span',{className:'pill'}, `Payday ${fmtShort(ctx.payday)}`),
-      h('span',{className:'pill'}, `${ctx.weekends} Sats \u2022 ${ctx.fridays} Fris`)
+      h('select',{value:monthIdx,onChange:e=>setMonthIdx(+e.target.value)}, MONTH_NAMES.map((n,i)=>h('option',{key:i,value:i},n))),
+      h('select',{value:year,onChange:e=>setYear(+e.target.value)}, [2025,2026,2027,2028].map(y=>h('option',{key:y,value:y},y))),
+      h('span',{className:'pill'}, '\ud83d\udcc6 ', fmtShort(ctx.payday)),
+      h('span',{className:'pill'}, `${ctx.weekends}\u00d7\ud83d\udecd \u2022 ${ctx.fridays}\u00d7\ud83c\udf92`),
+      h('button',{className:'magic-btn',onClick:startMagic,title:'Best-guess auto-allocation for this month'},
+        '\u2728 Magic allocate'
+      )
     ),
 
-    // Summary
     h('div',{className:'summary'},
       h('div',{className:'item'},
-        h('div',{className:'lbl'},'Income'),
+        h('div',{className:'lbl'},'\ud83d\udcb5 Income'),
         h('div',{className:'val'}, g2(settings.income)),
-        h('div',{className:'sub'},
-          h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:settings.income,onChange:e=>setSettings({...settings,income:+e.target.value}),className:'amt-input',style:{width:110}}))
-        )
+        h('div',{className:'sub'}, h('span',{className:'mw'}, h('input',{type:'number',step:'0.01',value:settings.income,onChange:e=>setSettings({...settings,income:+e.target.value}),className:'amt-input',style:{width:110}})))
       ),
       h('div',{className:'item'},
-        h('div',{className:'lbl'},'Allocated'),
+        h('div',{className:'lbl'},'\ud83d\udcca Allocated'),
         h('div',{className:'val'}, g2(totalAllocated)),
-        h('div',{className:'sub'}, `${pots.length} pots \u2022 ${settings.income>0?Math.round((totalAllocated/settings.income)*100):0}% of income`)
+        h('div',{className:'sub'}, `${pots.length} pots \u2022 ${settings.income>0?Math.round((totalAllocated/settings.income)*100):0}%`)
       ),
       h('div',{className:'item'},
-        h('div',{className:'lbl'},'Left to allocate (Buffer)'),
+        h('div',{className:'lbl'},'\ud83d\udcb8 Buffer'),
         h('div',{className:'val', style:{color: buffer<0 ? 'var(--bad)' : 'inherit'}}, g2(buffer)),
         h('div',{className:'sub'},
           h('span',{className:'health '+health}, healthLabel),
-          h('span',null,` \u2022 ${bufferPct.toFixed(1)}% of income`)
+          h('span',null,` \u2022 ${bufferPct.toFixed(1)}%`)
         )
       )
     ),
 
-    // Insights
     insightsList.length > 0 && h('div',{className:'insights'},
       insightsList.map((ins,i) => h('div',{key:i,className:'ins '+ins.type},
-        h('span',{className:'ico'}, ins.ico),
-        h('span',null, ins.text)
+        h('span',{className:'ico'}, ins.ico), h('div',{className:'body'}, ins.text)
       ))
     ),
 
-    // Pots
     h('div',{className:'pots'},
       pots.map((p,i)=>h(PotCard,{
-        key:p.id, pot:p, idx:i, total:totals[i], ctx, settings, income:settings.income,
+        key:p.id, pot:p, ctx, settings, income:settings.income,
         onChange:(np)=>updatePot(i,np),
         onDelete:()=>delPot(i),
         onMoveUp:()=>movePot(i,-1),
@@ -1231,11 +2005,9 @@ function BudgetView({ year, monthIdx, setYear, setMonthIdx, settings, setSetting
       h('button',{className:'smbtn',onClick:addPot},'+ Add pot')
     ),
 
-    // Bottom sections
-    h(AffordChecker,{ buffer, pots, ctx, settings }),
+    h(AffordChecker,{ buffer, pots, ctx }),
     h(AnnualSection,{ annual, setAnnual }),
-    h(BirthdaysSection,{ birthdays, setBirthdays }),
-    h(MortgageSection,{ settings, setSettings })
+    h(BirthdaysSection,{ birthdays, setBirthdays })
   );
 }
 
@@ -1251,6 +2023,7 @@ function App(){
 
   const [activeView, setActiveView] = useState('budget');
   const [dark, setDark] = useState(()=> localStorage.getItem('pp:dark') === '1');
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [pots, setPots] = useState(DEFAULT_POTS);
@@ -1259,30 +2032,33 @@ function App(){
   const [tariff, setTariff] = useState(DEFAULT_TARIFF);
   const [enAccount, setEnAccount] = useState(DEFAULT_EN_ACCOUNT);
   const [readings, setReadings] = useState(DEFAULT_READINGS);
+  const [renewals, setRenewals] = useState(DEFAULT_RENEWALS);
+  const [marketScan, setMarketScan] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [saved, setSaved] = useState(false);
   const saveTimer = useRef(null);
 
-  // Load from Supabase on mount (after auth)
   useEffect(()=>{
     if(!authed) return;
     (async ()=>{
-      const [s, p, a, b, t, ac, r] = await Promise.all([
+      const [s, p, a, b, t, ac, r, rn, ms] = await Promise.all([
         loadKey('pp:settings', DEFAULT_SETTINGS),
         loadKey('pp:pots', DEFAULT_POTS),
         loadKey('pp:annual', DEFAULT_ANNUAL),
         loadKey('pp:birthdays', DEFAULT_BIRTHDAYS),
         loadKey('pp:energy_tariff', DEFAULT_TARIFF),
         loadKey('pp:energy_account', DEFAULT_EN_ACCOUNT),
-        loadKey('pp:energy_readings', DEFAULT_READINGS)
+        loadKey('pp:energy_readings', DEFAULT_READINGS),
+        loadKey('pp:renewals', DEFAULT_RENEWALS),
+        loadKey('pp:market_scan', null)
       ]);
       setSettings(s); setPots(p); setAnnual(a); setBirthdays(b);
-      setTariff(t); setEnAccount(ac); setReadings(r);
+      setTariff(t); setEnAccount(ac); setReadings(r); setRenewals(rn);
+      setMarketScan(ms);
       setLoaded(true);
     })();
   }, [authed]);
 
-  // Auto-save with debounce + flash pill
   function flashSaved(){
     setSaved(true);
     clearTimeout(saveTimer.current);
@@ -1295,42 +2071,32 @@ function App(){
   useEffect(()=>{ if(loaded) saveKey('pp:energy_tariff', tariff).then(flashSaved); }, [tariff, loaded]);
   useEffect(()=>{ if(loaded) saveKey('pp:energy_account', enAccount).then(flashSaved); }, [enAccount, loaded]);
   useEffect(()=>{ if(loaded) saveKey('pp:energy_readings', readings).then(flashSaved); }, [readings, loaded]);
+  useEffect(()=>{ if(loaded) saveKey('pp:renewals', renewals).then(flashSaved); }, [renewals, loaded]);
+  useEffect(()=>{ if(loaded && marketScan) saveKey('pp:market_scan', marketScan); }, [marketScan, loaded]);
 
-  // Dark mode
   useEffect(()=>{
     document.body.classList.toggle('dark', dark);
     localStorage.setItem('pp:dark', dark ? '1' : '0');
   }, [dark]);
 
   function tryLogin(){
-    if(pw === PASSWORD){
-      localStorage.setItem('pp:auth','1');
-      setAuthed(true); setPwErr('');
-    } else {
-      setPwErr('Incorrect password');
-    }
+    if(pw === PASSWORD){ localStorage.setItem('pp:auth','1'); setAuthed(true); setPwErr(''); }
+    else setPwErr('Incorrect password');
   }
-  function logout(){
-    localStorage.removeItem('pp:auth');
-    setAuthed(false);
-  }
+  function logout(){ localStorage.removeItem('pp:auth'); setAuthed(false); }
   function resetAll(){
-    if(!confirm('Reset everything to defaults? This wipes ALL data including energy readings.')) return;
-    if(!confirm('Are you really sure? This cannot be undone.')) return;
-    setSettings(DEFAULT_SETTINGS);
-    setPots(DEFAULT_POTS);
-    setAnnual(DEFAULT_ANNUAL);
-    setBirthdays(DEFAULT_BIRTHDAYS);
-    setTariff(DEFAULT_TARIFF);
-    setEnAccount(DEFAULT_EN_ACCOUNT);
-    setReadings(DEFAULT_READINGS);
+    setSettings(DEFAULT_SETTINGS); setPots(DEFAULT_POTS);
+    setAnnual(DEFAULT_ANNUAL); setBirthdays(DEFAULT_BIRTHDAYS);
+    setTariff(DEFAULT_TARIFF); setEnAccount(DEFAULT_EN_ACCOUNT);
+    setReadings(DEFAULT_READINGS); setRenewals(DEFAULT_RENEWALS);
+    setConfirmReset(false);
   }
 
   if(!authed){
     return h('div',{className:'login-bg'},
       h('div',{className:'login-card'},
-        h('h1',null,'Family Money Planner'),
-        h('p',null,'Calm control over where every pound goes — before payday lands.'),
+        h('h1',null,'\ud83e\ude99 Family Money Planner'),
+        h('p',null,'Calm control over where every pound goes \u2014 before payday lands.'),
         h('input',{type:'password',placeholder:'Password',value:pw,onChange:e=>setPw(e.target.value),onKeyDown:e=>e.key==='Enter'&&tryLogin()}),
         h('button',{onClick:tryLogin},'Sign in'),
         pwErr && h('div',{className:'login-error'}, pwErr)
@@ -1338,25 +2104,61 @@ function App(){
     );
   }
 
+  const ctx = useMemo(()=>buildPeriodCtx({ year, monthIdx, settings, birthdays, annual }), [year, monthIdx, settings, birthdays, annual]);
+
+  const primaryTabs = [
+    { id:'budget', ico:'\ud83e\ude99', label:'Budget' },
+    { id:'energy', ico:'\u26a1', label:'Energy' }
+  ];
+  const secondaryTabs = [
+    { id:'renewals', ico:'\ud83d\udd04', label:'Renewals' },
+    { id:'mortgage', ico:'\ud83c\udfe0', label:'Mortgage' },
+    { id:'subs',     ico:'\ud83d\udcfa', label:'Subs' },
+    { id:'vehicle',  ico:'\ud83d\ude97', label:'Vehicle' },
+    { id:'goals',    ico:'\ud83c\udfaf', label:'Goals' }
+  ];
+
   return h('div',{className:'app'},
+    confirmReset && h(ConfirmModal,{
+      title:'Reset everything?', ico:'\u26a0\ufe0f', danger:true,
+      message:'This wipes ALL data: pots, bills, energy readings, tariff, renewals \u2014 everything reverts to defaults. This cannot be undone.',
+      confirmLabel:'Reset all data',
+      onConfirm:resetAll,
+      onCancel:()=>setConfirmReset(false)
+    }),
+
     h('div',{className:'hdr'},
-      h('h1',null,'Family Money Planner'),
+      h('h1',null, h('span',{className:'logo'},'\ud83e\ude99'), 'Family Money Planner'),
       h('div',{className:'right'},
-        h('span',{className:'savedpill'+(saved?' show':'')},'Saved'),
+        h('span',{className:'savedpill'+(saved?' show':'')},'\u2713 Saved'),
         h('button',{className:'icobtn',title:'Toggle dark mode',onClick:()=>setDark(!dark)}, dark ? '\u2600\ufe0f' : '\ud83c\udf19'),
-        h('button',{className:'icobtn',title:'Reset all',onClick:resetAll},'\u21bb'),
+        h('button',{className:'icobtn',title:'Reset all',onClick:()=>setConfirmReset(true)},'\u21bb'),
         h('button',{className:'icobtn',title:'Sign out',onClick:logout},'\u2192')
       )
     ),
 
     h('div',{className:'tabs'},
-      h('button',{className:activeView==='budget'?'active':'',onClick:()=>setActiveView('budget')},'Budget'),
-      h('button',{className:activeView==='energy'?'active':'',onClick:()=>setActiveView('energy')},'Energy')
+      primaryTabs.map(t=>h('button',{
+        key:t.id, className:activeView===t.id?'active':'',
+        onClick:()=>setActiveView(t.id)
+      }, h('span',{className:'ico'},t.ico), h('span',null,t.label)))
     ),
 
-    activeView === 'budget'
-      ? h(BudgetView,{ year, monthIdx, setYear, setMonthIdx, settings, setSettings, pots, setPots, annual, setAnnual, birthdays, setBirthdays })
-      : h(EnergyView,{ tariff, setTariff, account:enAccount, setAccount:setEnAccount, readings, setReadings, pots, setPots })
+    h('div',{className:'subtabs'},
+      secondaryTabs.map(t=>h('button',{
+        key:t.id, className:activeView===t.id?'active':'',
+        onClick:()=>setActiveView(t.id)
+      }, h('span',null,t.ico), h('span',null,t.label)))
+    ),
+
+    activeView === 'budget' ? h(BudgetView,{ year, monthIdx, setYear, setMonthIdx, settings, setSettings, pots, setPots, annual, setAnnual, birthdays, setBirthdays })
+    : activeView === 'energy' ? h(EnergyView,{ tariff, setTariff, account:enAccount, setAccount:setEnAccount, readings, setReadings, pots, setPots, marketScan, setMarketScan })
+    : activeView === 'renewals' ? h(RenewalsView,{ renewals, setRenewals, tariff, setActiveView })
+    : activeView === 'mortgage' ? h(MortgageView,{ settings, setSettings })
+    : activeView === 'subs' ? h(SubscriptionsView,{ pots, setPots })
+    : activeView === 'vehicle' ? h(VehicleView,{ pots, annual, ctx })
+    : activeView === 'goals' ? h(GoalsView,{ pots, setPots })
+    : null
   );
 }
 
